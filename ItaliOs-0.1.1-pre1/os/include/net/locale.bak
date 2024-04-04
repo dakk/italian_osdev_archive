@@ -1,0 +1,8 @@
+#ifndef _LOCALE_H_
+#define  _LOCALE_H_
+
+#include <rete.h>
+
+u_char mandaLOCALE(u_char *bufLOC,u_short lungh);
+u_char riceviLOCALE();
+#endif

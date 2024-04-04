@@ -1,0 +1,120 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+        -----------------------
+          The "INITCONF" file
+        -----------------------
+
+This file is used for entire boot process to know what type of
+setting we want to use.
+
+
+
+ GENERAL DESCRIPTION OF FILE FORMAT
+------------------------------------
+
+ - No difference between lowercase and uppercase neither tab or space.
+ - Excess spaces, tabs and empty lines are ok.
+ - Comment start with '#' (can be put after a command too) and
+   terminate at endline.
+ - There is only one instruction per line.
+
+The file is divided into sections. Every section has a name embraced
+in square parenthesis and it's followed by specific instructions.
+The section ends when another one starts or at the end of file.
+
+In the following instruction format specifications we'll use
+uppercase for command and lowercase for the parameters that must be
+substituted with appropriate values.
+
+
+
+ IMPLEMENTED SECTIONS
+----------------------
+
+The sections must be inserted in the same order they are presented.
+
+
+[CONFIG]
+
+This section defines some general settings of boot process and
+constants used by OSSO itself.
+These are implemented instructions (all must be present!):
+
+  BOOT_DIR = boot_directory_name
+  MODULES_DIR = modules_directory_name
+
+They set the directory where boot and driver modules are placed.
+
+  BOOT_SEGMENT = segment_interval_where_put_boot_modules
+  MODULES_SEGMENT = segment_interval_where_put_driver_modules
+
+They set the memory segments where the modules (boot and drivers)
+must be put.
+
+* The segment intervals are in this form:
+
+  start_segment - end_segment
+
+The segments can be written in decimal or hexadecimal base and are
+separated by minus sign.
+The end segment (16 bytes) is usable: the next one is not allowed.
+
+     --------------------------------------------------
+
+[BOOT]
+
+This section contains the boot modules to load with appropriate
+values and address.
+These are implemented instructions (only START is necessary):
+
+  START = module_to_execute [, segment_interval]
+
+It specifies what is the first module to execute at the end of the
+boot process. If segments is not indicated BOOT_SEGMENT is assumed.
+NOTE: START must be present exactly once in this section!
+
+  INSTALL = module_to_load [, segment_interval]
+
+It is like START with the difference that the module is only loaded,
+not executed.
+
+  PRELOAD [RUN/DRIVER [ROOT]] = module_to_preload [param1[ param2[ ...]]]
+
+It preload a module for the next stage of boot process (tipically
+INIT). "RUN" indicate that the module must be executed, "DRIVER"
+that must be executed as a driver (it have to register itself to
+MPS) and "ROOT" that the execution must happen in supervisor level.
+"param1" and following are the parameters to pass to the module.
+This module will be loaded in MODULES_SEGMENT.
+
+     --------------------------------------------------
+
+[INIT]
+
+This section is used by init to load the driver necessary to make
+OSSO working.
+These are implemented instructions (none necessary):
+
+  LOAD [ROOT] = modules [param1[ param2[ ...]]]
+
+It is like PRELOAD in BOOT section with the only difference that
+modules are always executed.

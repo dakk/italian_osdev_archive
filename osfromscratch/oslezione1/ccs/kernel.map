@@ -1,0 +1,246 @@
+Archive member included because of file (symbol)
+
+./main/libmain.a(main.o)      (--whole-archive)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD ./main/libmain.a
+Address of section .text set to 0x10000
+                0x0000000008048000                . = (0x8048000 + SIZEOF_HEADERS)
+
+.interp
+ *(.interp)
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.dyn
+ *(.rel.init)
+ *(.rel.text.rel.text.*.rel.gnu.linkonce.t.*)
+ *(.rel.fini)
+ *(.rel.rodata.rel.rodata.*.rel.gnu.linkonce.r.*)
+ *(.rel.data.rel.data.*.rel.gnu.linkonce.d.*)
+ *(.rel.tdata.rel.tdata.*.rel.gnu.linkonce.td.*)
+ *(.rel.tbss.rel.tbss.*.rel.gnu.linkonce.tb.*)
+ *(.rel.ctors)
+ *(.rel.dtors)
+ *(.rel.got)
+ *(.rel.bss.rel.bss.*.rel.gnu.linkonce.b.*)
+
+.rela.dyn
+ *(.rela.init)
+ *(.rela.text.rela.text.*.rela.gnu.linkonce.t.*)
+ *(.rela.fini)
+ *(.rela.rodata.rela.rodata.*.rela.gnu.linkonce.r.*)
+ *(.rela.data.rela.data.*.rela.gnu.linkonce.d.*)
+ *(.rela.tdata.rela.tdata.*.rela.gnu.linkonce.td.*)
+ *(.rela.tbss.rela.tbss.*.rela.gnu.linkonce.tb.*)
+ *(.rela.ctors)
+ *(.rela.dtors)
+ *(.rela.got)
+ *(.rela.bss.rela.bss.*.rela.gnu.linkonce.b.*)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.init
+ *(.init)
+
+.plt
+ *(.plt)
+
+.text           0x0000000000010000       0x73
+ *(.text.stub.text.*.gnu.linkonce.t.*)
+ .text          0x0000000000010000       0x73 ./main/libmain.a(main.o)
+                0x000000000001000a                putc(char)
+                0x000000000001002e                puts(char*)
+                0x0000000000010056                main
+                0x0000000000010000                _start()
+ *(.gnu.warning)
+
+.fini
+ *(.fini)
+                0x0000000000010073                PROVIDE (__etext, .)
+                0x0000000000010073                PROVIDE (_etext, .)
+                0x0000000000010073                PROVIDE (etext, .)
+
+.rodata         0x0000000000010073       0x12
+ *(.rodata.rodata.*.gnu.linkonce.r.*)
+ .rodata.str1.1
+                0x0000000000010073       0x12 ./main/libmain.a(main.o)
+
+.rodata1
+ *(.rodata1)
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+                0x0000000000011085                . = (0x1000 DATA_SEGMENT_ALIGN 0x1000)
+                0x0000000000011088                . = ALIGN (0x4)
+                0x0000000000011088                PROVIDE (__preinit_array_start, .)
+
+.preinit_array
+ *(.preinit_array)
+                0x0000000000011088                PROVIDE (__preinit_array_end, .)
+                0x0000000000011088                PROVIDE (__init_array_start, .)
+
+.init_array
+ *(.init_array)
+                0x0000000000011088                PROVIDE (__init_array_end, .)
+                0x0000000000011088                PROVIDE (__fini_array_start, .)
+
+.fini_array
+ *(.fini_array)
+                0x0000000000011088                PROVIDE (__fini_array_end, .)
+
+.data           0x0000000000011088        0x4
+ *(.data.data.*.gnu.linkonce.d.*)
+ .data          0x0000000000011088        0x4 ./main/libmain.a(main.o)
+                0x0000000000011088                videomem
+
+.data1
+ *(.data1)
+
+.tdata
+ *(.tdata.tdata.*.gnu.linkonce.td.*)
+
+.tbss
+ *(.tbss.tbss.*.gnu.linkonce.tb.*)
+ *(.tcommon)
+
+.eh_frame
+ *(.eh_frame)
+
+.gcc_except_table
+ *(.gcc_except_table)
+
+.dynamic
+ *(.dynamic)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE ( *crtend.o).ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE ( *crtend.o).dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.jcr
+ *(.jcr)
+
+.got
+ *(.got.plt)
+ *(.got)
+                0x000000000001108c                _edata = .
+                0x000000000001108c                PROVIDE (edata, .)
+                0x000000000001108c                __bss_start = .
+
+.bss            0x000000000001108c        0x0
+ *(.dynbss)
+ *(.bss.bss.*.gnu.linkonce.b.*)
+ *(COMMON)
+                0x000000000001108c                . = ALIGN (0x4)
+                0x000000000001108c                . = ALIGN (0x4)
+                0x000000000001108c                _end = .
+                0x000000000001108c                PROVIDE (end, .)
+                0x000000000001108c                . = DATA_SEGMENT_END (.)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x10
+ *(.comment)
+ .comment       0x0000000000000000       0x10 ./main/libmain.a(main.o)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info.gnu.linkonce.wi.*)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+OUTPUT(ccs.bin binary)

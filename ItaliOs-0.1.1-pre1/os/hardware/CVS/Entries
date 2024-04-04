@@ -1,0 +1,22 @@
+D/audio////
+D/keymap////
+/8259.c/1.5/Fri Feb 28 20:41:01 2003//
+/dma.c/1.3/Fri Feb 28 20:41:01 2003//
+/fdc.c/1.6/Fri Feb 28 20:41:02 2003//
+/gdt.c/1.6/Fri Feb 28 20:41:02 2003//
+/hdd.c/1.4/Fri Feb 28 20:41:02 2003//
+/idt.c/1.2/Fri Feb 28 20:41:02 2003//
+/io.c/1.3/Fri Feb 28 20:41:02 2003//
+/mouse.c/1.3/Fri Feb 28 20:41:02 2003//
+/parallel.c/1.4/Fri Feb 28 20:41:02 2003//
+/pit.c/1.3/Fri Feb 28 20:41:02 2003//
+/printer.c/1.3/Fri Feb 28 20:41:02 2003//
+/register.c/1.3/Fri Feb 28 20:41:02 2003//
+/rtc.c/1.5/Fri Feb 28 20:41:02 2003//
+/serial.c/1.16/Fri Feb 28 20:41:02 2003//
+/speaker.c/1.3/Fri Feb 28 20:41:02 2003//
+/video.c/1.4/Fri Feb 28 20:41:02 2003//
+/forme_vga.c/1.2/Result of merge//
+/keyboard.c/1.7/Result of merge//
+/vga.c/1.11/Result of merge//
+/makefile/1.10/Fri Feb 28 22:07:54 2003//

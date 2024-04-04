@@ -1,0 +1,72 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+/******************************* O S S O ***********************************/
+/* file : BUGS                                                             */
+/* Known Bugs                                                              */
+/***************************************************************************/
+
+
+/***************************************************************************
+ *
+ * $Id: BUGS,v 1.3 2000/11/02 23:34:12 iurlano Exp $
+ *
+ ***************************************************************************
+ *
+ * $Log: BUGS,v $
+ * Revision 1.3  2000/11/02 23:34:12  iurlano
+ * Dynamic linking seems to work!!
+ * Some problems at boot stage with files with extension
+ *
+ * Revision 1.2  2000/06/05 07:47:42  iurlano
+ * English version
+ *
+ * Revision 1.1.1.1  2000/05/30 08:10:53  iurlano
+ * OSSO : First Public Release
+ *
+ * Revision 1.1.1.1  2000/03/06 15:53:43  iurlano
+ *
+ *
+ * Revision 1.1.1.1  2000/01/19 10:42:39  pecciant
+ *
+ *
+ * Revision 1.4  1999/11/23 13:53:27  pecciant
+ * *** empty log message ***
+ *
+ * Revision 1.3  1999/11/23 12:22:33  iurlano
+ * Pulizia generale...
+ *
+ *
+ ***************************************************************************/
+
+
+Bugs :
+
+1 - unmask_IRQ() and mask_IRQ() probably don't work.
+
+2 - SHOULD BE OK(YET TO TEST)
+      printk() doesn't work when exceeds the 80th column.
+
+3 - There are a lot of things in italian, yet.
+
+4 - Perhaps there is the limit of 64kb of data in the BOOT directory
+
+5 - Problem loading file whose name has an extension at boot stage

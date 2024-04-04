@@ -1,0 +1,19 @@
+#OSSO Configuration File
+#Definisce le opzioni di configurazione del sistema boot
+#
+#Sintassi :
+#
+#<Nome> <tipo> <nome univoco> <valore di Default> <Commento ....>
+#Il nome compare poi nel .h
+#il tipo puo' essere value (tipo #define CENTO 100)
+#oppure string  (tipo #define CENTO "100")
+#oppure boolean (tipo #define CENTO 1)
+#oppure define  (tipo #define CENTO)
+#
+
+targetfloppy makestring targetfloppy a:/ TARGET_FLOPPY Target Floppy Mtools Drive
+targetfloppyimg makestring targetfloppyimg /dev/fd0 TARGET_FLOPPY_IMG Target Floppy Image Path
+targetdisk makestring targetdisk o:/ TARGET Target Disk Mtools Drive
+targetdiskimg makestring targetdiskimg /tmp/osso.disk TARGET_IMG Target Disk Image Path
+bootdir makestring bootdir BOOT T_BOOT_DIR Boot Directory
+modulesdir makestring modulesdir MODULES T_MODULES_DIR Modules Directory

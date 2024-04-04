@@ -1,0 +1,67 @@
+#define DIM_IDT 256 //Numero di descrittori all' intero della IDT
+
+
+//Questa è la struttura di un descrittore all' interno della IDT - Interrupt Descriptore Table
+
+       struct descrittore
+{
+		
+	        unsigned short int offset0_15;
+		unsigned short int segmento;
+		unsigned short int riservato : 5;
+		unsigned short int opzioni : 11;
+		unsigned short int offset16_31;
+};
+
+
+
+//Prototipi delle funzioni utilizzate
+
+void initIDT(void);
+void Init_PIC8259(void);
+void abilita_irq(unsigned char irq_num, unsigned char port_num);
+char inportb  (int numport);
+void outportb (int portdata, int portnum);
+void pic_handler();
+void exec_irq();
+void handler_default(void);
+
+//Prototipi degli handler delle eccezioni
+void trap0(void);
+void trap1(void);
+void trap2(void);
+void trap3(void);
+void trap4(void);
+void trap5(void);
+void trap6(void);
+void trap7(void);
+void trap8(void);
+void trap9(void);
+void trap10(void);
+void trap11(void);
+void trap12(void);
+void trap13(void);
+void trap14(void);
+void trap15(void);
+void trap16(void);
+void trap17(void);
+////Fine prototipi degli handler delle eccezioni
+
+
+
+/*Questa che segue è un array che serve per abilitare il giusto irq. Ricordo che se vogliamo abilitare l' irq
+ 0 (timer) dobbiamo inviare alla giusta porta (0x21 per master e 0xA1 per slave) 11111110 ovvero
+ l' irq da attivare deve essere posto a 0. Se vogliamo abilitare il 1° irq (tastiera) allora inviamo 
+ 11111101 e così via. */
+
+unsigned int irq_number[8] = {
+			    0xfe, 	//11111110 - Master PIC: Timer     --  Slave PIC: Real Time Clock
+			    0xfd,  	//11111101 - Master PIC: Tastiera  --  Slave PIC: Free
+			    0xfb,	//11111011 - Master PIC: Slave PIC --  Slave PIC: Free
+			    0xf7,	//11110111 - Master PIC: COM2/COM4 --  Slave PIC: Free
+			    0xef,	//11101111 - Master PIC: COM1/COM3 --  Slave PIC: Free
+			    0xdf,	//11011111 - Master PIC: LPT2      --  Slave PIC: Coprocessore
+			    0xbf,	//10111111 - Master PIC: Floppy    --  Slave PIC: 1° hardisk
+			    0x7f	//01111111 - Master PIC: LPT1      --  Slave PIC: 2° hardisk
+			    };
+

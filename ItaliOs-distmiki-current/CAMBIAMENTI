@@ -1,0 +1,9 @@
+ Piccola distribuzione fatta da miki00
+ include dei comandi semplici sul filesystem in stile linux
+ per creare il file disko.img dare il make e poi copiare l'immagine su un floppy
+
+09-04-2004: aggiunte diverse SYSCALL, modificato il file floppy.cc(adesso bufferizza in RX)
+		aggiunte diverse applicazioni, fat finita.
+13-04-2004: risistemato il tutto implementando le funz floppy_r_buff e
+floppy_w_buff, risolvendo numerosi bug
+14-04-2004: debuggato tree, creaentry e leggifile

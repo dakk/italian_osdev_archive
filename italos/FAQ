@@ -1,0 +1,62 @@
+   1. Che cos'è ItaliOs?
+   2. Perchè il nome ItaliOs?
+   3. Com'è nato ItaliOs?
+   4. Qual'e' lo scopo di ItaliOs? Perche' creare un altro sistema operativo?
+   5. Chi ha inventato ItaliOs?
+   6. Quali versioni esistono?
+   7. Come si installa ItaliOs?
+   8. Ora che l'ho avviato, cosa me ne faccio? 
+
+
+
+1.
+Che cos'e' ItaliOs?
+ItaliOs è un sistema operativo minimale.
+
+2.
+Perche' il nome ItaliOs?
+Il nome ItaliOs deriva da una serie di cambiamenti: inizialmente si chiamava SilviOs, 
+ma sembrava un po' troppo egocentrico, inseguito decidemmo di fare l'Os completamente 
+in italiano e dargli il nome di ItalianOs, infine }tde{ ha inventato il nome ItaliOs che e' rimasto 
+quello definitivo.
+
+3.
+Com'e' nato ItaliOs?
+ItaliOs e' nato con: un editor, un pc, e principalmente un solo cervello :)
+
+4.
+Qual'e' lo scopo di ItaliOs? Perche' creare un altro sistema operativo?
+ItaliOs non ha uno scopo ben preciso, il vero fine e' quello di divertirsi programmando. 
+Lo scopo di ItaliOs e' diverso da quello degli altri Os in circolazione, 
+quindi non puo' essere messo a confronto.
+
+5.
+Chi ha inventato ItaliOs?
+ItaliOs e' stato ideato da Silvio "kernel" Abruzzo ed e' il principale sviluppatore, 
+seguono altri sviluppatori minori e betatester.
+
+6.
+Quali versioni esistono?
+Sono state create fin ad ora 3 versioni: la 0.1, la 0.2 e la 0.3. 
+La versione 0.1.x ha un kernel in c, un fs (ITFS), il net (ping server, piccolo telnet, client irc, 
+programma per le mail) e alcuni giochini. La versione 0.2.x con kernel in c++ (compatibile 
+con posix e ANSI C) e' una versione sperimentale completamente abbandonata. 
+La 0.3, nata da Os From Scratch, si propone gli stessi obbiettivi della 0.2: 
+adesione a Posix e all'ANSI C, tutti i driver della 0.1, gestione delle reti, con un webserver, 
+protocolli, etc..
+
+7.
+Come si installa ItaliOs?
+Per i possessori di un sistema Unix like:
+- Scaricare i sorgenti dal sito
+- Estrarre in una cartella i sorgenti
+- Inserire un floppy disk
+- Dare il comando 'make dep'
+- Dare il comando 'make install'
+- Eseguite il floppy al boot del pc o con bochs
+Se avete qualche problema non esitate a contattarci.
+
+8.
+Ora che l'ho avviato, cosa me ne faccio?
+Poco o niente.. italios è in uno stato ancora embrionale, 
+sebbene la versione 0.1 ha anche un ottimo net e un client irc.

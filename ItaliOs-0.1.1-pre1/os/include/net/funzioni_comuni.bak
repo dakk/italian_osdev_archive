@@ -1,0 +1,17 @@
+#ifndef _FUNZCOMUNI_H_
+#define _FUNZCOMUNI_H_
+
+#include <rete.h>
+
+void copymem(u_char *bsrc,u_char *bdst,u_short blen);
+void shiftDX(u_char *bsrc,u_short blenoff,u_short blen);
+void shiftSX(u_char *bsrc,u_short blenoff,u_short blen);
+void setmem(void *bsrc,u_char bst,u_short blen);
+u_short scbyte(u_short bsrc);
+u_int scbyte4(u_int bsrc);
+u_int IPinNUM(char *ip);
+u_char *NUMinIP(u_int ip1);
+unsigned int str_str(char *s1,char *s2);
+unsigned int atou(char *nu);
+u_char ogni(u_char n1,u_int n2);
+#endif

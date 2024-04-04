@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>Os for scratch: ItaLo</title>
+	</head>
+	<body>
+		<h1>
+			<center>L'architettura del processore</center>
+		</h1>
+		<br>
+		<h2>
+		Affrontiamo ora degli argomenti di notevole impegno. Il nostro scopo per la fine di questa lezione è:
+		<ol>
+			<li>Configurare i segmenti di memoria
+			<li>Configurare gli interrupt e gli irq
+		</ol>
+		Per iniziare impariamo a conoscere come funziona l'architettura IA32. Per ulteriori approfondimenti leggere i tre manuali della intel, sopratutto il terzo. I disegni sono stati presi da li. Da buon despota illuminato spesso cercherò di rendere più facile il tutto tralasciando di dire alcune cose, oppure semplificando i concetti.
+		Innanzitutto analizziamo come funziona IA32 e che caratteristiche ci offre.<br>
+		Un processore IA32 sostanzialmente ha 3 modi di funzionamento (in realtà sono 4) la modalità reale, la modalità protetta e la modalità virtual 8086. <br>
+Appena viene avviato il pc, il processore è in modalità reale e si comporta a tutti gli effetti come un 8086 ma molto + veloce.<br>
+La modalità protetta è la modalità che è stata introdotta col 286 (e poi espansa col 386+) e permette di sfruttare tutte le potenzialità dell'architettura IA32.
+Infine abbiamo la modalità virtual 8086 che ci permette di avere un ambiente in modalità reale ma dentro la modalità protetta.<br>
+Noi ci concentreremo sulla modalità protetta nei processori da 386 in su.<br>
+A partire dal 386 abbiamo dei registri in più e delle strutture che ci permettono di configurare la memoria, i processi, etc.
+I registri general purpuse sono stati espansi a 32 bit (eax, ebx, ecx, edx, esi, edi) anche lo stack pointer e il base pointer sono diventati a 32 bit (esp, ebp); anche l'istruction pointer (eip) e i flag (eflag) sono stati estesi.
+Inoltre abbiamo dei registri nuovi:
+<ul>
+	<li> GS e FS  sono registri segmento senza una specifica funzione
+	<li> cr0 --> cr4 sono 5 nuovi registri di controllo per processore
+	<li> gdtr che contiene la descrizione della gdt
+	<li> idtr che contiene la descrizione della idt
+	<li> ldtr che contiene la descrizione della ldt
+	<li> tr che contiene l'indirizzo del primo tss
+	<li> gestione della paginazione.
+</ul>
+Ecco un disegno riassuntivo:<br>
+<center><img src="generalIA32.png"></center><br>
+	Iniziamo ad analizzare gli eflag:<br>
+	<center><img src="eflag.png"></center><br>
+	<ul>
+		<li>TF: Da settare per abilitare la modalità single-step per il debug,  cancellarlo per disabilitare questa modalità. In single-step model il processore genera un eccezione di debug dopo ogni istruzione. Se un applicazione setta il TF flag usando POPF, POPFD o IRET, l'eccezione viene generata dopo questa istruzione.
+		<li>IF: indica se gli interrupt sono abilitati
+		<li>VM: Virtual-8086 mode: da settare per abilitare l'emulazione dell'8086.
+		<li>ID: Indica la capacità di usare l'istruzione cpuid
+	</ul>
+	Gli alri flag non ci interessano o comunque sono banali: basta vedere nel manuale della intel. <br>
+	Analizziamo i registri di controllo:<br>
+	<center><img src="crx.png"></center><br>
+	Iniziamo con cr0:<br>
+	<ul>
+		<li>PE: Protection enable. Abilita la modalità protetta quando settato e abilita la modalità reale quando è spento. Quando si abilita il pmode automaticamente non viene anche attivata la paginazione.
+		<li>WP: Quando abilitato non permette la scrittura di pagine a sola lettura a livello utente da parte dei supervisori (CPL < 3)mentre quando è disabilitato permette di scriverci sempre per CPL < 3.
+		<li>PG: Quando è acceso permette e abilita la paginazione. Per avere effetto deve essere attivo anche PE.
+	</ul>
+	Useremo intensivamente cr2 e cr3 quando programmeremo la paginazione, quindi ce ne occuperemo un altra volta.
+		</h2>
+	</body>
+</html>

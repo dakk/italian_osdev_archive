@@ -1,0 +1,130 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+/******************************* O S S O ***********************************/
+/* file : TO_DO                                                            */
+/* Things yet to be done                                                   */
+/***************************************************************************/
+
+
+/***************************************************************************
+ *
+ * $Id: TO_DO,v 1.9 2001/06/01 20:47:39 iurlano Exp $
+ *
+ ***************************************************************************
+
+
+Last updated : 1 Jun 2001
+
+TO DO LIST
+
+- Change bootloader (boot/kernel-loader.c) to support a kernel in the ELF
+  format to prevent memory conflicts while loading modules
+  
+- Finish SMP support (Dectection is done, need processors boot code, 
+  interprocessor communications code and interrupt handling infos)
+
+- Finish IDE driver. Seems quite working, not tried with new hard disks.
+  Reading and writing implemented. Needs testings and checks againts the
+  standards.
+
+- Find out to manage the different disk geometries and how to get
+  the right one
+
+- Test and correct the IRQ mask functions in interrupts.c
+
+- Gathering of informations fro the BIOS from real mode to protected 
+  mode via a memory area. It would became useless in case of an
+  implementation of v86 mode for calling BIOS from protected mode.
+
+- Define interface for FAT (and more generally File Systems) for file
+  accesses. Currently it is able to list root dir and read files. Needs
+  implementation for directory management and file and directories
+  creation and write. Needs also to support FAT12 and FAT32, VFAT.
+
+- Finish SERIAL driver. Current status: <fill in Ste!>
+
+- Implement DMA management code.
+
+- Implement more drivers. Most needed are: PARALLEL port, Floppy disk
+  controller, ethernet cards (RTL8139 3c509B), filesystems like Ext2.
+
+- Tests and tests. Needs to be tested on different hardware.
+
+- Code for libc (libOSSO.so). Needs to implement lot of the standard
+  functions A port of the original GNU libc would be great and would mean 
+  lot of software supported!!
+
+- Documentation: instruction for the CVS version are required.
+  Other documentation is always needed.
+
+- Test programs: needed for every kind of test you can imagine.
+
+- Shell: needs restructuration, or, better, a port from an existing shell.
+
+- Environment: needs implementation. The current direction is an
+  implementation in the libc of the process. Each child process gets its
+  environment from the father at the time of process creation, completely
+  transparent to the programmer.
+
+Subsystems work :
+
+- threads and processes:
+    need testing, implementations of wait(), waitpid() and other syscalls
+    implementation of SIGCHILD signal(event?) at program termination.
+
+- send-receive:
+    need reimplementation to get rid of the 4Kb limit.
+    need ask() / reply() mechanism, eventually forwardask() too.
+
+- events: 
+    seems finished. Actually it misses a mechanism to recognize which 
+    process has signaled the event.
+    needs testing
+
+- timeout:
+    timer needs implementation.
+    sleep() and similar need implementation too.
+
+- driver-protocols:
+    need protocols for every device.
+
+- driver:
+    needed drivers
+
+- filesystems:
+    needed drivers
+
+- console:
+    need drivers, decisions, study, implementation.
+    The dream is an implementation compatible with ncurses
+    or other terminal interfaces.
+
+Future ....
+
+- System architecture for dynamic libraries need to be planned. Actually,
+  dynamic linking is supported only for libOSSO.so.
+
+- Network layers will be needed after the creation of ethernet drivers.
+  TCP/IP UDP/IP etc ...
+
+- A coherent (with microkernel design) mechanism has to be created for
+  swap.

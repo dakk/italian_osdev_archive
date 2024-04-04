@@ -1,0 +1,90 @@
+// -*- C++ -*-
+/***************************************************************************
+                         MatrixOS: Class string 
+                          --------------------
+    begin                : Sun 16 Jan 2005
+    copyleft             : Giuseppe "denever" Martino
+    email                : denever@users.sf.net
+ ***************************************************************************/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with this program; if not, write to the Free Software            *
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA*
+ *                                                                         *
+ ***************************************************************************/
+
+#ifndef STRING_STL
+#define STRING_STL
+
+namespace std
+{
+  class string
+  {
+  public:
+      string();
+      string(const char*);
+      string::string(char*, unsigned int);
+      string(const string&);
+      string(int);
+      ~string();
+
+      void operator+=(char);
+      void operator+=(const char*);
+      string& operator+=(const string&);
+      string& operator=(const string&);
+
+      void string::push_back(char);
+      void string::push_back(char*, unsigned int);
+      void string::push_back(const char*, unsigned int);
+
+      inline char operator[](unsigned int i) const
+      {
+	  if(i < m_size+1)
+	      return m_data[i];
+	  
+	  return 0;
+      }
+
+      inline unsigned char at(unsigned int i) const
+      {
+	  if(i < m_size+1)
+	      return m_data[i];
+	  
+	  return 0;
+      }
+
+      inline void clear()
+      {
+	  delete [] m_data;
+	  m_size = 0;
+	  m_data = 0;
+      }
+
+      inline unsigned int size() const
+      {
+	  return m_size;
+      }
+
+      inline char* c_str()
+      {
+	  return m_data;
+      }
+
+  private:
+      char* m_data;
+      unsigned int m_size;
+  };
+}
+#endif
+

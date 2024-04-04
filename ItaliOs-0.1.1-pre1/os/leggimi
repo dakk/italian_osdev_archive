@@ -1,0 +1,38 @@
+Benvenuti nell'ItaliOs
+
+Il SilviOs funziona su floppy e non interagisce in nessun modo con hard
+disk e altri supporti di memorizzazzazione.
+
+Questo sistema operativo è libero. Puoi redistrinuirlo e/o modificarlo
+in accordo con la licenza GNU come pubblicata dalla Free Software
+Foundation.
+
+Questo sistema operativo è distrubuito nella speranza che sia
+utile, ma è distribuito senza nessuna garanzia. Vedere la GNU
+General Public Lecense per ulteriori informazioni.
+
+Dovresti averlo ricevuto secondo la GNU General Public License.
+Se non fosse così contatta la Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+Tutto il codice è open source, se vuoi puoi modificarlo, migliorarlo e poi
+spedirmi le patch.
+
+
+		INSTALLAZIONE
+1. Compilazione. Il compilatore consigliato
+   è il gcc 2.95.3 o 2.96, mentre come assemblatore si usa il nasm.
+1 Per compilarlo digitare il comando make
+
+2.Per installarlo loggarsi come root e dare il comando
+	make install
+  Deve essere presente un floppy nel floppy drive.
+  Alla richiesta del nome del floppy inserire il nome che si vuole dare al floppy, mentre alla richeista della passwd inserire un eventuale passwdord oppure niete
+
+3.Ora per far avviare l'ItaliOs riavviare il pc dopo aver
+  predisposto il BIOS a partire dal floppy.
+
+Probabilmente è possibile compilare l'ItaliOs anche con windows con cygwin,
+ma dato che non ho mai provato non posso garantirlo.
+
+Per ulteriori informazioni spedire una mail a goku_vegeta@libero.it

@@ -1,0 +1,3 @@
+PROGRAMMA=tris.elf
+NOME=Tris
+VERSIONE=0.1

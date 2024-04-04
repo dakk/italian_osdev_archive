@@ -1,0 +1,3 @@
+PROGRAMMA=pallo.elf
+VERSIONE=1.16
+NOME=Pallo

@@ -1,0 +1,8 @@
+#ifndef _CASSERT_
+#define  _CASSERT_
+
+extern "C"{
+	#include <assert.h>
+};
+
+#endif

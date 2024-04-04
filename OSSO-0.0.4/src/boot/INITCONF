@@ -1,0 +1,60 @@
+#
+# OSSO boot configuration file.
+#
+# See Documentation/INITCONF_syntax.txt for details.
+#
+# NOTE: If you change segments pay attention to the reserved ones.
+#       (See config.h)
+#
+
+
+[CONFIG]
+
+boot_dir    = /BOOT
+modules_dir = /MODULES
+
+boot_segment    = 0x1000 - 0x1FFF
+preload_segment = 0x6000 - 0x7FFF
+
+
+[INIT]
+
+#load = KEYBOARD
+#load root = IDE
+#load = SHELL
+
+
+[BOOT]
+
+start   = starter, 0x0300 - 0x1FFF
+install = kernel,  0x2000 - 0x3FFF
+install = libosso.so
+install = init
+
+preload run root = /boot/mps
+preload run root = /boot/vfs
+
+# Per ora facciamo cosi'...
+preload driver root = keyboard
+#preload driver root = serial ports=0,1 verbose irq=4,3,4,3 mode=poll
+
+preload driver root = fat device=hda4 mount=/disk2 rw block=4096
+preload driver root = ide geometry=disk
+preload driver root = fat device=hda3 mount=/ rw block=4096
+#preload driver root = ide geometry=bios
+#preload driver root = fdc
+
+#preload run root = MPSCOM
+preload run root = SHELL
+
+
+#preload run root = vga
+#preload run = EVENTEST
+#preload run = FORKTEST
+#preload run = MPSTEST
+
+
+# FINE FILE
+
+
+

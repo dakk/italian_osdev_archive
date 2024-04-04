@@ -1,0 +1,13 @@
+COSE DA FARE E DA AGGIORNARE IN MEMORY:
+
+- La linear_alloc mappa a partire da last_used_page, funge, 
+  ma prima o poi finisce lo spazio... 
+
+  Da fare una funz. generica, magari che chiama una funz di ricerca.
+
+- ATTENZIONE: da perfezionare tutta la parte sulla concorrenza:
+  la richiesta delle pagine viene fatta una a una, ma il controllo
+  sulla loro presenza e' totale all'inizio.
+  Potrebbe anche darsi che all'inizio ci sono, ma poi qualcuno le 
+  frega, e per ora c'e' solo il panic ...
+  Ci vorrebbe una specie di Prenotaantanipagine() ...

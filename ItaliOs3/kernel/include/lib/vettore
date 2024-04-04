@@ -1,0 +1,84 @@
+#ifndef _VETTORE_HEADER_
+#define _VETTORE_HEADER_
+
+#include <cstdlib>
+
+//#define _DEBUG_
+
+#define INIT_ELEMENT 1000
+
+template <typename TIPO> class vettore{
+	private:
+		size_t _len; //indica il numero di elementi utilizzati nel vettore
+		size_t _size;  //indica la dimensione del vettore, questo perkè ne vengono allocati in numero superiore
+		TIPO* _vett;	
+		void normalizza();
+	public:
+		//vettore();
+		//vettore(TIPO vett[], size_t  len);
+		
+		void init();
+		
+		//restituisce l'indice nel vettore
+		size_t aggiungi_in_coda(TIPO elem);	
+	
+		//prende l'elemento nel vettore
+		TIPO& prendi(size_t index);
+	
+		void modifica_elemento(size_t index, TIPO elem){ _vett[index] = elem; }
+			
+		TIPO& operator[](size_t index){ 
+			return prendi(index); 
+		}  
+		
+		size_t size(){ return _len; }
+};
+/*
+template<typename TIPO> vettore<TIPO>::vettore(){
+#ifdef _DEBUG_
+	kout << "vettore: costruttore di default" << endl;
+#endif
+	_size = INIT_ELEMENT;
+	_vett = (TIPO*) malloc(sizeof(TIPO) * _size);
+	_len = 0;
+}
+
+template<typename TIPO> vettore<TIPO>::vettore(TIPO vett[], size_t len){
+#ifdef _DEBUG_
+	kout << "vettore: costruttore che prende un vettore" << endl;
+#endif
+	_size = len * 2;
+	_vett = (TIPO*) malloc(sizeof(TIPO) * _size);
+	for(size_t i=0; i < len; i++)
+		aggiungi_in_coda(vett[i]);
+}
+*/
+
+template<typename TIPO> void vettore<TIPO>::init(){
+#ifdef _DEBUG_
+	kout << "vettore: costruttore di default" << endl;
+#endif
+	_size = INIT_ELEMENT;
+	_vett = (TIPO*) malloc(sizeof(TIPO) * _size);
+	_len = 0;
+}
+
+
+template<typename TIPO> size_t vettore<TIPO>::aggiungi_in_coda(TIPO elem){
+	if(_size <= _len){
+		_size *= 2;
+		_vett = (TIPO*) realloc(_vett, sizeof(TIPO)*_size);
+#ifdef _DEBUG_
+		kout << "espando la dimensione del vettore a " << _size << endl;
+#endif
+	}
+	_vett[_len] = elem;
+	_len++;
+	return _len-1;
+}
+
+template<typename TIPO> TIPO& vettore<TIPO>::prendi(size_t index){
+	return _vett[index];
+}
+
+#endif

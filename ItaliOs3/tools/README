@@ -1,0 +1,11 @@
+Ciao Benvenuto negli ItaliOs Tools sono dei programmi stile SDK per la creazione di applicazioni per italios.
+Per installarli digitare:
+	make install
+
+Per usarli semplicemente mettere tutti i sorgenti del programma in una dir autonoma e digitare
+	/usr/local/bin/italios/it_prj_gen
+e creare un file di nome program.inc con la seguente linea
+	PROGRAMMA=nome_eseguibile
+	VERSIONE=numero versione
+	NOME=nome_programma
+e digitare make per compilare il programma e make dist per creare il pakketto per la distribuzione del programma. 

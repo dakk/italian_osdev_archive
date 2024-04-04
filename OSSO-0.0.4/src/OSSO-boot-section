@@ -1,0 +1,17 @@
+#OSSO Configuration File
+#Definisce le opzioni di configurazione del sistema boot
+#
+#Sintassi :
+#
+#<Nome> <tipo> <nome univoco> <valore di Default> <Commento ....>
+#Il nome compare poi nel .h
+#il tipo puo' essere value (tipo #define CENTO 100)
+#oppure string  (tipo #define CENTO "100")
+#oppure boolean (tipo #define CENTO 1)
+#oppure define  (tipo #define CENTO)
+#
+write header c
+CONF_FILE_NAME string conffilename INITCONF Configuration File Name
+CONF_FILE_SEGMENT value conffileseg 0x5000 Configuration File Segment
+CONF_FILE_ENDSEG value conffileendseg 0x5FFF Configuration File Segment End
+write footer c

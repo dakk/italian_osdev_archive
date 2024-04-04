@@ -1,0 +1,34 @@
+#!/bin/bash
+
+echo "Compilo il boot loader Dream Catcher"
+nasm -f bin src/boot/dreamcatcherdef.asm  -o bin/boot.bin
+echo ""
+
+echo "Compilo il kernel"
+cd src/kernel
+
+rm -f main.o string.o video.o stringutil.o kout.o klog.o kdbg.o kerr.o
+
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o main.o main.cpp
+
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o string.o libc/string.cpp
+
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o video.o hardware/driver/video.cpp
+
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o bochsdebug.o hardware/driver/bochsdebug.cpp
+
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o stringutil.o kframework/stringutil.cpp
+
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o kout.o kservices/kout.cpp
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o klog.o kservices/klog.cpp
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o kdbg.o kservices/kdbg.cpp
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -fno-builtin -fno-exceptions -fno-rtti -I./header -I./header/libc -c -o kerr.o kservices/kerr.cpp
+
+ld -Bstatic --oformat binary -o../../bin/kernel.bin main.o string.o video.o bochsdebug.o stringutil.o kout.o klog.o kdbg.o kerr.o -Ttext 0x10000 -Map kernel.map
+
+cd ../..
+echo ""
+
+echo "Scrivo l'immagine del floppy disk"
+cat bin/boot.bin bin/kernel.bin > bin/Floppy.img
+echo ""

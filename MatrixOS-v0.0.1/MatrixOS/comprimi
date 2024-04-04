@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export CDIR=$(basename $PWD)
+NAME=`date '+%Y_%m_%d'-%H_%M_%S`
+echo $CDIR
+cd ..
+tar czvf MatrixOS-$NAME.tar.gz $CDIR
+cd $CDIR

@@ -1,0 +1,289 @@
+Archive member included because of file (symbol)
+
+./main/libmain.a(main.o)      (--whole-archive)
+./main/libmain.a(debug.o)     (--whole-archive)
+./hardware/libhardware.a(video.o)
+                              (--whole-archive)
+./hardware/libhardware.a(8259.o)
+                              (--whole-archive)
+./hardware/libhardware.a(irq.o)
+                              (--whole-archive)
+./cpu/libcpu.a(gdt.o)         (--whole-archive)
+./cpu/libcpu.a(idt.o)         (--whole-archive)
+./cpu/libcpu.a(paging.o)      (--whole-archive)
+./mm/libmm.a(kmmu.o)          (--whole-archive)
+./mm/libmm.a(fis_mmu.o)       (--whole-archive)
+./mm/libmm.a(pagine_libere.o)
+                              (--whole-archive)
+./mm/libmm.a(mmu.o)           (--whole-archive)
+./mm/libmm.a(pagine_virtuali.o)
+                              (--whole-archive)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD ./main/libmain.a
+LOAD ./hardware/libhardware.a
+LOAD ./cpu/libcpu.a
+LOAD ./mm/libmm.a
+                0x00010000                . = 0x10000
+
+.text           0x00010000     0x1bb9
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x00010000      0x125 ./main/libmain.a(main.o)
+                0x00010010                main
+                0x00010000                _start()
+                0x000100fe                __do_global_ctors()
+ *fill*         0x00010125        0x3 00
+ .text          0x00010128      0x257 ./main/libmain.a(debug.o)
+                0x000102a6                Debug::operator<<(char)
+                0x00010152                Debug::register_trace(unsigned short)
+                0x000102e4                Debug::Debug()
+                0x00010128                Debug::istruction_trace(unsigned short)
+                0x0001028c                Debug::operator<<(char const*)
+                0x00010306                Debug::put(char const*)
+                0x000101a0                Debug::stop()
+                0x00010338                Debug::put(char)
+                0x00010260                Debug::operator<<(unsigned)
+                0x000101ae                Debug::operator<<(int)
+                0x000102c2                Debug::Debug()
+ *fill*         0x0001037f        0x1 00
+ .gnu.linkonce.t.utoa
+                0x00010380       0x82 ./main/libmain.a(debug.o)
+                0x00010380                utoa
+ *fill*         0x00010402        0x2 00
+ .text          0x00010404      0x405 ./hardware/libhardware.a(video.o)
+                0x00010554                Video::Video()
+                0x000105cc                Video::clear()
+                0x00010518                Video::Video()
+                0x00010404                Video::operator<<(int)
+                0x000104fc                Video::operator<<(char)
+                0x00010780                Video::set_text_color(unsigned char)
+                0x000104e2                Video::operator<<(char const*)
+                0x00010608                Video::accapo()
+                0x00010648                Video::put(char const*)
+                0x00010798                Video::set_back_color(unsigned char)
+                0x00010590                Video::init()
+                0x0001067a                Video::put(char)
+                0x00010770                Video::get_formed_color()
+                0x000107be                Video::get_back_color()
+                0x000107b2                Video::get_text_color()
+                0x000104b6                Video::operator<<(unsigned)
+ *fill*         0x00010809        0x3 00
+ .text          0x0001080c      0x16f ./hardware/libhardware.a(8259.o)
+                0x0001092c                get_cur_irq()
+                0x0001087a                enable_irq(unsigned short)
+                0x000108cc                disable_irq(unsigned short)
+                0x0001080c                init8259()
+ *fill*         0x0001097b        0x1 00
+ .text          0x0001097c       0xa3 ./hardware/libhardware.a(irq.o)
+                0x0001097e                free_irq
+                0x0001097c                null_handler
+                0x000109d4                init_irq()
+                0x000109b7                internal_handler
+                0x00010996                _do_irq
+                0x000109c2                add_irq(void (*)(), unsigned char)
+ *fill*         0x00010a1f        0x1 00
+ .text          0x00010a20      0x103 ./cpu/libcpu.a(gdt.o)
+                0x00010a20                set_gdtr(unsigned long long*, unsigned)
+                0x00010a7c                init_gdt()
+ *fill*         0x00010b23        0x1 00
+ .text          0x00010b24      0x742 ./cpu/libcpu.a(idt.o)
+                0x00010f14                idt::add(void (*)(), unsigned)
+                0x00010c04                (anonymous namespace)::isr3()
+                0x00010ea4                (anonymous namespace)::isr16()
+                0x00011090                idt::init()
+                0x00010ce4                (anonymous namespace)::isr7()
+                0x00010edc                (anonymous namespace)::isr17()
+                0x00010c74                (anonymous namespace)::isr5()
+                0x00010e6c                (anonymous namespace)::isr14()
+                0x00010b94                (anonymous namespace)::isr1()
+                0x00010b24                (anonymous namespace)::mint_null()
+                0x00010d1c                (anonymous namespace)::isr8()
+                0x00010d54                (anonymous namespace)::isr9()
+                0x00010d8c                (anonymous namespace)::isr10()
+                0x00010bcc                (anonymous namespace)::isr2()
+                0x00010fd2                idt::add(void (*)(int), unsigned)
+                0x00010dfc                (anonymous namespace)::isr12()
+                0x00010e34                (anonymous namespace)::isr13()
+                0x00010b5c                (anonymous namespace)::isr0()
+                0x00010dc4                (anonymous namespace)::isr11()
+                0x00011232                idt::get(unsigned)
+                0x00010cac                (anonymous namespace)::isr6()
+                0x000111f0                idt::del(unsigned)
+                0x00010b3c                (anonymous namespace)::set_idtr((anonymous namespace)::int_gate*, unsigned)
+                0x00010c3c                (anonymous namespace)::isr4()
+ *fill*         0x00011266        0x2 00
+ .text          0x00011268      0x111 ./cpu/libcpu.a(paging.o)
+                0x0001131a                abilita_hardware_paging()
+                0x0001134a                disabilita_hardware_paging()
+                0x000112a8                pagina_presente(unsigned)
+                0x0001129e                get_page_addr(unsigned)
+                0x00011294                get_table_addr(unsigned)
+                0x00011268                crea_page_dir(unsigned*, unsigned)
+                0x000112c8                set_present(unsigned*)
+                0x0001127e                crea_page_table(unsigned*, unsigned)
+                0x000112d0                prendi_prima_pagina_libera(unsigned*)
+                0x000112b8                table_presente(unsigned)
+ *fill*         0x00011379        0x3 00
+ .text          0x0001137c      0x15f ./mm/libmm.a(kmmu.o)
+                0x0001137c                init_kmmu()
+ *fill*         0x000114db        0x1 00
+ .text          0x000114dc      0x30a ./mm/libmm.a(fis_mmu.o)
+                0x000115e4                prendi_pagina_fisica()
+                0x00011696                rilascia_pagina(void*)
+                0x0001152a                init_spazio_fisico()
+                0x00011716                prendi_spazio_fisico(void*, void*)
+                0x000114dc                count_memory()
+                0x00011780                libera_spazio_fisico(void*, void*)
+ *fill*         0x000117e6        0x2 00
+ .text          0x000117e8      0x15c ./mm/libmm.a(pagine_libere.o)
+                0x00011866                prendi_spazio_virtuale(unsigned, unsigned*)
+                0x00011824                init_spazio_virtuale_libero(unsigned*)
+                0x00011806                (anonymous namespace)::isset(unsigned, unsigned*)
+                0x000117e8                (anonymous namespace)::setbitmapbit(unsigned, unsigned*, unsigned)
+                0x0001192e                libera_pagina_virtuale(unsigned, unsigned*)
+ .text          0x00011944       0xee ./mm/libmm.a(mmu.o)
+                0x00011944                init_mmu(mem_desc*)
+                0x00011970                alloca(unsigned, mem_desc*)
+ *fill*         0x00011a32        0x2 00
+ .text          0x00011a34      0x185 ./mm/libmm.a(pagine_virtuali.o)
+                0x00011a34                init_spazio_virtuale(unsigned*)
+                0x00011a92                setta_spazio_virtuale(unsigned*, void*, unsigned)
+                0x00011bb9                PROVIDE (etext, .)
+
+.rodata         0x00011bc0      0x713
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata.str1.1
+                0x00011bc0       0x38 ./main/libmain.a(main.o)
+ *fill*         0x00011bf8        0x8 00
+ .rodata.str1.32
+                0x00011c00       0x28 ./main/libmain.a(main.o)
+ .rodata.str1.1
+                0x00011c28       0x1b ./main/libmain.a(debug.o)
+ *fill*         0x00011c43       0x1d 00
+ .rodata.str1.32
+                0x00011c60       0x25 ./main/libmain.a(debug.o)
+ *fill*         0x00011c85        0x3 00
+ .rodata        0x00011c88        0x4 ./hardware/libhardware.a(video.o)
+                0x00011c88                kout
+ *fill*         0x00011c8c       0x14 00
+ .rodata.str1.32
+                0x00011ca0       0x25 ./hardware/libhardware.a(video.o)
+ .rodata.str1.1
+                0x00011cc5       0x17 ./cpu/libcpu.a(gdt.o)
+ *fill*         0x00011cdc        0x4 00
+ .rodata.str1.32
+                0x00011ce0       0x30 ./cpu/libcpu.a(gdt.o)
+ .rodata.str1.1
+                0x00011d10      0x133 ./cpu/libcpu.a(idt.o)
+ *fill*         0x00011e43       0x1d 00
+ .rodata.str1.32
+                0x00011e60      0x14e ./cpu/libcpu.a(idt.o)
+ .rodata.str1.1
+                0x00011fae       0x25 ./cpu/libcpu.a(paging.o)
+ .rodata.str1.1
+                0x00011fd3       0x29 ./mm/libmm.a(kmmu.o)
+ *fill*         0x00011ffc        0x4 00
+ .rodata.str1.32
+                0x00012000       0x66 ./mm/libmm.a(kmmu.o)
+ .rodata.str1.1
+                0x00012066       0x96 ./mm/libmm.a(fis_mmu.o)
+ *fill*         0x000120fc        0x4 00
+ .rodata.str1.32
+                0x00012100       0x66 ./mm/libmm.a(fis_mmu.o)
+ *fill*         0x00012166       0x1a 00
+ .rodata.str1.32
+                0x00012180       0xa0 ./mm/libmm.a(pagine_libere.o)
+ .rodata.str1.32
+                0x00012220       0x29 ./mm/libmm.a(mmu.o)
+ .rodata.str1.1
+                0x00012249       0x17 ./mm/libmm.a(mmu.o)
+ .rodata.str1.1
+                0x00012260       0x2b ./mm/libmm.a(pagine_virtuali.o)
+ *fill*         0x0001228b       0x15 00
+ .rodata.str1.32
+                0x000122a0       0x33 ./mm/libmm.a(pagine_virtuali.o)
+                0x000132d3                . = (0x1000 DATA_SEGMENT_ALIGN 0x1000)
+                0x000132d4                . = ALIGN (0x4)
+
+.data           0x000132d4       0x18
+                0x000132d4                __CTOR_LIST__ = .
+                0x000132d4        0x4 LONG 0x2 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
+ *(.ctors)
+ .ctors         0x000132d8        0x4 ./main/libmain.a(debug.o)
+ .ctors         0x000132dc        0x4 ./hardware/libhardware.a(video.o)
+                0x000132e0        0x4 LONG 0x0
+                0x000132e4                __CTOR_END__ = .
+                0x000132e4                __DTOR_LIST__ = .
+                0x000132e4        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
+ *(.dtors)
+                0x000132e8        0x4 LONG 0x0
+                0x000132ec                __DTOR_END__ = .
+ *(.data .data.* .gnu.linkonce.d.*)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.bss            0x00013300    0x408a8
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x00013300    0x20008 ./main/libmain.a(main.o)
+                0x00013300                kernel_desc
+ .bss           0x00033308        0x1 ./main/libmain.a(debug.o)
+                0x00033308                debug
+ *fill*         0x00033309        0x3 00
+ .bss           0x0003330c       0x10 ./hardware/libhardware.a(video.o)
+                0x0003330c                mystdout
+ .bss           0x0003331c        0x2 ./hardware/libhardware.a(8259.o)
+                0x0003331c                (anonymous namespace)::irq_mask
+ *fill*         0x0003331e        0x2 00
+ .bss           0x00033320       0x40 ./hardware/libhardware.a(irq.o)
+                0x00033320                handler
+ .bss           0x00033360       0x18 ./cpu/libcpu.a(gdt.o)
+                0x00033360                gdt
+ *fill*         0x00033378        0x8 00
+ .bss           0x00033380      0x800 ./cpu/libcpu.a(idt.o)
+                0x00033380                (anonymous namespace)::_IDT
+ .bss           0x00033b80        0x4 ./mm/libmm.a(kmmu.o)
+                0x00033b80                kernel_dir
+ *fill*         0x00033b84       0x1c 00
+ .bss           0x00033ba0    0x20004 ./mm/libmm.a(fis_mmu.o)
+                0x00033ba0                (anonymous namespace)::page_bitmap
+                0x00053ba0                (anonymous namespace)::num_pages
+ .bss           0x00053ba4        0x4 ./mm/libmm.a(pagine_libere.o)
+                0x00053ba4                (anonymous namespace)::num_pages
+ *(COMMON)
+                0x00053ba8                . = ALIGN (0x4)
+                0x00053ba8                . = ALIGN (0x4)
+                0x00053ba8                _end = .
+                0x00053ba8                PROVIDE (end, .)
+                0x00053ba8                . = DATA_SEGMENT_END (.)
+OUTPUT(ccs.bin binary)
+
+.comment        0x00000000       0xd0
+ .comment       0x00000000       0x10 ./main/libmain.a(main.o)
+ .comment       0x00000010       0x10 ./main/libmain.a(debug.o)
+ .comment       0x00000020       0x10 ./hardware/libhardware.a(video.o)
+ .comment       0x00000030       0x10 ./hardware/libhardware.a(8259.o)
+ .comment       0x00000040       0x10 ./hardware/libhardware.a(irq.o)
+ .comment       0x00000050       0x10 ./cpu/libcpu.a(gdt.o)
+ .comment       0x00000060       0x10 ./cpu/libcpu.a(idt.o)
+ .comment       0x00000070       0x10 ./cpu/libcpu.a(paging.o)
+ .comment       0x00000080       0x10 ./mm/libmm.a(kmmu.o)
+ .comment       0x00000090       0x10 ./mm/libmm.a(fis_mmu.o)
+ .comment       0x000000a0       0x10 ./mm/libmm.a(pagine_libere.o)
+ .comment       0x000000b0       0x10 ./mm/libmm.a(mmu.o)
+ .comment       0x000000c0       0x10 ./mm/libmm.a(pagine_virtuali.o)

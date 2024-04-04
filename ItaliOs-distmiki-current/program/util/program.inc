@@ -1,0 +1,3 @@
+PROGRAMMA= ls.elf
+VERSIONE=0.1
+NOME=ls

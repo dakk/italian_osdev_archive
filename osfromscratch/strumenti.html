@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>Os for scratch: Strumenti</title>
+	</head>
+	<body>
+		<h1>
+			<center>Strumenti</center>
+		</h1>
+		<br>
+		<h2>
+		Il primo aspetto pratico da definire è il linguaggio da usare e quale compilatore usare. <br> Come linguaggio useremo il c++, perché ci permette di fare tutto quello che fa il c e inoltre ha delle caratteristiche interessati: mi riferisco all'overloading, ai parametri di default e ai namespace. A volte useremo anche meccanismi proprio dell'OOP. <br> La scelta del compilatore ricade sul g++, compilatore c++ che fa parte del gcc. Useremo il g++ perché oltre ad essere open souce produce codice abbastanza pulito ed efficente.<br>
+		Per fare in modo che il gcc mantenga codice non troppo dipendente da linux dobbiamo aggiungere queste opzioni: <br>
+		<ul>
+			<li>il -fomit-frame-pointer serve a mantenere integrità negli indirizzi delle varie funzioni ed è obbligatorio
+			<li>il -Wall serve a dire al compilatore di mostrarci tutti i warning, si potrebbe mettere anche il --pedantic, ma non lo consiglio perché da warning inutili sugli assegnamenti con indirizzi, sulla parte in asm e sulle direttive del gcc.
+			<li>il -march=i386 indica che il nostro codice è per 386 e quindi non ottimizzera per processori superiori. Questa è necessaria perché se si utilizzano caratteristiche del processori superiori bisogna abilitarle ed al momento ciò non è ancora stato fatto.
+			<li>il -c indica che vogliamo solo la compilazione senza il linking
+			<li>il -nostdlib indica che non vogliamo che sia possibile usare la libreria standard, questo perché, ovviamente, la libc e la libc++ sono librerie dinamiche che lavorano in user mode con le api di linux ^__^
+			<li>il -nostdinc fa in modo che non vengano usati gli header di default
+			<li>il fno-builtin fa in modo che non usi roba interna che ovviamente vale solo per linux
+			<li>il fno-exceptions fa in modo che non usi le eccezioni perché esse sono dipendenti dall'os
+			<li>il fno-rtti fa in modo che non possiamo usare la rtti per lo stesso motivo visto sopra
+		</ul>
+		<br>
+		Alcune parti dovremo scriverle necessariamente in assembler e useremo il nasm che è un assemblatore open source, funziona su molte piattaforme: useremo l'assembler SOLO nel ccs, altrimenti il kernel non sarà + multipiattaforma. Il gcc permette anche di inserire assembler inline purché sia in formato At&t. Possiamo inserire anche asm in formato intel, ma solo per le versioni del gcc superiori alla 3.0, noi ci limiteremo all'asm in formato at&t in modo da avere la maggiore compatibilità possibile.<br><br>
+		La cosa + difficile per un os è il debug: noi useremo bochs che è un ottimo emulatore di pc e ha delle interessanti funzioni per il debug. Per compilarlo io vi consiglio di dare il ./configure con questi parametri: <br>
+<pre>
+		./configure --enable-iodebug --enable-disasm --enable-debugger
+</pre><br>
+<ul>
+	<li>--enable-debugger permette di abilitare il debugger di bochs che ha funzioni per il trace dei registri, controllo della memoria, etc
+	<li>--enable-disasm permette di abilitare il disassembler di bochs: ci permette di vedere quali istruzioni vengono eseguite
+	<li>--enable-iodebug ci permette di usare delle speciali porte di bochs per il debug.
+</ul>
+Sembra che ora abbiamo tutto per iniziare: Vediamo come si scrive un bootloader e scriviamolo. ^___^
+
+		</h2>
+	</body>
+</html>

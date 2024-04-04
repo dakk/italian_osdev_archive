@@ -1,0 +1,91 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+ -lista di eventi per processo
+  L'idea + bellina che m'e' venuta e' farne una lista per processo (e 
+  vabbe'...) pero' gli elementi della lista sono parte di una struttura
+  globale. Il semaforo del descrittore dovrebbe bastare per l'accesso in mutua
+  esclusione (non ci dovrebbero essere conflitti tra processi diversi)
+  l'aggiunta e la rimozione viene fatta con gestione centralizzata (l'overhead
+  dovrebbe essere minimo, ma il risparmio di spazio bello consistente).
+  (Dovremmo cercare di farlo per tutto: infilare roba statica nei descrittori,
+   specie strutture dati che per la maggior parte non verranno usate, porta via
+   un casino di spazio. Un bell'esempio potrebbe essere quello delle code di 
+   messaggi: nel descrittore solo il puntatore, il codone globale (se ne 
+   riparla eehhh...)
+  Inoltre un passaggio eventuale ad allocazione dinamica richiederebbe solo di
+  riscrivere la inserisci_in_lista e rimuovi_da_lista (ahh la modularita'...) 
+
+- IGNORARE
+  Con semaforino per mut escl su thread (o si usa il semaforo sul
+  descrittore del processo? Si potrebbe usare 1 solo  come soluzione
+  totale, purtroppo in questa maniera tutte le operazioni sul descrittore
+  (memoria, messaggi, eventi, etc) verrebbero serializzate (in caso di
+  multithreading peso rallenterebbe e farebbe avvicinare il problema di
+  finire la coda sul semaforo) ma con un semaforo solo per descrittore
+  invece di 3 o 4 (con un bel risparmio di memoria se non si implementano
+  i descrittori ad allocazione dinamica).
+  Non e' un aspetto vitale per ora, ma con funzioni stabili e collaudate
+  sarebbe buona cosa confrontare le soluzioni ...	
+
+ -far diventare gli int eventi, con semaforo per mutua esclusione
+  per ora chiamato Events_Sem (IURLANS!!!)
+
+ -Come si mettono gli eventi stile destroy nel descrittore?
+
+-   Come trattare gli eventi pubblici (IRQ) ?
+    Qui ci sarebbero 200 strategie:
+    in caso uno chiede di accedere ad un evento pubblico gia' mappato
+    (es IRQ 0xAntani) come ci si comporta?  
+      - Gli si da ma come ci accede ritorna noperms.
+        pulito: interfaccia comune e senza distinzioni tra eventi pubblici
+        e privati.
+        Brutto in generale: ti chiedo un evento, me lo dai, e come lo uso
+        mi dici che non posso... inoltre non so che altre cose potrebbe
+        dar fuori sto metodo.
+        
+      - Gli si dice che e' pubblico ed e' gia' occupato
+        pulito: in fin dei conti gli eventi pubblici sono pochi e
+        con nomi conosciuti ( senno' non sarebbero pubblici :-), e se uno
+	e' fesso e s'attacca a un IRQ a caso (se e' libero) cazzi sua... 
+	Qualche problemino di gestione in + per i tipi di ritorno, ma
+	niente di serio.
+	(per ora mi garba questa!)
+
+      - Gli si dice che esiste gia' (ci potrebbe pero' accedere (NOPERMS?))
+
+      - varie ed eventuali
+
+- Si creano solo eventi normali o solo binari o tutteddua?
+  se entrambi c'e' il problema dei nomi almeno nei well known.	    
+  Per ora e' generico con possibilita' di settare binario/normale
+  (e mi sembra la migliore)
+  Gli IRQ lo stesso.
+
+- Parentesi sicurezza: Come si impedisce l'appropriazione indebita di IRQ?
+  Per ora ci se ne frega, e le soluzioni sono tante: 
+  - Permessi? (soluzione ideale, dato che ci sono gia' a livello di evento.
+    Bisognerebbe pero' far partire un processo come driver o come altro...)
+  - Chiamata di fine inizializzazione driver-server da parte di init.
+    Carica tutto, quando ha finito syscall() e tutti gli altri vengono
+    considerati gia' presi. Eccellente sulla realizzazione, ma da' qualche
+    problemino per l'aggiunta run time (svantaggio non da poco, altro che
+    driver modulare ... )
+  - Un me ne vengono a mente altre, ma si invita a pensare...		

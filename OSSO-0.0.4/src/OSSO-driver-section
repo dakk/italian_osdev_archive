@@ -1,0 +1,18 @@
+#OSSO Configuration File
+#Definisce le opzioni di configurazione del kernel
+#
+#Sintassi :
+#
+#<Nome> <tipo> <nome univoco> <valore di Default> <Commento ....>
+#Il nome compare poi nel .h
+#il tipo puo' essere value (tipo #define CENTO 100)
+#oppure string  (tipo #define CENTO "100")
+#oppure boolean (tipo #define CENTO 1)
+#oppure define  (tipo #define CENTO)
+#
+KEYBOARD makevar keyboarddriver 1 DRIVERS Keyboard Driver
+IDE makevar idedriver 0 DRIVERS IDE Driver
+FAT makevar fatdriver 0 DRIVERS FAT Driver
+SERIAL makevar serialdriver 0 DRIVERS Serial Driver
+VGA makevar vgadriver 0 DRIVERS VGA Driver
+FDC makevar floppydriver 0 DRIVERS Floppy Driver (Not done yet!)

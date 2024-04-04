@@ -1,0 +1,13 @@
+export DISPOSITIVO=a:
+cd kernel && make floppy && make install && \
+cd .. && cd tools && make && make install && \
+cd .. && cd program  && \
+cd  shell && make && mcopy shell.elf $DISPOSITIVO && cd .. && \
+cd bf && make && mcopy bf.elf $DISPOSITIVO && cd ..  && \
+cd roman && make && mcopy roman.elf $DISPOSITIVO && cd .. && \
+cd tris && make && mcopy tris.elf $DISPOSITIVO && cd .. && \
+cd .. && cd lib && \
+mmd $DISPOSITIVO/lib && \
+cd libc && make && mcopy libc.lad $DISPOSITIVO/lib && cd .. && \
+cd libsys && make && mcopy libsys.lad $DISPOSITIVO/lib && cd .. &&
+cd .. && mcopy  avvio.cfg $DISPOSITIVO/lib

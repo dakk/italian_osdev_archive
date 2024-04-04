@@ -1,0 +1,8 @@
+#ifndef _CSTDLIB_
+#define _CSTDLIB_
+
+extern "C"{
+	#include <stdlib.h>
+}
+
+#endif

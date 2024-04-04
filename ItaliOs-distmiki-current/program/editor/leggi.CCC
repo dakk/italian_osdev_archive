@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main() {
+  char s[30];
+  unsigned char t;
+  fflush(stdout);
+  for (t=0;t<30;t++) s[t]=0;
+  fgets(s,30,stdin);
+  for (t=0;t<30;t++) if (s[t]<31) s[t]=0;
+  printf("%s",s);fflush(stdout);
+  return 0;
+}

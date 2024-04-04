@@ -1,0 +1,12 @@
+;=========================================================;
+; DateOfUpLoad                                   06/12/05 ;
+;---------------------------------------------------------;
+; Dex4u OS V0.00                                          ;
+; by Craig Bamford.                                       ;
+;                                                         ;
+;=========================================================;
+ This is a selfextrating exe, that will put Dex4u on a formatted floppy 
+(for Dex4u, Demo4), was uploaded on 06/12/2005 (UK Date).
+Just put a empty formatted floppy in the a: drive and click on the exe,
+and reboot you pc, (type "help" from the prompt).
+

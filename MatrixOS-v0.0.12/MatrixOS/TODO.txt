@@ -1,0 +1,45 @@
+------------video.cpp----------------------------
+//Setto il colore del testo e quello dello sfondo
+setTextColor(White);
+setBackColor(Black);
+è inutile è la situazione di default
+
+(Possibile modifica alla funzione GotoXY(unsigned int x, unsigned int y):
+	- Modificare in Video::GotoXY(int x, int y); Perchè in caso di valori negativi vengono interpretati come relativi alla posizione corrente.) -> Verra utilizzata nella libreria per creare interfacce testuali
+Bug: Aggiunta una collona e una riga possibili nuovi bug.
+Bug: Possibile bun nella funzione GotoXY
+Bug: Errore quando si scrive a schermo tramite la funzione kservices::KOut::Write("x"); durante la gestione del IRQ del PIT. RISOLTO
+
+--> Verificare video.cpp <--
+
+------------stringutil.cpp-----------------------
+
+dec non è necessario.
+oct si scrive con uno 0 davanti
+hex si scrive con 0x davanti
+
+------------string.cpp---------------------------
+string è incompleto.
+
+------------bochsdebug.cpp-----------------------
+Verificare la correttezza delle costanti.
+
+---------------gdt.cpp--------------------------
+Leggere i vari todo nel file.
+
+Per verifiare la velocità usare:
+
+qword d;
+for(int i=0;i<5000000;i++){
+	d = 990 + i;
+	asm("nop");
+}
+
+---------------pit.cpp--------------------------
+Probabilmente l'emulazione di bochs non è corretta.
+Il PIT non funziona correttamente.
+Bug nella frequenza del PIT.
+
+
+-------------Tastiera--------------------------
+Bug: Il sistema operativo si blocca quando viene premuto invio.

@@ -1,0 +1,14 @@
+.c.o:
+	@echo "COMPILO" $<
+	$(CC)  $(CFLAG) -c -o $@ $<
+.cc.o:
+	@echo "COMPILO" $<
+	$(CXX)  $(CXXFLAG) -c -o $@ $<
+.cc.S:
+	$(CXX)  $(CXXFLAG) -S -o $@ $<
+.s.o:
+	@echo "ASSEMBLO" $<
+	$(AS)  -o $@ $<
+.asm.o:
+	@echo "ASSEMBLO" $<
+	$(ASM)  -o $@ $<

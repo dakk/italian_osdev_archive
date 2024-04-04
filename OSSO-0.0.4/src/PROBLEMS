@@ -1,0 +1,62 @@
+`/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+/******************************* O S S O ***********************************/
+/* file : PROBLEMS                                                         */
+/* Actual Problems                                                         */
+/***************************************************************************/
+
+
+/***************************************************************************
+ *
+ * $Id: PROBLEMS,v 1.2 2000/08/22 14:57:55 iurlano Exp $
+ *
+ ***************************************************************************
+ *
+ * $Log: PROBLEMS,v $
+ * Revision 1.2  2000/08/22 14:57:55  iurlano
+ * More Translation and cleaning
+ *
+ * Revision 1.1  2000/06/12 08:05:26  iurlano
+ * Translation in progress
+ *
+ * Revision 1.1.1.1  2000/05/30 08:10:55  iurlano
+ * OSSO : First Public Release
+ *
+ * Revision 1.5  2000/01/04 18:10:16  iurlano
+ * Interrupts reordering and bug fix
+ *
+ ***************************************************************************/
+
+- The scheduler does not verify if it is jumping to currently running TSS
+    and thus causes GPF. It happens if you put the same process in the queue
+    of ready processes and the two are subsequent.
+
+- 128 MB is the maximum amount of possible physical memory, due to the logical
+    address wher the gcc puts the process. It is a problem because the physical
+    memory is mapped from 0 to the end.
+  I think a workaround is mapping only the memory used for memory management by
+    memory.c. I have changed paging.c to map only the first 2 MB of memory and
+    it seems to work for 16MB of ram. I think I'll work on it (iurlano)
+
+- ide.c does not work with my Quantum Fireball 4.3GB SE. It does work on a old
+    Conner 42MB. Perhaps a BIOS problem (Pentium 100Mhz Computer)? (iurlano)
+

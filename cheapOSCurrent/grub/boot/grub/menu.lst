@@ -1,0 +1,19 @@
+# default - boot the first entry
+
+# dopo 8 sec boot default
+timeout 8
+
+# cheapOS image
+title cheapOS
+root (fd0)
+kernel /kernel.elf
+
+# Reboot
+title Reboot
+reboot
+
+# Halt
+title Halt
+halt
+
+

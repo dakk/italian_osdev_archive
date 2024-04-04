@@ -1,0 +1,142 @@
+2004-12-12 (BRANCH 0.11.00) Andrea Righi
+	* os/kernel/syscall.c:
+	Added nanosleep() system call.
+
+	* apps/src/sleep/sleep.c:
+	Added the sleep application (delay for a specified amount of time).
+
+	* apps/src/usleep/usleep.c:
+	Added the usleep application (sleeps some microseconds).
+
+2004-12-04 (BRANCH 0.11.00-preview) Andrea Righi
+	* os/arch/i386/kernel/paging.c:
+	Fixed a memory leak bug in page_fault_cow_handler().
+
+	* os/kernel/cow.c:
+	Fixed a deadlock bug set_shared_page() and unset_shared_page().
+
+	* apps/src/fork/fork.c:
+	Added a simple user application to test the fork() system call.
+
+2004-12-04 (BRANCH 0.10.04-rc3) Andrea Righi
+	* os/arch/i386/kernel/paging.c, os/kernel/task.c, os/kernel/kpagerd.c:
+	Added the fork() system call implementation.
+
+	* os/arch/i386/kernel/syscall.S:
+	Added the fork() system call entry point.
+
+	* os/kernel/syscall.c, include/sys/sys.h:
+	Added system call fork() definition.
+
+	* AUTHORS:
+	Added this file in the main directory.
+
+2004-11-22 (BRANCH 0.10.04-rc2) Andrea Righi
+	* include/kernel/cow.h, os/kernel/cow.c
+	Added COW interface to keep track about shared pages (between forked tasks and their father).
+
+2004-08-25 Andrea Righi
+	* os/arch/i386/kernel/paging.c, os/arch/i386/kernel/exceptions.c:
+	Added the page fault handler for COW pages.
+
+	* include/arch/mmx.h:
+	Added SSE / SSE2 extensions.
+	Added improvements for K7 and AthlonXP processors.
+
+2004-08-24 (BRANCH 0.10.04-rc1) Andrea Righi
+	* os/drivers/dma/dma.c, os/drivers/floppy/floppy.c:
+	No mutual exclusion for the DMA controller <- bug fixed.
+	This problem caused errors and data corruption in concurrent accesses to
+	floppy disk blocks for read/write operations.
+	Changes in functions fdc_rw(); added routines lock_dma_controller() and unlock_dma_controller().
+
+2004-08-23 Andrea Righi
+	* os/network/eth.c:
+	Fixed a very *dangerous* bug: deadlock during the reception of ARP and IP packets at the same time.
+	Changed functions: to_eth_layer(), recv_eth_packet(), recv_arp_packet().
+
+	* apps/src/ping/*:
+	Added a simple user application to translate strings into the morse code.
+
+2004-08-22 Andrea Righi
+	* os/network/icmp.c:
+	Removed the ping code from the kernel; can be replaced by a user-level application.
+	Changed to_icmp_layer() routine to handle ICMP echo request packets.
+
+	* os/network/ip.c:
+	Added function get_host_net() to return network address.
+	Changed ip_packet_filter() routine.
+	Changed send_ip_packet() to handle correctly loopback and broadcast packets.
+	Added ip_sendto() function: the standard interface for raw IP packets.
+	Changed ip_recvfrom() function: now returns the IP packet without the IP header.
+
+	* os/network/socket.c:
+	Added raw ip socket implementation - changed sys_recvfrom(), sys_sendto(), sys_socket().
+
+2004-08-21 Andrea Righi
+	* include/net/*.h:
+	Separated the kernel headers from the user headers for each network layer.
+	Created kernel files in include/kernel/net/*.h.
+
+2004-08-20 Andrea Righi
+	* os/network/eth.c:
+	Funtion ifconfig() modified: set 0.0.0.0 as the host IP address when network goes down.
+
+	* os/network/ip.c:
+	host_ip and host_netmask are initialized to 0 (this means that network is down).
+	send_ip_packet and ip_recvfrom check if the network is down before sending / receiving packets.
+
+	* os/network/icmp.c:
+	Print if the network is down (and in this case report 0.0.0.0 for this host IP address).
+
+2004-08-19 (BRANCH 0.10.03) Andrea Righi
+	* os/kernel/elf32.c:
+	Fixed bug #944334 (now the .bss section is correctly zeroed after a file is loaded in memory).
+
+	* os/fs/fat/fat12.c:
+	Fixed bug #941856 (mutual exclusion problems to get the size of a file).
+
+	* os/network/ip.c, os/network/icmp.c:
+	Fixed some errors that occurred when pinging to the loopback IP address.
+
+2004-08-15 Andrea Righi
+	* os/network/ip.c, os/network/icmp.c:
+	Added the support for the loopback IP address (127.0.0.1).
+	Created a standard socket interface also for ICMP sockets.
+
+	* apps/src/morse/*:
+	Added a simple user application to translate strings into the morse code.
+
+2004-08-14 Andrea Righi
+	* os/network/socket.c:
+	Created a standard interface for network functions to support user-level sockets
+	(for now only UDP sockets are available).
+
+	* os/arch/i386/kernel/syscall.S:
+	Added sys_socket, sys_closesocket, sys_bind, sys_recvfrom and sys_sendto system calls.
+
+	* apps/src/socket/*:
+	Created a simple UDP chat server to test sockets.
+
+2004-04-23 (BRANCH 0.10.02) Andrea Righi
+
+	* os/driver/floppy/floppy.c:
+	Added the floppy cache for recently used blocks.
+	Improved low-level routines for read and write operations.
+
+	* os/fs/fat/fat12.c:
+	Added sync, mount, umount routines.
+
+	* os/shell/shell.c:
+	Added sync, mount, umount commands.
+
+2004-04-21 Andrea Righi
+
+	* os/driver/floppy/floppy.c:
+	Fixed deadlock bug.
+
+	* os/network/eth.c:
+	Fixed deadlock bug.
+
+	* os/kernel/sched.c:
+	Replaced the round-robin scheduler with a simple priority-based scheduler.

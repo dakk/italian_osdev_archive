@@ -1,0 +1,41 @@
+  MANUALE FOPEN
+  
+  Funzione: 
+    #include <fat12.h>
+    FILE *fopen(char *nomefile,char *modo);
+     
+  Descrizione:
+    Questa funzione apre il file nomefile e ritorna un puntatore ad 
+    una struttura FILE che e' fatta cosi':
+
+    #define FILE struct tFile
+    struct tFile {
+      char nome[13]; /* nome del file */
+      u_short time,date; /* ora e data di creazione */
+      u_char attr; /* attributi del file */
+      int flag;   /* 1=lettura 2=scrittura 4=append */
+      int dir;   /* posizione della dir dove si trova il file */
+      int size;   /* dimensione del file */
+      int posiz;   /* posizione attuale */
+      u_short clust;  /* cluster di partenza */
+      u_short clust_corr;  /* cluster corrente */
+    };
+        
+    La variabile modo puo' avere i seguenti valori:
+    
+      "r" : apre un file in sola lettura, se il file non esiste ritorna NULL,
+            il puntatore del file e' posizionato all'inizio.
+      "r+": apre un file in lettura e scrittura, se il file non esiste ritorna 
+            NULL, il puntatore del file e' posizionato all'inizio.
+      "w" : crea un file in sola scrittura, se esiste il file questi viene can-
+            cellato 
+      "w+": crea un file in lettura e scrittura, se esiste il file questi vie-
+            ne cancellato 
+      "a" : apre un file in sola scrittura, crea il file se non esiste e il
+            puntatore viene posizionato alla fine del file.
+      "a+": apre un file lettura e scrittura, crea il file se non esiste e il
+            puntatore viene posizionato alla fine del file.
+	    
+    La funzione ritorna il puntatore a questa struttura se l'operazione e' andata
+    a buon fine, altrimenti ritorna NULL.
+     

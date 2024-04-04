@@ -1,0 +1,25 @@
+#OSSO Configuration File
+#Definisce le opzioni di configurazione del kernel
+#
+#Sintassi :
+#
+#<Nome> <tipo> <nome univoco> <valore di Default> <Commento ....>
+#Il nome compare poi nel .h
+#il tipo puo' essere value (tipo #define CENTO 100)
+#oppure string  (tipo #define CENTO "100")
+#oppure boolean (tipo #define CENTO 1)
+#oppure define  (tipo #define CENTO)
+#
+write header c
+SMP_ENABLE define smp 0 Enable SMP Support (only MP detection, untested)
+DYNAMIC_SEMAPHORE define synsem 1 Enable Dynamic Semaphores (Experimental code)
+DIRECT_MEM_SIZE_PROBE define dmemsizeprobe 0 Enable Direct probing of Memory size
+SYSTEM_MEMORY_SIZE value sysmemsize 8192 System Memory Size in KB
+MAX_PROCESSES value maxglobalprocesses 100 Max Existing Processes number
+MAX_THREADS value maxglobalthreads 150 Max Existing Threads number
+MAX_THREADS_PER_PROCESS value maxthreadsperprocess 10 Max Number of Threads per Process
+BOCHS_INVESTIGATE define bochsinspection 0 Enable BOCHS Investigating Feature (requires patched BOCHS)
+NEW_MEM_ALLOC_AND_COPY define newmemallocandcopy 0 Enable optimized Mem_Alloc_And_Copy implementation (should speed up process creation)
+write footer c
+
+

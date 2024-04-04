@@ -1,0 +1,480 @@
+# Anjuta Version 1.2.0 
+Compatibility Level: 1 
+
+<PROJECT_DESCRIPTION_START>
+un os<PROJECT_DESCRIPTION_END>
+<CONFIG_PROGS_START>
+<CONFIG_PROGS_END>
+<CONFIG_LIBS_START>
+<CONFIG_LIBS_END>
+<CONFIG_HEADERS_START>
+<CONFIG_HEADERS_END>
+<CONFIG_CHARACTERISTICS_START>
+<CONFIG_CHARACTERISTICS_END>
+<CONFIG_LIB_FUNCS_START>
+<CONFIG_LIB_FUNCS_END>
+<CONFIG_ADDITIONAL_START>
+<CONFIG_ADDITIONAL_END>
+<CONFIG_FILES_START>
+<CONFIG_FILES_END>
+<MAKEFILE_AM_START>
+<MAKEFILE_AM_END>
+
+props.file.type=project
+
+anjuta.version=1.2.0
+anjuta.compatibility.level=1
+
+project.name=ItaliOs3
+project.type=GENERIC
+project.target.type=EXECUTABLE
+project.version=0.3
+project.author=SIlvio
+project.source.target=unknown
+project.has.gettext=0
+project.gui.command=
+project.programming.language=C_C++
+project.excluded.modules=intl
+
+project.config.extra.modules.before=
+project.config.extra.modules.after=
+project.config.blocked=1
+project.config.disable.overwriting=1 1 1 1 1 1 1 1 1 
+
+project.menu.entry=ItaliOs3 Version 0.3
+project.menu.group=Application
+project.menu.comment=ItaliOs3 Version 0.3
+project.menu.icon=
+project.menu.need.terminal=0
+
+project.configure.options=
+anjuta.program.arguments=
+preferences.build.option.jobs=0
+preferences.build.option.silent=0
+preferences.build.option.autosave=0
+preferences.anjuta.make.options=-k
+preferences.make=make
+preferences.build.option.keep.going=1
+preferences.build.option.warn.undef=0
+preferences.autoformat.custom.style= -i8 -sc -bli0 -bl0 -cbi0 -ss
+preferences.indent.opening=0
+preferences.autoformat.disable=1
+preferences.indent.automatic=1
+preferences.use.tabs=1
+preferences.indent.size=4
+preferences.tabsize=4
+preferences.indent.closing=0
+
+module.include.name=.
+module.include.type=
+module.include.files=\
+	utils/include/sys/io.h\
+	utils/include/sys/exec.h\
+	utils/include/sys/vt100.h\
+	utils/include/ctype.h\
+	utils/include/stdio.h\
+	utils/include/float.h\
+	utils/include/math.h\
+	utils/include/time.h\
+	utils/include/stdarg.h\
+	utils/include/stddef.h\
+	utils/include/stdlib.h\
+	utils/include/sprintf.h\
+	utils/include/string.h\
+	utils/include/assert.h\
+	utils/include/limits.h\
+	include/fs/fat.h\
+	include/mm/mem.h\
+	include/mm/mmu.h\
+	include/mm/pagine_virtuali.h\
+	include/mm/desc_mem.h\
+	include/mm/kmmu.h\
+	include/mm/pagine_libere.h\
+	include/mm/fis_mmu.h\
+	include/app/shell.h\
+	include/app/utility.h\
+	include/cpu/bitops.h\
+	include/cpu/gdt.h\
+	include/cpu/idt.h\
+	include/cpu/paging.h\
+	include/cpu/cpu_oper.h\
+	include/lib/da.h\
+	include/lib/mf.h\
+	include/lib/sc.h\
+	include/lib/tree23.h\
+	include/lib/dfs_bfs.h\
+	include/lib/heap_info.h\
+	include/lib/avl.h\
+	include/lib/bst.h\
+	include/lib/dst.h\
+	include/lib/mst.h\
+	include/lib/skip_list.h\
+	include/lib/rst.h\
+	include/lib/triheap.h\
+	include/lib/ttheap2.h\
+	include/lib/triheap_ext.h\
+	include/lib/fheap.h\
+	include/lib/ttheap.h\
+	include/lib/hashtbl.h\
+	include/lib/search.h\
+	include/lib/rand.h\
+	include/lib/sort.h\
+	include/lib/dict_info.h\
+	include/lib/rbtree.h\
+	include/lib/bheap.h\
+	include/lib/timing.h\
+	include/lib/tree23_ext.h\
+	include/lib/dgraph.h\
+	include/sys/syscall.h\
+	include/sys/exec.h\
+	include/sys/vt100.h\
+	include/libc/ctype.h\
+	include/libc/stdio.h\
+	include/libc/float.h\
+	include/libc/math.h\
+	include/libc/time.h\
+	include/libc/stdarg.h\
+	include/libc/stddef.h\
+	include/libc/stdlib.h\
+	include/libc/sprintf.h\
+	include/libc/string.h\
+	include/libc/assert.h\
+	include/libc/limits.h\
+	include/task/messaggi.h\
+	include/task/sem.h\
+	include/task/timer.h\
+	include/task/politic_sched.h\
+	include/task/task.h\
+	include/task/fun_task.h\
+	include/task/hardware_task.h\
+	include/debug.h\
+	include/hardware/io.h\
+	include/hardware/key_traslation.h\
+	include/hardware/delay.h\
+	include/hardware/dma.h\
+	include/hardware/irq.h\
+	include/hardware/pit.h\
+	include/hardware/rtc.h\
+	include/hardware/video.h\
+	include/hardware/serial.h\
+	include/hardware/speaker.h\
+	include/hardware/mem_size.h\
+	include/hardware/8259.h\
+	include/hardware/floppy.h\
+	include/hardware/tastiera.h\
+	include/fpu_emu/fpu_emu_exp.h\
+	include/fpu_emu/fpu_emu_mov.h\
+	include/fpu_emu/fpu_emu_reg.h\
+	include/fpu_emu/fpu_emu_control.h\
+	include/fpu_emu/fpu_const.h\
+	include/fpu_emu/fpu_type.h\
+	include/fpu_emu/fpu_emu_data.h\
+	include/fpu_emu/fpu_emu_comp.h\
+	include/fpu_emu/fpu_emu_demo.h\
+	include/fpu_emu/fpu_emu_math.h\
+	include/fpu_emu/fpu_emu_exception.h\
+	include/fpu_emu/fpu_emu.h\
+	include/fpu_emu/fpu_emu_trig.h\
+	include/fpu_emu/my_double.h\
+	include/fpu_emu/fpu_trig_value.h\
+	include/dispositivi/hmu.h\
+	program/prova/config_func.h\
+	program/shell/config_func.h\
+	program/shell/shell.h
+
+module.source.name=.
+module.source.type=
+module.source.files=\
+	fs/fat.cc\
+	mm/kmmu.cc\
+	mm/mem.cc\
+	mm/mmu.cc\
+	mm/pagine_virtuali.cc\
+	mm/desc_mem.cc\
+	mm/pagine_libere.cc\
+	mm/fis_mmu.cc\
+	app/utility.cc\
+	app/shell.cc\
+	cpu/paging.cc\
+	cpu/gdt.cc\
+	cpu/idt.cc\
+	cpu/cpu_oper.cc\
+	lib/sc.c\
+	lib/tree23.c\
+	lib/dfs_bfs.c\
+	lib/avl.c\
+	lib/bst.c\
+	lib/mst.c\
+	lib/hashtbl.c\
+	lib/search.c\
+	lib/rand.c\
+	lib/sort.c\
+	lib/rbtree.c\
+	lib/bheap.c\
+	boot/floppy_header.c\
+	boot/mkdosfs.c\
+	libc/ctype.c\
+	libc/vsscanf.c\
+	libc/stdio.c\
+	libc/sscanf.c\
+	libc/math.c\
+	libc/vsprintf.c\
+	libc/time.c\
+	libc/stdlib.c\
+	libc/sprintf.c\
+	libc/string.c\
+	main/exec.cc\
+	main/debug.cc\
+	main/aamain.cc\
+	main/syscall.cc\
+	task/politic.cc\
+	task/messaggi.cc\
+	task/task.cc\
+	task/sem.cc\
+	task/hardware_task.cc\
+	utils/func.c\
+	utils/libc.c\
+	hardware/serial.cc\
+	hardware/speaker.cc\
+	hardware/key_traslation.cc\
+	hardware/floppy.cc\
+	hardware/dma.cc\
+	hardware/irq.cc\
+	hardware/delay.cc\
+	hardware/pit.cc\
+	hardware/rtc.cc\
+	hardware/8259.cc\
+	hardware/video.cc\
+	hardware/tastiera.cc\
+	fpu_emu/fpu_emu_exception.cc\
+	fpu_emu/fpu_emu.cc\
+	fpu_emu/fpu_emu_trig.cc\
+	fpu_emu/my_double.cc\
+	fpu_emu/fpu_emu_exp.cc\
+	fpu_emu/fpu_emu_control.cc\
+	fpu_emu/fpu_emu_mov.cc\
+	fpu_emu/fpu_emu_reg.cc\
+	fpu_emu/fpu_emu_data.cc\
+	fpu_emu/fpu_emu_comp.cc\
+	fpu_emu/fpu_emu_demo.cc\
+	fpu_emu/fpu_emu_math.cc\
+	dispositivi/hmu.cc\
+	program/prova/prova.c\
+	program/shell/shell.c
+
+module.pixmap.name=.
+module.pixmap.type=
+module.pixmap.files=\
+	doc/html/doxygen.png
+
+module.data.name=.
+module.data.type=
+module.data.files=
+
+module.help.name=.
+module.help.type=
+module.help.files=
+
+module.doc.name=.
+module.doc.type=
+module.doc.files=\
+	doc/html/fis__mmu_8cc-source.html\
+	doc/html/floppy_8cc-source.html\
+	doc/html/tastiera_8cc-source.html\
+	doc/html/fpu__emu__exp_8h-source.html\
+	doc/html/fpu__emu__mov_8cc-source.html\
+	doc/html/stdio_8h-source.html\
+	doc/html/dgraph_8h-source.html\
+	doc/html/exec_8h-source.html\
+	doc/html/serial_8h-source.html\
+	doc/html/math_8c-source.html\
+	doc/html/fpu__emu__comp_8cc-source.html\
+	doc/html/mkdosfs_8c-source.html\
+	doc/html/fpu__emu__mov_8h-source.html\
+	doc/html/irq_8cc-source.html\
+	doc/html/dst_8h-source.html\
+	doc/html/hardware__task_8h-source.html\
+	doc/html/cpu__oper_8h-source.html\
+	doc/html/triheap_8h-source.html\
+	doc/html/prova_2config__func_8h-source.html\
+	doc/html/pagine__libere_8cc-source.html\
+	doc/html/hardware__task_8cc-source.html\
+	doc/html/prova_2program_8inc-source.html\
+	doc/html/fpu__emu__data_8h-source.html\
+	doc/html/cpu__oper_8cc-source.html\
+	doc/html/speaker_8h-source.html\
+	doc/html/sc_8h-source.html\
+	doc/html/key__traslation_8h-source.html\
+	doc/html/search_8h-source.html\
+	doc/html/syscall_8h-source.html\
+	doc/html/fpu__emu__exception_8cc-source.html\
+	doc/html/io_8h-source.html\
+	doc/html/delay_8cc-source.html\
+	doc/html/sort_8c-source.html\
+	doc/html/avl_8c-source.html\
+	doc/html/vsscanf_8c-source.html\
+	doc/html/fat_8cc-source.html\
+	doc/html/hashtbl_8c-source.html\
+	doc/html/fpu__emu__demo_8h-source.html\
+	doc/html/tree23__ext_8h-source.html\
+	doc/html/include_2app_2shell_8h-source.html\
+	doc/html/time_8h-source.html\
+	doc/html/shell_2program_8inc-source.html\
+	doc/html/timing_8h-source.html\
+	doc/html/ttheap2_8h-source.html\
+	doc/html/rbtree_8h-source.html\
+	doc/html/stdlib_8c-source.html\
+	doc/html/fpu__emu__demo_8cc-source.html\
+	doc/html/bst_8h-source.html\
+	doc/html/politic_8cc-source.html\
+	doc/html/dma_8cc-source.html\
+	doc/html/limits_8h-source.html\
+	doc/html/rst_8h-source.html\
+	doc/html/hmu_8cc-source.html\
+	doc/html/dict__info_8h-source.html\
+	doc/html/kmmu_8h-source.html\
+	doc/html/video_8h-source.html\
+	doc/html/math_8h-source.html\
+	doc/html/task_8h-source.html\
+	doc/html/8259_8cc-source.html\
+	doc/html/timer_8h-source.html\
+	doc/html/sprintf_8c-source.html\
+	doc/html/float_8h-source.html\
+	doc/html/rand_8c-source.html\
+	doc/html/prova_8c-source.html\
+	doc/html/floppy_8h-source.html\
+	doc/html/fpu__emu__exception_8h-source.html\
+	doc/html/delay_8h-source.html\
+	doc/html/shell_8cc-source.html\
+	doc/html/fat_8h-source.html\
+	doc/html/sort_8h-source.html\
+	doc/html/messaggi_8h-source.html\
+	doc/html/fheap_8h-source.html\
+	doc/html/avl_8h-source.html\
+	doc/html/paging_8h-source.html\
+	doc/html/index.html\
+	doc/html/rtc_8h-source.html\
+	doc/html/messaggi_8cc-source.html\
+	doc/html/utility_8cc-source.html\
+	doc/html/pit_8h-source.html\
+	doc/html/fpu__emu__data_8cc-source.html\
+	doc/html/hashtbl_8h-source.html\
+	doc/html/fis__mmu_8h-source.html\
+	doc/html/ttheap_8h-source.html\
+	doc/html/paging_8cc-source.html\
+	doc/html/pagine__virtuali_8cc-source.html\
+	doc/html/speaker_8cc-source.html\
+	doc/html/heap__info_8h-source.html\
+	doc/html/stdlib_8h-source.html\
+	doc/html/mst_8c-source.html\
+	doc/html/debug_8h-source.html\
+	doc/html/fpu__emu__reg_8cc-source.html\
+	doc/html/shell_8c-source.html\
+	doc/html/desc__mem_8h-source.html\
+	doc/html/idt_8h-source.html\
+	doc/html/files.html\
+	doc/html/sem_8cc-source.html\
+	doc/html/key__traslation_8cc-source.html\
+	doc/html/kmmu_8cc-source.html\
+	doc/html/irq_8h-source.html\
+	doc/html/stdarg_8h-source.html\
+	doc/html/dma_8h-source.html\
+	doc/html/syscall_8cc-source.html\
+	doc/html/utility_8h-source.html\
+	doc/html/fpu__emu_8cc-source.html\
+	doc/html/mf_8h-source.html\
+	doc/html/sprintf_8h-source.html\
+	doc/html/video_8cc-source.html\
+	doc/html/debug_8cc-source.html\
+	doc/html/rtc_8cc-source.html\
+	doc/html/politic__sched_8h-source.html\
+	doc/html/rand_8h-source.html\
+	doc/html/tree23_8c-source.html\
+	doc/html/bheap_8c-source.html\
+	doc/html/fpu__emu__math_8h-source.html\
+	doc/html/fpu__emu__control_8cc-source.html\
+	doc/html/my__double_8h-source.html\
+	doc/html/task_8cc-source.html\
+	doc/html/pagine__libere_8h-source.html\
+	doc/html/mmu_8cc-source.html\
+	doc/html/fpu__emu__exp_8cc-source.html\
+	doc/html/program_2shell_2shell_8h-source.html\
+	doc/html/bitops_8h-source.html\
+	doc/html/hmu_8h-source.html\
+	doc/html/8259_8h-source.html\
+	doc/html/triheap__ext_8h-source.html\
+	doc/html/string_8c-source.html\
+	doc/html/mmu_8h-source.html\
+	doc/html/skip__list_8h-source.html\
+	doc/html/ctype_8c-source.html\
+	doc/html/gdt_8h-source.html\
+	doc/html/fun__task_8h-source.html\
+	doc/html/desc__mem_8cc-source.html\
+	doc/html/mst_8h-source.html\
+	doc/html/sscanf_8c-source.html\
+	doc/html/fpu__emu__trig_8cc-source.html\
+	doc/html/sem_8h-source.html\
+	doc/html/fpu__emu__control_8h-source.html\
+	doc/html/dfs__bfs_8c-source.html\
+	doc/html/mem_8h-source.html\
+	doc/html/idt_8cc-source.html\
+	doc/html/fpu__type_8h-source.html\
+	doc/html/tastiera_8h-source.html\
+	doc/html/floppy__header_8c-source.html\
+	doc/html/stdio_8c-source.html\
+	doc/html/vsprintf_8c-source.html\
+	doc/html/fpu__emu__math_8cc-source.html\
+	doc/html/pagine__virtuali_8h-source.html\
+	doc/html/tree23_8h-source.html\
+	doc/html/fpu__emu__reg_8h-source.html\
+	doc/html/bheap_8h-source.html\
+	doc/html/fpu__emu_8h-source.html\
+	doc/html/exec_8cc-source.html\
+	doc/html/fpu__trig__value_8h-source.html\
+	doc/html/serial_8cc-source.html\
+	doc/html/gdt_8cc-source.html\
+	doc/html/my__double_8cc-source.html\
+	doc/html/sc_8c-source.html\
+	doc/html/pit_8cc-source.html\
+	doc/html/search_8c-source.html\
+	doc/html/fpu__const_8h-source.html\
+	doc/html/fpu__emu__comp_8h-source.html\
+	doc/html/string_8h-source.html\
+	doc/html/assert_8h-source.html\
+	doc/html/mem__size_8h-source.html\
+	doc/html/ctype_8h-source.html\
+	doc/html/mem_8cc-source.html\
+	doc/html/fpu__emu__trig_8h-source.html\
+	doc/html/time_8c-source.html\
+	doc/html/vt100_8h-source.html\
+	doc/html/rbtree_8c-source.html\
+	doc/html/shell_2config__func_8h-source.html\
+	doc/html/da_8h-source.html\
+	doc/html/dfs__bfs_8h-source.html\
+	doc/html/stddef_8h-source.html\
+	doc/html/bst_8c-source.html\
+	doc/html/aamain_8cc-source.html\
+	README\
+	INSTALL\
+	ChangeLog
+
+module.po.files=
+
+compiler.options.supports=
+compiler.options.include.paths=\
+	.\
+	..
+compiler.options.library.paths=
+compiler.options.libraries=
+compiler.options.libraries.selected=
+compiler.options.defines=\
+	HAVE_CONFIG_H
+compiler.options.defines.selected=
+compiler.options.warning.buttons=0 0 1 1 0 1 0 0 0 0 0 0 0 1 0 0 
+compiler.options.optimize.buttons=0 0 1 0 
+compiler.options.other.buttons=1 0 
+compiler.options.other.c.flags=
+compiler.options.other.l.flags=
+compiler.options.other.l.libs=
+
+project.src.paths=

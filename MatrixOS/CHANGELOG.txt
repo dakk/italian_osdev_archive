@@ -1,0 +1,24 @@
+Versione 0.0.20.1
+- Compila anche con gcc 4
+- Makefile
+
+Versione 0.0.20
+- Scritto il driver per il PIT src/kernel/hardware/driver/pit.cpp
+- Scritto il driver per il DMA src/kernel/hardware/driver/dma.cpp
+- Scritto il driver per il floppy src/kernel/hardware/driver/floppy.cpp
+- Scritto il driver per la console basata su vbe: src/kernel/hardware/driver/vbeconsole.cpp
+- Scritto il driver per la console iniziale: src/kernel/hardware/driver/initconsole.cpp
+- Il driver VBE funziona anche con il paging abilitato src/kernel/hardware/driver/vbe.cpp
+
+- Scritto il supporto al riconoscimento della CPU src/kernel/hardware/cpu/cpuid.cpp
+
+- Aggiunto il supporto al multiboot src/kernel/boot/boot.S src/kernel/boot/mboot.cpp
+
+- Aggiunti nuovi comandi a kshell src/kernel/kservices/kshell.cpp
+- kerr klog kout ora si basano su initconsole src/kernel/kservices/kout.cpp src/kernel/kservices/klog.cpp src/kernel/kservices/kerr.cpp
+
+- Aggiunto il supporto al multitasking src/kernel/task/scheduler.cpp src/kernel/hardware/cpu/irc.cpp
+
+- Aggiunto il gestore della memoria fisica src/kernel/memory/physicalmem.cpp
+- Aggiunto il supporto al paging src/kernel/memory/paging.cpp
+- Aggiunto una semplice funzione malloc src/kernel/memory/virtualmem.cpp

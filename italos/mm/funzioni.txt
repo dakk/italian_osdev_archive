@@ -1,0 +1,32 @@
+FUNZIONI DEL GESTORE DELLA MEMORIA
+
+
+M M U    F I S I C O      (fis_mmu.h)
+--------------------------------------
+
+size_t count_memory();
+void init_spazio_fisico();
+void*  prendi_pagina_fisica();
+bool rilascia_pagina(void *addr);
+void* prendi_spazio_fisico(void *iinizio, void *ifine);
+void libera_spazio_fisico(void *iinizio, void *ifine);
+
+MMU VIRTUALE
+-------------------
+1)Gestione Pagine libere
+void init_spazio_virtuale_libero(dword* pagine_libere);
+void* prendi_spazio_virtuale(size_t pagine, dword* pagine_libere);
+void libera_pagina_virtuale(size_t pagina, dword* pagine_libere);
+
+2)Gestione paginazione a livello hardware
+void init_spazio_virtuale(page_dir_entry* dir);
+void setta_spazio_virtuale(page_dir_entry* dir, void* linear_address, size_t pagine);
+void abilita_hardware_paging();
+void disabilita_hardware_paging();
+
+
+
+MMU 
+------
+
+

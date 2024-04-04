@@ -1,0 +1,6 @@
+
+void initKBD(void)
+{
+Init_IDT_entry(pic_handler,0x21); //0x21 è la porta che identifica la tastiera ed associamo ad assa l' hander
+abilita_irq(1,0x21);
+}

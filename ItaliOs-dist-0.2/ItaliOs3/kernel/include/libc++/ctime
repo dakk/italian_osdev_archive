@@ -1,0 +1,8 @@
+#ifndef _CTIME_
+#define _CTIME_
+
+extern "C"{
+	#include <time.h>
+};
+
+#endif

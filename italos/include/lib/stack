@@ -1,0 +1,54 @@
+#ifndef _stack_H_
+#define _stack_H_
+
+#include <cstddef>
+#include <new>
+
+template <typename T>
+class stack	{
+	private:
+		struct Node	{
+			public:
+				T data;       
+				Node *next;
+				Node(T e, Node *n = 0) {
+					data = e;
+					next = n;
+				};
+		};
+		Node *head;	
+		size_t dimens;
+	public:
+		void init(){
+		        head = 0;
+				dimens = 0; 
+		}
+		// aggiunge un elemento        
+		void push(T e)	{
+		        dimens++;
+				head = new Node(e, head);
+		}
+		// prende il primo elemento dallo stack
+		T pop(){
+			Node *zombie = head;                  
+			head = head->next;                      
+			T retval = zombie->data;            
+			delete zombie;                         
+			dimens--;
+			return retval;
+		}		
+
+		// come pop ma non lo elimina
+		T top() {
+			if(head == 0) return 0;
+			return head->data;
+		}
+
+		// se lo stack è vuoto
+		bool empty() { return head == 0; }
+		
+		//restituisce la dimensione
+		int size(){     return dimens; };
+};
+
+#endif

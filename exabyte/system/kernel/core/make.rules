@@ -1,0 +1,17 @@
+# Kernel core make rules for Unix/Linux
+
+LD = ld
+CC = gcc -c
+# -DHAVE_ASM_USCORE
+CFLAGS = -Wall -fomit-frame-pointer -march=i686 -ffreestanding -nostdinc -fno-builtin -DVBSTRING -DDEBUG -DDEBUG2
+DISASM = objdump -d
+NASM = nasm
+NASMFLAGS = -felf
+RM = rm
+RMFLAGS = -f
+
+.S.o:
+	$(CC) $(CFLAGS) -I$(PATH_TO_TOP)/include/ -o $@ $<
+
+.c.o:
+	$(CC) $(CFLAGS) -I$(PATH_TO_TOP)/include/ -o $@ $<

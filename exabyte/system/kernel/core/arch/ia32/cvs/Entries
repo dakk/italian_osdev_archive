@@ -1,0 +1,21 @@
+/Makefile/1.11/Sun Oct 16 18:29:22 2005//
+/apic.c/1.10/Wed Oct 26 17:47:04 2005//
+/asm.S/1.7/Wed Oct 26 17:47:04 2005//
+/cmos.c/1.1/Wed Oct 26 17:47:04 2005//
+/cpuid.c/1.2/Thu Oct 13 17:10:10 2005//
+/exc.c/1.1/Wed Oct  5 16:00:48 2005//
+/gdt.c/1.5/Wed Oct 12 18:27:47 2005//
+/idt.c/1.9/Fri Oct 21 15:19:49 2005//
+/ioapic.c/1.7/Tue Oct 18 15:44:49 2005//
+/irq.c/1.13/Fri Oct 21 15:19:49 2005//
+/msr.c/1.2/Tue Oct 11 10:22:51 2005//
+/multiboot.c/1.1/Mon Oct 10 17:43:14 2005//
+/pic8259.c/1.7/Mon Oct 17 07:05:34 2005//
+/pit.c/1.1/Fri Oct 21 15:21:31 2005//
+/setup.c/1.10/Thu Oct 27 22:00:22 2005//
+/smp.c/1.21/Wed Oct 26 17:47:04 2005//
+/spinlock.asm/1.1/Fri Oct 21 15:21:31 2005//
+/time.c/1.1/Wed Oct 26 17:47:04 2005//
+/timer.c/1.3/Wed Oct 26 17:47:04 2005//
+/vga_text.c/1.6/Tue Oct 18 15:44:49 2005//
+D

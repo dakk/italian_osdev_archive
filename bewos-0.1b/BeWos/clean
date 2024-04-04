@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "RIMOZIONE FILE OGGETTI E IMMAGINI DI BEWOS"
+echo " "
+
+rm main.o
+rm kernel.bin
+rm BeWos.img
+rm kernel.map
+rm boot/bewoot.bin
+rm functions/io_port.o
+rm functions/keyboard.o
+rm functions/shell.o
+rm functions/printk.o
+rm functions/string.o
+rm interrupt/idt.o
+rm interrupt/pic8259.o 

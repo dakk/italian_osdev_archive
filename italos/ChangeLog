@@ -1,0 +1,11 @@
+6/2/2004: Da oggi si reinizia il changelog
+6/2/2004 (sNeo): messa on line nuova versione del sito!!!
+6/2/2004 (Abruzzo Silvio): implementati i semafori e aggiungi sem.cc e sem.h
+6/2/2004 (Abruzzo Silvio): adeguate tutte le funzioni in mem.cc con l'uso dei semafori
+6/2/2004 (Abruzzo Silvio): aggiunti i file INFO, README, AUTORI, STORIA, FAQ, INSTALL
+7/2/2004 (Abruzzo Silvio): iniziato driver del floppy
+8/2/2004 (Abruzzo Silvio): continuato driver del floppy
+10/2/2004 (Abruzzo Silvio): scritto driver del dma
+10/2/2004 (Abruzzo Silvio): continuato driver del floppy: ora funzia la lettura e la scrittura 
+10/2/2004 (Abruzzo Silvio): aggiunto make indent che indenta i file con uno stile comune e modificato make clean per fargli cancellare i file di backup di make indent
+12/2/2004 (rookie): integrato il driver del dma

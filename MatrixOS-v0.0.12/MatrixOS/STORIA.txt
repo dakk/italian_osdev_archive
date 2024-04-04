@@ -1,0 +1,23 @@
+24\04\2005 È uscita la versione 0.0.12 (stable)
+
+18\04\2005 È uscita la versione 0.0.11 (unstable) che comprende la gestione della memoria (malloc), i nuovi driver della tastiera, la nuova Kernel Shell, Il PIT, la modalità grafica VESA BIOS EXTENSION VBE.
+
+È uscita la versione 0.0.9 Che comprende IDT,IRQ, Tastiera...
+
+28\12\2004 - È uscita la versione 0.0.3 che comprende: Il boot loader ufficiale di MatrixOS, e la gestione della GDT.
+
+08\12\2004 - È uscita la versione 0.0.2 (Stable)
+
+26\11\2004 - È uscita la versione 0.0.1 (Unstable)
+
+09\11\2004 - Jockerfox si unisce al gruppo di programmatori di  MatrixOS. Iniziato il nuovo boot loader
+
+10\10\2004 - ada si unisce al gruppo di programmatori MatrixOS.
+
+16\09\2004 - Utilizzo come boot Loader Dream Catcher.
+
+14\09\2004 - Ho deciso di riscrivere il kernel di MatrixOS e cambiare boot loader.
+
+07\09\2004 - Copiato da DreamOS la idt, l'irq e il pic8259. 
+
+31\08\2004 - Iniziato MatrixOS.

@@ -1,0 +1,11 @@
+Autori di MatrixOS:
+
+	Davide Bettio "WindowsUninstall" (matrixos@altervistaTAGLIA_QUI.it-> Il principale autore di MatrixOS.
+	Enrico S. "Ada Byron" (ada.byronTAGLIA_QUI@tiscali.it)
+	Michele   "jockerfox" -> Autore del boot loader.
+	Giuseppe Martino "Denever"   -> Autore di string.cpp
+
+MatrixOS include anche codice di ItaliOS (www.italios.it) scritto principalmente da:
+	Silvio Abruzzo "Kernel26" (silvioabruzzoTAGLIA_QUI@italios.it)
+
+Ringrazio anche tutti quelli che mi hanno aiutato a realizzare MatrixOS

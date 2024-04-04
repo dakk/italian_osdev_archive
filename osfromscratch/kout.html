@@ -1,0 +1,228 @@
+<html>
+	<head>
+		<title>Os for scratch: ItaLo</title>
+	</head>
+	<body>
+		<h1>
+			<center>Canale a video</center>
+		</h1>
+		<br>
+		<h2>
+
+Per vedere quello che facciamo sulla macchina abbiamo bisogno di un output sullo schermo del monitor, che stampi scritte a video, che faccia scorrere il testo (scroll), che cancelli e pulisca lo schermo e stampi molti tipi base.
+<br>
+		Per differenziarlo dalla cout del c++ standard noi lo chiameremo kout.<br>
+		Vediamo innanzitutto di approfondire il funzionamento della scheda video. Di default lo schermo è impostato ad una risoluzione di 80x25 caratteri. Se vogliamo cambiare risoluzione del testo prima di andare in pmode nel bootloader dobbiamo inserire qualcosa del genere:
+		<pre>
+		  mov ax, 1112h
+		  int 0x10
+		</pre>
+Queste 2 righe ci permettono di fare in modo che la risoluzione del testo sia 50x80. Date le mie scarse capacità visive useremo la 25x80 ^___^ .<br>
+Ogni carattere occupa in memoria 2 byte, il primo contiene il codice ascii del carattere, il secondo contiene gli attributi del carattere.<br><br>
+<center><img src="carattere.png"></center>
+<br><br>
+Mentre i colori sono questi: <br><br>
+
+
+<center><img src="colori.png"></center><br><br>
+I caratteri vanno copiati in memoria dall'indirizzo 0xB8000 che è proprio dove la scheda video cerca i dati per disegnare a video. Se vogliamo ad esempio scrivere "CIAO" su schermo partendo dall'angolo in alto a sinistra, con sfondo nero e scritta bianca, la memoria dovrà contenere una cosa del genere:<br><br>
+
+<table width=200 cellspacing=1 border=2 align="center" bgcolor="red">
+  <tbody align="center">
+    <tr>
+      <td> ' C ' </td>
+      <td> 0xB8000 </td>
+    </tr>
+    <tr>
+      <td> 7 </td>
+      <td> 0xB8001 </td>
+    </tr>
+    <tr>
+      <td> ' I ' </td>
+      <td> 0xB8002 </td>
+    </tr>
+    <tr>
+      <td> 7 </td>
+      <td> 0xB8003 </td>
+    </tr>
+    <tr>
+      <td> ' A ' </td>
+      <td> 0xB8004 </td>
+    </tr>
+    <tr>
+      <td> 7 </td>
+      <td> 0xB8005 </td>
+    </tr>
+    <tr>
+      <td> ' O ' </td>
+      <td> 0xB8006 </td>
+    </tr>
+    <tr>
+      <td> 7 </td>
+      <td> 0xB8008 </td>
+    </tr>
+    <tr>
+      <td> <br><br><br> </td>
+      <td> <br><br><br> </td>
+  </tbody>
+</table>
+
+<br><br>
+
+Quindi possiamo iniziare a scrivere: <br>
+<pre>
+
+enum  {     NERO,
+	    BLU,
+	    VERDE,
+	    CELESTE,
+	    ROSSO,
+	    VIOLA,
+	    MARRONE,
+	    BIANCO_SPORCO,
+	    GRIGIO,
+	    BLU_CHIARO,
+	    VERDE_CHIARO,
+	    CELESTINO,
+	    ARANCIONE,
+	    ROSA,
+	    GIALLO,
+	    BIANCO,
+	    MAX_COLOR = 15,
+	    LAMPEGGIO = 128
+};
+
+	typedef unsigned char colore;
+</pre>
+Inizialmente la nostra classe può avere questo aspetto: <br>
+<pre>
+class Video{
+public:
+        Video();
+        void clear() ;
+        void put(const char c) ;
+	void put(const char* c) ;
+	void set_text_color( colore  mycolor);
+	void set_back_color(colore mycolor);
+	colore get_text_color(void);
+	colore get_back_color(void);
+private:
+        word *videomem ;   //puntatore alla memoria
+        size_t off ;                    //offset usato per le coordinate della y
+        size_t pos ;                  //indica la posizione della x
+	//restituisce il colore nella forma color<<8
+	word get_formed_color();
+	colore color;
+	//li metto come costati per dare un significato ai numeri
+	static const size_t max_x = 80;
+	static const size_t max_y = 25;
+	static const size_t screen_size  = max_x * max_y;
+};
+
+		</pre>
+L'unica cosa su cui soffermarci è il tipo della variabile videomem. Abbiamo usato una word perché questo ci permette di gestire ogni carattere come se fosse un singolo elemento.<br>
+Iniziamo dall'implementazione del costruttore:<br>
+<pre>
+	Video::Video(){
+		pos=0 ;        off=0 ; //la posizione iniziale è 0,0
+		videomem = (word*) 0xB8000 ; //imposto il puntatore per farlo puntare all'inizio della memoria video
+		set_text_color(GIALLO);
+		set_back_color(BLU);
+		clear(); //puliamo lo schermo
+	}
+</pre>
+Quindi vediamo subito la clear:
+<pre>
+
+	void Video::clear()	{
+		unsigned int i;
+
+		for(i=0; i<screen_size; i++){
+			videomem[i] = (unsigned char) ' ' | get_formed_color() ;
+		}
+		pos=0 ; off=0 ;
+	}
+</pre>
+La funzione get_formed_color() ci permette di avere il byte del colore organizzato nella maniera già vista sopra ma shiftato di 8 bit cosicché facilmente si aggiunge il codice ascci del carattere e si forma la word intera.<br>
+Vediamo le implementazioni quindi della get_formed_color(), della set_back_color() e della set_text_color(): <br>
+<pre>
+
+word Video::get_formed_color(){
+	return color<<8;
+};
+
+void Video::set_text_color( colore  mycolor){
+	color = color & 0x70; //quindi ottengo 0xxx0000
+	color |= (mycolor & 0xF);
+}
+
+void Video::set_back_color(colore mycolor){
+	//azzero i bit deillo sfondo
+	color &=0x8f; //ottengo x000 xxxx
+
+	//preparo i bit dello sfondo
+	mycolor &= 0x7;  //cancello tutti i i bbit tranne i primi tre quindi alla fine ottengo 0000 0xxx
+	mycolor <<=4;  //shifto tutto di 4 in questo modo li allineo per bene e ottengo 0xxx 0000
+
+	//setto il colore per bene
+	color += mycolor;
+}
+</pre>
+I commenti mi sembrano abbastanza esplicativi, vediamo la funzione più importante di tutte, la put():<br>
+<pre>
+	void Video::put(const char c){
+		if(c == '\n'){
+			accapo();
+			return;
+		}
+
+		if(c == '\t'){
+			for(int i = 0; i < tab_size; i++)
+				put(' ');
+			return;
+		}
+
+		if(pos>=max_x){
+			accapo();
+		}
+
+		if(off>=screen_size)
+		{
+			//faccio lo scroll di una riga dello schermo
+
+			for(int i=0; i < screen_size - 80; i++)
+				videomem[i] = videomem[i+80];
+
+			for(int  i = screen_size-80; i < screen_size; i++)
+				videomem[i] = videomem[off + pos] = (unsigned char) ' '  | get_formed_color() ;
+
+			pos = 0; off-=80;
+		}
+
+		videomem[off + pos] = (unsigned char) c | get_formed_color() ;
+		pos++ ;
+	}
+</pre>
+Lo scroll dello schermo lo gestiamo copiando tutto il contenuto della memoria di una riga in alto.<br>
+L'ultima funzione che analizziamo è la accapo():<br>
+<pre>
+	void Video::accapo(){
+		//coloro con il colore dello sfondo i caratteri rimanenti per arrivare alla fine dello schermo
+		while(pos<max_x){
+			videomem[off + pos] = (unsigned char) ' ' | get_formed_color() ;
+			pos++;
+		}
+		pos = 0;
+		off += max_x;
+	}
+</pre>
+Bene il resto della classe lo si può vedere direttamente dal file che, tra l'altro, è ben commentato.<br>
+Analizziamo un aspetto legato alla nostra classe video. Dunque creiamo un oggetto globale di questo tipo:<br>
+<pre>
+	Video mystdout;
+	Video& kout = mystdout;
+</pre>
+Il nostro oggetto è globale; quindi all'avvio del css dobbiamo eseguire noi il costruttore, dato che non possiamo usare il loader degli eseguibili di linux.
+		</h2>
+	</body>
+</html>

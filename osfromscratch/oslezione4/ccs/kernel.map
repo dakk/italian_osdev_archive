@@ -1,0 +1,202 @@
+Archive member included because of file (symbol)
+
+./main/libmain.a(main.o)      (--whole-archive)
+./main/libmain.a(debug.o)     (--whole-archive)
+./hardware/libhardware.a(video.o)
+                              (--whole-archive)
+./hardware/libhardware.a(8259.o)
+                              (--whole-archive)
+./hardware/libhardware.a(irq.o)
+                              (--whole-archive)
+./cpu/libcpu.a(gdt.o)         (--whole-archive)
+./cpu/libcpu.a(idt.o)         (--whole-archive)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD ./main/libmain.a
+LOAD ./hardware/libhardware.a
+LOAD ./cpu/libcpu.a
+                0x00010000                . = 0x10000
+
+.text           0x00010000     0x11b6
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x00010000      0x139 ./main/libmain.a(main.o)
+                0x000100d2                tastiera_handler()
+                0x00010010                main
+                0x00010000                _start()
+                0x00010112                __do_global_ctors()
+ *fill*         0x00010139        0x3 00
+ .text          0x0001013c      0x257 ./main/libmain.a(debug.o)
+                0x000102ba                Debug::operator<<(char)
+                0x00010166                Debug::register_trace(unsigned short)
+                0x000102f8                Debug::Debug()
+                0x0001013c                Debug::istruction_trace(unsigned short)
+                0x000102a0                Debug::operator<<(char const*)
+                0x0001031a                Debug::put(char const*)
+                0x000101b4                Debug::stop()
+                0x0001034c                Debug::put(char)
+                0x00010274                Debug::operator<<(unsigned)
+                0x000101c2                Debug::operator<<(int)
+                0x000102d6                Debug::Debug()
+ *fill*         0x00010393        0x1 00
+ .gnu.linkonce.t.utoa
+                0x00010394       0x82 ./main/libmain.a(debug.o)
+                0x00010394                utoa
+ *fill*         0x00010416        0x2 00
+ .text          0x00010418      0x405 ./hardware/libhardware.a(video.o)
+                0x00010568                Video::Video()
+                0x000105e0                Video::clear()
+                0x0001052c                Video::Video()
+                0x00010418                Video::operator<<(int)
+                0x00010510                Video::operator<<(char)
+                0x00010794                Video::set_text_color(unsigned char)
+                0x000104f6                Video::operator<<(char const*)
+                0x0001061c                Video::accapo()
+                0x0001065c                Video::put(char const*)
+                0x000107ac                Video::set_back_color(unsigned char)
+                0x000105a4                Video::init()
+                0x0001068e                Video::put(char)
+                0x00010784                Video::get_formed_color()
+                0x000107d2                Video::get_back_color()
+                0x000107c6                Video::get_text_color()
+                0x000104ca                Video::operator<<(unsigned)
+ *fill*         0x0001081d        0x3 00
+ .text          0x00010820      0x16f ./hardware/libhardware.a(8259.o)
+                0x00010940                get_cur_irq()
+                0x0001088e                enable_irq(unsigned short)
+                0x000108e0                disable_irq(unsigned short)
+                0x00010820                init8259()
+ *fill*         0x0001098f        0x1 00
+ .text          0x00010990       0xa3 ./hardware/libhardware.a(irq.o)
+                0x00010992                free_irq
+                0x00010990                null_handler
+                0x000109e8                init_irq()
+                0x000109cb                internal_handler
+                0x000109aa                _do_irq
+                0x000109d6                add_irq(void (*)(), unsigned char)
+ *fill*         0x00010a33        0x1 00
+ .text          0x00010a34      0x103 ./cpu/libcpu.a(gdt.o)
+                0x00010a34                set_gdtr(unsigned long long*, unsigned)
+                0x00010a90                init_gdt()
+ *fill*         0x00010b37        0x1 00
+ .text          0x00010b38      0x67e ./cpu/libcpu.a(idt.o)
+                0x00010f28                idt::add(void (*)(), unsigned)
+                0x00010fe6                idt::init()
+                0x00010b50                (anonymous namespace)::set_idtr((anonymous namespace)::int_gate*, unsigned)
+                0x00010cf8                (anonymous namespace)::isr7()
+                0x00010e48                (anonymous namespace)::isr13()
+                0x00010c50                (anonymous namespace)::isr4()
+                0x00010c88                (anonymous namespace)::isr5()
+                0x00010dd8                (anonymous namespace)::isr11()
+                0x00010be0                (anonymous namespace)::isr2()
+                0x00010cc0                (anonymous namespace)::isr6()
+                0x00010b38                (anonymous namespace)::mint_null()
+                0x00010c18                (anonymous namespace)::isr3()
+                0x00010ef0                (anonymous namespace)::isr17()
+                0x00011182                idt::get(unsigned)
+                0x00010eb8                (anonymous namespace)::isr16()
+                0x00011140                idt::del(unsigned)
+                0x00010b70                (anonymous namespace)::isr0()
+                0x00010da0                (anonymous namespace)::isr10()
+                0x00010d68                (anonymous namespace)::isr9()
+                0x00010e10                (anonymous namespace)::isr12()
+                0x00010ba8                (anonymous namespace)::isr1()
+                0x00010e80                (anonymous namespace)::isr14()
+                0x00010d30                (anonymous namespace)::isr8()
+
+.rodata         0x000111c0      0x3ee
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata.str1.1
+                0x000111c0       0x3c ./main/libmain.a(main.o)
+ *fill*         0x000111fc        0x4 00
+ .rodata.str1.32
+                0x00011200       0x28 ./main/libmain.a(main.o)
+ .rodata.str1.1
+                0x00011228       0x1b ./main/libmain.a(debug.o)
+ *fill*         0x00011243       0x1d 00
+ .rodata.str1.32
+                0x00011260       0x25 ./main/libmain.a(debug.o)
+ *fill*         0x00011285        0x3 00
+ .rodata        0x00011288        0x4 ./hardware/libhardware.a(video.o)
+                0x00011288                kout
+ *fill*         0x0001128c       0x14 00
+ .rodata.str1.32
+                0x000112a0       0x25 ./hardware/libhardware.a(video.o)
+ .rodata.str1.1
+                0x000112c5       0x17 ./cpu/libcpu.a(gdt.o)
+ *fill*         0x000112dc        0x4 00
+ .rodata.str1.32
+                0x000112e0       0x30 ./cpu/libcpu.a(gdt.o)
+ .rodata.str1.1
+                0x00011310      0x133 ./cpu/libcpu.a(idt.o)
+ *fill*         0x00011443       0x1d 00
+ .rodata.str1.32
+                0x00011460      0x14e ./cpu/libcpu.a(idt.o)
+                0x000125ae                . = (0x1000 DATA_SEGMENT_ALIGN 0x1000)
+                0x000125b0                . = ALIGN (0x4)
+
+.data           0x000125b0       0x18
+                0x000125b0                __CTOR_LIST__ = .
+                0x000125b0        0x4 LONG 0x2 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
+ *(.ctors)
+ .ctors         0x000125b4        0x4 ./main/libmain.a(debug.o)
+ .ctors         0x000125b8        0x4 ./hardware/libhardware.a(video.o)
+                0x000125bc        0x4 LONG 0x0
+                0x000125c0                __CTOR_END__ = .
+                0x000125c0                __DTOR_LIST__ = .
+                0x000125c0        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
+ *(.dtors)
+                0x000125c4        0x4 LONG 0x0
+                0x000125c8                __DTOR_END__ = .
+ *(.data .data.* .gnu.linkonce.d.*)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.bss            0x000125e0      0x880
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x000125e0        0x1 ./main/libmain.a(debug.o)
+                0x000125e0                debug
+ *fill*         0x000125e1        0x3 00
+ .bss           0x000125e4       0x10 ./hardware/libhardware.a(video.o)
+                0x000125e4                mystdout
+ .bss           0x000125f4        0x2 ./hardware/libhardware.a(8259.o)
+                0x000125f4                (anonymous namespace)::irq_mask
+ *fill*         0x000125f6        0xa 00
+ .bss           0x00012600       0x40 ./hardware/libhardware.a(irq.o)
+                0x00012600                handler
+ .bss           0x00012640       0x18 ./cpu/libcpu.a(gdt.o)
+                0x00012640                gdt
+ *fill*         0x00012658        0x8 00
+ .bss           0x00012660      0x800 ./cpu/libcpu.a(idt.o)
+                0x00012660                (anonymous namespace)::_IDT
+ *(COMMON)
+                0x00012e60                . = ALIGN (0x4)
+                0x00012e60                . = ALIGN (0x4)
+                0x00012e60                _end = .
+                0x00012e60                PROVIDE (end, .)
+                0x00012e60                . = DATA_SEGMENT_END (.)
+OUTPUT(ccs.bin binary)
+
+.comment        0x00000000       0x70
+ .comment       0x00000000       0x10 ./main/libmain.a(main.o)
+ .comment       0x00000010       0x10 ./main/libmain.a(debug.o)
+ .comment       0x00000020       0x10 ./hardware/libhardware.a(video.o)
+ .comment       0x00000030       0x10 ./hardware/libhardware.a(8259.o)
+ .comment       0x00000040       0x10 ./hardware/libhardware.a(irq.o)
+ .comment       0x00000050       0x10 ./cpu/libcpu.a(gdt.o)
+ .comment       0x00000060       0x10 ./cpu/libcpu.a(idt.o)

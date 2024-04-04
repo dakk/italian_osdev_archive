@@ -1,0 +1,9 @@
+.c.o:
+	$(CC)  $(CFLAG) -c -o $@ $<
+.cc.o:
+	$(CXX)  $(CXXFLAG) -c -o $@ $<
+.s.o:
+	$(AS)  -o $@ $<
+.asm.o:
+	$(ASM)  -o $@ $<
+

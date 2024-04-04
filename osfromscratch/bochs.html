@@ -1,0 +1,190 @@
+<html>
+	<head>
+		<title>Os for scratch: ItaLo</title>
+	</head>
+	<body>
+		<h1>
+			<center>Bochs</center>
+		</h1>
+		<br>
+		<h2>
+		La cosa più difficile in un os, come avevo già accennato, è il debug: uno strumento utilissimo a tale scopo è bochs, un emulatore di pc che ci offre delle caratteristiche particolarmente utili.<br>
+		Innanzitutto scarichiamo i sorgenti di bochs da
+		<a href="http://bochs.sourceforge.net">http://bochs.sourceforge.net</a>
+Scompattiamo il tarball e diamo un bel:
+<pre>
+./configure --enable-iodebug --enable-disasm --enable-debugger
+</pre><br>
+<ul>
+	<li>--enable-debugger permette di abilitare il debugger di bochs che ha funzioni per il trace dei registri, controllo della memoria, etc
+	<li>--enable-disasm permette di abilitare il disassembler di bochs, ci permetterà di vedere quali istruzioni vengono eseguite
+	<li>--enable-iodebug ci permette di usare delle speciali porte di bochs per il debug.
+</ul>
+		Quindi diamo un bel make (e volendo anche un bel make install), e installiamo i font di bochs:<br>
+		<pre>
+		   cp font/vga.pcf font-path-here/misc
+   		   compress font-path-here/misc/vga.pcf
+   		   mkfontdir font-path-here/misc
+   		   xset fp rehash
+  		</pre>
+		 Sostituiamo font-path-here con il path di dove abbiamo i font. Solitamente è: /usr/X11R6/lib/X11/fonts/ .
+		 Quindi riavviamo xfs. <br>
+		Io personalmete uso questo file di configurazione: <a href="bochsrc">bochsrc</a>. Per ulteriori informazioni consiglio la lettura della documentazione di bochs.<br>
+Può essere utile durante l'esecuzione far stampare dei messaggi di debug che non devono comparire, invece, quando eseguiamo l'os su un pc reale. Per far stampare un carattere nel logger di bochs basta mettere il codice ascii nella porta 0xe9 e questo come per magia apparirà nel prompt di bochs.<br> Ho creato una classe debug del tutto identica alla kout. Col tempo la modificheremo per renderla molto più potente.<br>
+<br>Altre cose interessanti che ci fornisce bochs sono: il trace dei registri, il trace delle istruzioni e il blocco per poi eseguire il codice passo a passo. <br>
+		I comandi vanno messi nella porta 0x8A00 : eccone una breve lista: <br>
+		<ul>
+			<li>0x8A00: Usato per abilitare il debug
+			<li>0x8A01: Selects register 0: Indirizzo dell'inizio del monitoraggio della memoria (inclusivo)
+			<li>0x8A02: Selects register 1: Indirizzo della fine del monitoraggio della memoria (esclusivo)
+			<li>0x8A80: Abilita il monitoraggio della memoria come indicato dai registri 0 e 1 e cancella entrambi i registri
+			<li>0x8AE0: Ritorna il Prompt di debug
+			<li>0x8AE2: Disabilita il trace delle istruzioni
+			<li>0x8AE3: Abilita il trace delle istruzioni
+			<li>0x8AE4: Disabilita il trace dei registri
+			<li>0x8AE5: Abilita il trace dei registri (funziona solo se il trace delle istruzioni e abilitato)
+			<li>0x8AFF: Disabilita l'i/o debug e le funzioni di monitoraggio della memoria.
+		</ul>
+		Bene! Ora possiamo implementare tante belle funzioni che ci saranno molto utili. Il debugger lo attiveremo direttamente da costruttutore in questo modo non ci dovremo preoccupare di sapere se è attivato oppure no. L'unica cosa che ci rimane da progettare è la maniera di attivare i vari trace. Ci si prospettano varie soluzioni:
+		<pre>
+			void istruction_trace(bool enabled);
+		</pre>
+		oppure
+		<pre>
+			void istruction_trace(word status);
+		</pre>
+		o ancora
+		<pre>
+			void set_istruction_trace();
+			void unset_istruction_trace();
+		</pre>
+		A mio parere la migliore è la seconda perché a differenza della prima ci permette di definire ulteriori stati di abilitato o disabilitato in caso di espansione futura. La terza invece è la peggiore perché dobbiamo implemenare delle funzioni in più, con lo svantaggio aggiuntivo di dover ricordare più nomi.<br>
+		Ecco il codice dell'header e della classe. <br>
+		ccs/include/debug.h:<br>
+		<pre>
+
+#ifndef _DEBUG_H_
+#define _DEBUG_H_
+
+#include <stddef.h>
+#ifndef endl
+#define  endl  '\n'
+#endif
+
+enum{
+	ON, OFF
+};
+
+class Debug{
+public:
+        Debug();
+        void put(const char c) ;
+	void put(const char* c) ;
+	Debug& operator << (const int numero);
+	Debug& operator << (const unsigned int numero);
+	Debug& operator << (const char* str);
+	Debug& operator << (const char ch);
+	void istruction_trace(word status);
+	void register_trace(word status);
+	void stop();
+};
+
+extern Debug debug;
+
+#endif
+		</pre>
+		<br>ccs/main/debug.cc:<br>
+		<pre>
+
+#include < debug.h >
+#include < string.h >
+#include < io.h >
+
+namespace{
+	static const word BOCHS_IODEBUG_PORT = 0x8A00;
+}
+
+Debug debug;
+
+void Debug::istruction_trace(word status){
+	if(status == ON){
+		outportw(BOCHS_IODEBUG_PORT, 0x8AE3);
+		return;
+	}
+	if(status == OFF){
+		outportw(BOCHS_IODEBUG_PORT, 0x8AE2);
+		return;
+	}
+	return;
+}
+
+
+void Debug::register_trace(word status){
+	if(status == ON){
+		istruction_trace(ON);
+		outportw(BOCHS_IODEBUG_PORT, 0x8AE5);
+		return;
+	}
+	if(status == OFF){
+		istruction_trace(OFF);
+		outportw(BOCHS_IODEBUG_PORT, 0x8AE4);
+		return;
+	}
+	return;
+}
+
+void Debug::stop(){
+	outportw(BOCHS_IODEBUG_PORT, 0x8AE0);
+}
+
+Debug& Debug::operator << (const int numero){
+	char num_str[30];
+	itoa(numero, num_str);
+	put(num_str);
+	return *this;
+}
+
+
+Debug& Debug::operator << (const unsigned int numero){
+	char num_str[30];
+	utoa(numero, num_str, 10);
+	put(num_str);
+	return *this;
+}
+
+
+Debug& Debug::operator << (const char* str){
+	put(str);
+	return *this;
+}
+
+
+Debug& Debug::operator << (const char ch){
+	put(ch);
+	return *this;
+}
+
+
+Debug::Debug(){
+	outportw(BOCHS_IODEBUG_PORT, 0x8A00);
+	put("\n\nDebugger inizializzato\n\n");
+}
+
+void Debug::put(const char* c){
+	int i;
+	for (i = 0; c[i] != '\0'; i++) {
+		put(c[i]);
+	}
+	return;
+}
+
+void Debug::put(const char c){
+        outportb(0xe9, c);
+}
+		</pre><br>
+Anche questa volta abbiamo finito, vi lascio allo studio dei sorgenti: ho aggiunto un nuovo file io.h con delle funzioni per i/o inoltre ho modificato la kout per convogliare tutto quello che stampa a video nel logger di bochs.
+		</h2>
+	</body>
+</html>
+
+

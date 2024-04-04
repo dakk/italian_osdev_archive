@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "		+---------------------------------------+"
+echo "		|	  	MatrixOS Make		|"
+echo "		+---------------------------------------+"
+echo "		|	->Build	& Install & Test	|"
+echo "		+---------------------------------------+"
+echo ""
+echo ""
+
+# Elimino i file bin
+rm rm -f bin/*.bin
+# Elimino i file img
+rm rm -f bin/*.img
+# Elimino i file oggetto
+rm -f src/kernel/*.o #TODO: Da modificare
+rm -f src/kernel/*~ #TODO: Da modificare
+
+./build
+
+#echo "Cancello il Floppy Disk"
+#cp -f /dev/full /dev/fd0
+#echo ""
+
+bochs -f bochsrc

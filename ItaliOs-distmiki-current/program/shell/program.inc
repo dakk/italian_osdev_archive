@@ -1,0 +1,3 @@
+PROGRAMMA=shell.elf
+VERSIONE=0.3
+NOME=ItSh

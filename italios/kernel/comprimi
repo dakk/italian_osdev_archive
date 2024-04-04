@@ -1,0 +1,9 @@
+#!/bin/bash
+export CDIR=$(basename $PWD)
+NAME=`date '+%Y_%m_%d'-%H_%M_%S`
+make clean
+#make indent
+echo $CDIR
+cd ..
+tar czvf ItaliOs-0.3.0-$NAME.tar.gz $CDIR
+cd $CDIR

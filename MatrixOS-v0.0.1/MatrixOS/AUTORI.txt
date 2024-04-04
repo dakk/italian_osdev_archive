@@ -1,0 +1,9 @@
+Autori di MatrixOS:
+
+	Davide B. "WindowsUninstall" -> Il principale autore di MatrixOS.
+	Enrico S. "Ada Byron" ( ada.byronTAGLIA_QUI@tiscali.it)
+
+Autori del BootLoader:
+
+	Ivan Gualandri "^Inuyasha^" ( ivgua@tiscali.it ) con l'aiuto di Silvio Abruzzo.
+	Silvio Abruzzo "Kernel26" ( silvioabruzzo@italios.it ) -> Uno degli autori del Boot Loader.

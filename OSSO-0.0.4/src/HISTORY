@@ -1,0 +1,672 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+/* 
+  WARNING: This file is obsolete. You should not be reading this if you
+  don't know what it is.
+*/
+
+10-07-1999
+  Inizio del progetto. Boot loader che carica il file pre-kernel. Stampa
+    a video con il BIOS
+
+11-07-1999
+  Nuovo file: video.asm che contiene la routine di stampa a video senza BIOS
+    con scrolling dello schermo e gestione delle coordinate.
+
+12-07-1999
+  Changed project name to OSSO. Aggiunta la gestione del cursore hardware in
+    video.asm
+
+14-07-1999
+  First code running in PM (yeah!) che nervi :-(( 
+  Nuovo file: history (this one!)
+
+15-07-1999
+  Aggiunto KERNEL.C (!!!!!!!!!!!!!!!!)
+  BOIA DEH.
+  Caricamento da un punto fisso (settore 108) (terza traccia)
+  Stampa a video da programma C
+  Da riaggiustare...
+
+16-07-1999
+  Cambiata struttura delle directory. Aggiunto un Makefile per il kernel.
+  Video.asm e' diventato inutile, almeno credo....
+  Video.asm ripulito contiene solo la stampa in modo reale.
+  Aggiunto il file memset.c con la routine che inizializza la memoria.
+  Adesso e' possibile usare array su stack.
+  Aggiunto nuovo file TO_DO
+  Aggiunto file printk.c con relativa funzione di output con scrolling.
+  Aggiunta directory include con un include io.h
+
+17-07-1999
+  Aggiunto kernel.h che contiene i prototipi delle funzioni dei vari moduli.
+  Io.h adesso e' a posto.
+  Printk aggiornato con la posizione del cursore in modo corretto.
+  Piccoli ritocchi a Makefile e crea_disco.c
+  Printk cambiato. Aggiunto il supporto per output di variabili di tipo:
+    stringa, char, signed int, unsigned int;
+  Aggiunta funzione _start che funziona da entry point (il warning del 
+    compilatore mi iniziava a stare sui coglioni)
+
+19-07-1999
+  Prima versione con gestione di interrupt funzionante: crea la tabella IDT
+    all'indirizzo 0 con 48 interrupt (32 eccezioni + 16 IRQ ). Installa i
+    relativi handlers con terminazione corretta e stampa a video. Aggiunte
+    macro per l'assembler a sys.h
+  Kernel arrivato a 10K di dimensione. Aggiornata routine di boot per il cari-
+    camento (adesso fino a 18k, 2 tracce ).
+  Aggiunto file interrupts.c con inizializzazione IDT.
+  Pre-kernel adesso inizializza il controller degli Interrupt configurando
+    gli IRQ come ints da 0x20 a 0x2F. Inoltre li maschera inizialmente tutti.
+  Che fatica.
+
+20-07-1999
+  Aggiustato caricamento del Kernel. Adesso funziona.
+  Aggiunto nuovo file : MemoryMap contenente l'occupazione della memoria.
+  Aggiunta funzione in printk.c : get_initial_cursor_pos() che prende le
+    coordinate del cursore da Bios Data Area (0x40:0x50)
+  Aggiunto file: keyboard.c che conterra' le routine di gestione della tastiera
+  Aggiornato il Makefile
+
+21-07-1999
+  Preso contatto con Marco. EVVIVA!
+  Aggiunto file con le Versioni dei programmi.
+  Tradotti i files .asm in .nasm per uso con l'assemblatore NASM
+  Aggiornato Makefile per compilare gli assembler in entrambi i formati,
+    cambiando soltanto la variabile AS
+
+22-07-1999
+  Aggiunto include keyscancodes.h che contiene dei codici di scansione.
+  Migliorata routine di riconoscimento caratteri: aggiunto supporto per i led,
+    riconoscimento di shift control e alt.
+  Ritocco al Makefile
+
+23-07-1999
+  Aggiunto in keyscancodes.h mappa dei caratteri con relativi modificatori.
+  Commentati interrupts.c e keyscancodes.h
+  Aggiunta gestione di codice esteso di tastiera in keyboard.c
+  Ritoccati file in include per evitare inclusioni multiple.
+  Aggiunta commenti generali a i moduli non ancora commentati.
+  Finita la mappa dei caratteri. I caratteri adesso riconosciuti e visualizzati
+    sono tutti tranne il tasto di pausa.
+  Non riconosce lo stato di Caps Lock per le lettere.
+
+25-07-1999
+  Aggiunto modulo sysinfo.c con routine di riconoscimento del sistema.
+    Attualmente riconosce le porte seriali e parallele gia' riconosciute dal
+    BIOS.
+  Aggiunto modulo sysinfo.h
+
+26-07-1999
+  Corretto caricamento IDT in interrupts.c; aggiunta funzione specifica.
+    Adesso IDT non e' limitata all'indirizzo 0.
+  Aggiunta la dichiarazione di un descrittore di segmento. Da provare.
+  Aggiunto nuovo file: PROPOSITI
+
+27-07-1999
+  Aggiunta routine di rilevazione della dimensione della memoria in sysinfo.c.
+    Skazza di 3 kb ma funziona.
+  Rispippolato alla routine della memoria. Sembra funzionare...
+
+28-07-1999
+  **Ale**
+  Cambiata locazione dello stack in modo protetto. (pre-kernel.nasm)
+  Aggiornata MemoryMap
+  Tolti sorgenti in formato as86. Lasciato soltanto nasm.
+  Aggiornato Top Level Makefile
+  Spostato lo stack del modo protetto nella posizione occupata dallo stack
+    del modo reale (vedi MemoryMap)
+  Aggiunto malloc.c con la funzione malloc() che alloca la memoria dal primo
+    MB fino alla fine della memoria. Aggiunta funzione get_free_memory()
+    Aggiunto include malloc.h
+  Aggiunto -nostdinc a CFLAGS per sicurezza.
+  Aggiornati entrambi i Makefile
+  Inserita definizione di NULL in <types.h>
+  Aggiunte routines per il mascheramento degli IRQ a interrupts.c:
+    set_IRQ_mask get_IRQ_mask mask_IRQ unmask_IRQ
+    e #define in interrupts.h (anche questo nuovo).
+  **Marco**
+  Cambiato boot.nasm per il caricamento automatico di kernel e prekernel
+    di qualsiasi dimensione (ehm, fino a 65k, ma siamo abbastanza
+    lontani); gli indirizzi di caricamento sono sempre fissi.
+  Routine di check 386 inserita in prekernel.nasm prima del passaggio in modo
+    protetto (da testare su un 286...)
+
+  Nota: in questa versione funziona il caricamento di piu' di 18 settori
+   perche' i nuovi BIOS supportano il caso in cui si sfori la traccia per
+   andare alla traccia dopo che e' sullo stesso cilindro e altra testina.
+   E' bastato commentare le righe che limitavano il numero di settori a 18.
+   Questa soluzione e' da considerare ASSOLUTAMENTE PROVVISORIA e da rivedere
+   quanto prima.
+  
+  **Ale**
+  Nuovo file: BUGS
+
+29-07-1999
+  **Ale**
+  Testata routine di riconoscimento processore su 286: inizialmente non andava
+    perche' c'erano istruzioni che indirizzavano fs. Tolte quelle, il 
+    riconoscimento ha funzionato. Mancava una popf nel codice.
+    Adesso e' a posto.
+
+30-07-1999
+  **Marco**
+  Corretto bootcode.nasm per lettura di piu' di una traccia.
+
+  **Ale**
+  Inserito bootcode.nasm corretto in OSSO. Sembra funzionare correttamente.
+  Aggiunto modulo hd.c precursore del driver per l'hard disk. Riesce a
+    riconoscere il drive master del primo canale IDE. Stampa nome prodotto
+    numero seriale e geometria del disco.
+
+01-08-1999
+  **Ale**
+  Ripulitura in corso di hd.c. Adattamento allo standard ATA in corso.
+    Corretto riconoscimento del dispositivo master primario.
+    Aggiunta di timeouts alle routine.
+  Eliminato BUG negli interrupts che causava stampe di caratteri sbagliati:
+    mancava la parte di salvataggio registri per gli interrupts.
+
+02-08-1999
+  **Ale**
+  Scoperta del fatto che all' ANSI vogliono 50 $ per mandarti lo standard
+    ATA-1.....
+  Aggiunte routine di lettura e scrittura su HD: read_sector e write_sector.
+  Parametri di Mapping dell'HD decise a tempo di compilazione :-(
+    Vedremo poi come fare...
+  Prima prova di BOOT di OSSO da HD. Esito negativo, come da aspettativa.
+    E' da riprogettare per contenere tabella di partizioni e BPB con 
+    lunghezza delle tracce dell HD.
+  Aggiunto file hd.h con i prototipi delle funzioni in hd.c
+  Trovata la reale geometria del disco Conner modello CP3044. Adesso sembra
+    in grado di leggere tutti i settori. I dati reali sono inseriti a mano
+    nel codice.
+
+03-08-1999
+  **Ale**
+  Aggiunta di un'area di memoria nel primo MB che viene riempita da pre-kernel
+    in modo reale con dati utili per OSSO non reperibili da modo protetto.
+    Creato nuovo file con la specifica di questi dati: data.txt
+  Memorizzazione della geometria del primo disco (0x80) fornita dal BIOS in
+    data.txt e relativo fetch da kernel nel modulo hd.c
+  Aggiunta di funzioni di lettura e scrittura settori con indirizzo logico
+    calcolato dalla geometria fornita dal BIOS 
+
+04-08-1999
+  **Ale**
+  Ridotte leggermente le dimensioni di boot.nasm, accorciando alcune stringhe.
+
+05-08-1999
+  **Ale**
+  Cambiata gestione del video in printk.c : adesso e' supportato lo scrolling
+    della "storia dello schermo" tramite scroll hardware. La memoria 
+    sfruttata e' quasi tutta quella del buffer video.
+    Per ora funziona solo Shift-PgUp. Gestite 150 righe (modificabile);
+  Aggiunta gestione dei tasti Shift-PgDown. Sembra funzionare.
+
+06-08-1999
+  **Ale**
+  Aggiunto modulo parttable.c con funzioni di lettura e stampa della tabella
+    delle partizioni.
+  Aggiornato compilatore. Gcc versione 2.95
+  Cambiato hd.c per nuovo compilatore.
+
+07-08-1999
+  **Ale**
+  Aggiunta funzione make dep al Makefile per generare AUTOMATICAMENTE le nuove
+    dipendenze dopo l'aggiunta di un file. WOW. Sembra quasi serio!!!! :-)
+  Iniziato modulo fat.c per interpretare il filesystem FAT.
+
+08-08-1999
+  **Ale**
+  Aggiunte strutture per la directory e funzioni di lettura root dir a fat.c
+  Aggiunto  funzione strcmp per il confronto tra stringhe. Aggiunto string.h
+    con il prototipo. Testata al volo, sembra funzionare.
+  Aggiunta funzione strncmp
+  Aggiunta in fat.c funzione che restituisce il cluster di partenza 
+    dal nome del file.
+  N.B. Tutte le funzioni del modulo fat e anche hd sono da considerarsi solo
+    temporanee e da rifare appena decisa l'interfaccia per i dispositivi e per
+    i filesystems
+  Risolto bug della compilazione di crea_disco
+
+11-08-1999
+  **Ale**
+  Aggiunta qualche altra funzione a fat.c
+    Che schifo che e' venuto.
+
+12-08-1999
+  **Ale**
+  Aggiunta della funzione read_file a fat.c
+    funziona solo con nomi di undici caratteri senza il punto. Da usare
+    solo sperimentalmente e da rifare completamente.
+  Piccoli ritocchi al Makefile
+  Aggiunta directory test contenente file per le prove (ma va?).
+  Creato file di test che stampa una fila di - nella decima riga dello schermo
+    dopo averlo compilato come binario e con segmenti all'indirizzo 0x400000
+    il kernel lo ha caricato da HARD DISK partendo dal nome file alla locazione
+    0x400000 e lo ha eseguito con successo al primo tentativo (WOW!).
+    Il prossimo passo e' il caricamento dinamico. Anche ELF
+
+13-08-1999
+  **Ale**
+  Aggiunto nuovo file: sys.c con funzioni per trattare Descrittori di segmento
+    e descrittori di interrupt (da finire) per riempimento e caricamento.
+  Ricordarsi che il Makefile da cambiare nella dir kernel e' adesso 
+    Makefile.head
+
+14-08-1999
+  **Ale**
+  Aggiunta nuova directory userlib che conterra' la libc. Per adesso c'e' un
+    file: printc.c che contiene una funzione che esegue la prima SYSCALL di
+    8-8 via interrupt 0x40. printc stampa un carattere passandolo nel registro
+    al. Il file di prova va compilato nel file provacom.com e messo 
+    text=0x400000 viene caricato ed eseguito da 8-8
+
+15-08-1999
+  **Ale**
+  Inserito codice all'inizio di kernel.c che effettua la creazione di una nuova
+    gdt allocata dinamicamente, riempita con valori di default e caricata.
+    In seguito si usera' per i nuovi processi.
+  Aggiustato codice per la syscall. Non ho capito perche' non funzionava, ma
+    adesso va.
+  Cambiato codice printk. Adesso interpreta anche i caratteri presenti nelle
+    stringhe e in caso di %c
+
+16-08-1999
+  **Ale**
+  Inserito codice per il caricamento di provacom.com in una locazione e
+    settaggio di due descrittori di segmento (cs,ds) per quella locazione.
+    Lo stack rimane il solito, ma il programma viene eseguito pur essendo
+    compilato per risiedere all'indirizzo 0! Effettua correttamente anche
+    le syscall.
+
+17-08-1999
+  **Ale**
+  Il programma di test funziona con variabili globali. Non funziona con
+    variabili allocate su stack.
+  Creata prima versione di elf.h con strutture e definizioni per il formato ELF
+    anche se e' troppo complesso per essere usato a questo stadio dello
+    sviluppo. I programmi futuri come test dovranno essere linkati con
+    ld *.o  -oformat binary -Ttext 0
+  Aggiunte funzioni di stampa per tipi stringa intero e esadecimale a printc.c
+  Adesso test funziona anche con variabili temporanee. Mah! Mistero.
+  Aggiornato file PROPOSITI
+
+18-08-1999
+  **Ale**
+  Aggiunte a sys.h definizioni dei descrittori di sistema.
+  Aggiunto nuovo modulo gdt.c con relativo gdt.h per l'incapsulamento delle
+    funzioni relative alla gestione della GDT. Dopo aver guardato bene i TSS
+    e i task in generale, ho realizzato che per ogni processo ci deve essere
+    una LDT e un TSS.
+  Implementato un metodo generale per fare una call far (intersegmento)
+    completamente parametrica usando lo stack (vedi kernel.c)
+  Cambiato Makefile in root-dir con l'aggiunta di un target per automatizzare
+    la creazione di archivi. Attenzione!, richiede che la root-dir id 8-8 si
+    chiami src e che le directory di archivio siano ../Archive/ e 
+    ../ARCHIVE-BACKUP/ . Make clean pulisce adesso anche test.
+  Rinominata directory userlib in lib perche' mi sembrava piu' ganzo.
+  Aggiustata un po' la directory lib. Adesso C'e' un Makefile che crea la
+    libreria.
+  Aggiunto file ctype.c per il controllo sui caratteri. Non serve per ora,
+    ma servira' appena si fara' una shell e, siccome era facile, l'ho fatto.
+    E' da finire.
+  Abbozzato process.h con le strutture dei processi
+  TO_DO List aggiornato in ordine di priorita'
+  Aggiunto qualche commento ai file in include
+
+21-08-1999
+  **Ale**
+  Inserito primo abbozzo di struttura process in process.h che contiene i dati
+    di un processo. Inserite funzioni di creazione processi in process.c
+    Prima prova di esecuzione di provacom.com in un altro task.
+    Inserito codice di preparazione del task del kernel.
+    Sembra funzionare, ma e' da rivedere la syscall.
+
+22-08-1999
+  **Ale**
+  Corretto problema con syscall: l'errore e' nel fatto che la routine di printk
+    cosi' com'e' accede allo stack tramite DS e l'offset ovviamente e'
+    incoerente perche' i segmenti hanno base diversa. Il problema e' tempora-
+    neamente risolto impostando nella syscall lo stack al segmento dati del
+    kernel e ripristinato in uscita. E' da rivedere e cambiare.
+
+25-08-1999
+  **Ale**
+  Riscritto printk.c creando funzioni di stampa per ogni tipo di dato.
+    Nei casi in cui printk() non funzioni, le altre dovrebbero andare.
+
+
+26-08-1999
+  **Ale**
+  Cambiata interfaccia per syscall. Adesso la funzione considera in eax
+    il numero di syscall, ebx data1, ecx data2, edx data3. Creato syscalls.h
+    Con tutte le definizioni. Aggiornato printc.c in dir test.
+  Corretto codice che effettua il REBOOT. Effettuato tramite controller di
+    tastiera.
+
+16-09-1999
+  **Ale & Marco**
+  Create definizioni per i processi e i puntatori alle strutture dati per il
+    multitasking (CodaPronti,Processi,Processo_In_Esecuzione) in process.h
+    e process.c
+
+
+20-09-1999
+  **Ale**
+  Aggiunto file INTERRUPTS che contiene l'uso e i moduli delle funzioni
+    di ogni interrupt.
+  Preparata struttura delle directory per contenere OSSO a Pisa
+  **Marco**
+  Iniziata la scrittura di timer.c e timer.h: definizione di dati e primi
+    prototipi: to be continued...
+   
+10-10-1999
+  **Ale**
+  Tolta definizione di SHELL dal Makefile
+  Aggiunta funzione PrepareProcess_From_Function in process.h e process.c.
+    Testata con una funzione in kernel.c che stampa via syscall e funziona.
+  Aggiunta funzione call_tss in sys.c e sys.h per il cambio di contesto.
+
+14-10-1999
+  **Ale**
+  Quasi convinto Roberto ad entrare nel Team di OSSO.
+  **Roberto**
+  Creazione dell'infrastruttura di CVS all'universita' per poter lavorare
+   tranquillamente in contemporanea. (**Ale** Bel lavoro!)
+  Convinto Ale per l'allocazione statica delle strutture del kernel.
+
+16-10-1999
+  **Ale**
+  Aggiunte in ritardo a HISTORY.
+  Cambiati process.h e process.c per strutture statiche dei processi.
+  Ripuliti kernel.c e interrupts.c da quelle schifezze che avevo messo per
+    fare il test del task switch, che non funziona.
+  Creato nuovo modulo, scheduler.c, che contiene (indovina un po'?) il
+    gestore dell'IRQ0 (Timer).
+  Aggiunte funzioni per manipolazione di CodaPronti e Processi, ma sono venute
+    una schifezza perche' sono uno schifo le strutture dati. Propongo di
+    rifarle creando anche un'interfaccia decente.
+
+17-10-1999
+  **Ale**
+  Cambiate strutture dati dei processi, e relativo include.
+    Adesso c'e' una struttura task che contiene tutti i dati e le altre
+    funzioni ci accedono tramite il pid e i riferimenti vengono fatti tramite
+    pid.
+    Ho dovuto cambiare timer.h
+  Aggiunte funzioni che incapsulano l'inserzione e estrazione dalla CodaPronti.
+    Sarebbe figo creare delle funzioni piu' generiche e poi usarle tipo:
+    Enqueue(CodaPronti,x) o Extract(CodaPronti)....
+  Aggiunto codice per fare un controllo minimale sulla correttezza delle
+    funzioni appena aggiunte.
+  Ho fatto un po' a pugni con i nested comments.....
+  Messa a punto scheduler.c per interagire con CodaPronti.
+    Corretto scheduler.c con il settaggio del registro DS con il valore dello
+    spazio dati del kernel per permettere l'interazione con CodaPronti e i dati
+    dei processi. E' una modifica che va fatta per tutti i vettori di
+    interruzione che interagiscono con i dati del kernel.
+  Eseguito test di prova di multitasking con due processi A e B che stampano
+    a video. Funziona!!!
+    E' comunque da rivedere lo spazio in cui facciamo girare le interruzioni.
+
+18-10-1999
+  **Ale**
+  Corretto file INTERRUPTS
+  Corretta stampa del carattere in interrupts.c per stampa da processi utente
+  Tolto stdarg.h che non serviva.
+  Ripulito kernel.c da un po' di schifezze
+
+19-10-1999
+  **Ale**
+  Aggiunto codice che quando avviene una divisione per 0, stampa l'indirizzo
+    dell'istruzione che ha generato errore. Sembra l'indirizzo corretto, ma
+    non so come fare per dimostrarlo.
+  Aggiunto codice per la rilevazione dell'indirizzo che causa l'eccezione
+    di Invalid Opcode.
+  Aggiunte un paio di righe di test in kernel.c
+
+21-10-1999
+  **Ale**
+  Aggiunto moduli paging.h e paging.c con le definizioni delle strutture
+    che serviranno.
+  Messo a posto qualche commento qua e la'
+  **Marco**
+  Integrato in timer.h e timer.c (ehm, sovrascritti) le definizioni e qualche 
+  chiamata per il PIT. Aggiornato le funzioni dei processi con puntatori alla 
+  lista processi.
+
+25-10-1999
+  **Ale**
+  Scritto primo prototipo di inizializzazione per la paginazione. Funziona.
+  **Marco**
+  Scritte funzioni per la gestione della memoria paginata. Da testare e
+    integrare con il modulo paging.c
+  **Ale**
+  Tolta rilocazione del bootsector che non serviva.
+  Aggiunto fixedmemory.h con le locazioni di memoria per IDT e GDT
+  Parametrizzato init_gdt e init_idt per i valori delle #define.
+
+27-10-1999
+  **Ale**
+  Aggiustato paging.c in modo da usare memory.c
+  Cambiato kernel.c per inizializzare la paginazione in modo corretto.
+  La tabella delle pagine viene effettivamente caricata alla fine della
+    memoria.
+  Aggiunto file PROBLEMI
+  Cambiati i files TO_DO BUGS e PROPOSITI
+  Aggiunti file iniziali per PnP
+
+28-10-1999
+  **Ale**
+  Preparati files per semafori.
+  **Ale** & **Marco**
+  Discussioni di progettazione.
+  **Ale**
+  Aggiustato il caricamento per rispecchiare MemoryMap2
+
+31-10-1999
+  **Ale**
+  Definita struttura semaforo intero e booleano. Inizio scrittura P e V
+  Aggiunto file panic.c con panic(). aggiunti panic.o e semaphore.o al
+    Makefile.head
+
+01-11-1999
+  **Ale**
+  Aggiunto scheduler.h
+  Finita prima versione di P e V che utilizzano cli() e sti() per impedire
+    l'attivazione di altri processi. Sembra che funzioni.=======
+  Aggiunti file iniziali per PnP
+
+04-11-1999
+  **Ale**
+  Tolto doppione di MemoryMap.
+
+09-11-1999
+  **Ale**
+  Aggiunto file leggielf.c per esplorare la struttura di ELF
+
+11-11-1999
+  **Ale**
+  Ritocchi al Makefile per la generazione automatica.
+  Pulizia generale.
+  Riscrittura della paginazione del kernel in modo che copra tutta
+    la memoria fisica. Sembra funzionare, ma e' da controllare.
+  Scrittura di una prima versione ancora da completare di Create_Process_From
+    _ELF(). Per ora carica in modo corretto e visualizza i dati del program
+    header dell'elf.
+  Aggiustato inizializzazione di paginazione
+
+12-11-1999
+  **Marco**
+  Inserito codice di gestione delle pagine di memoria.
+  **Ale**
+  Corretto bug nel codice di Marchino
+
+14-11-1999
+  **Ale**
+  Aggiustato un po' modulo memory.c
+  Test abbastanza peso e sembra che l'allocazione delle pagine funzioni un po'. Non sembra riconoscere la fine della memoria.
+  Tolto tutte le chiamate a malloc(), il codice in fat.c non e' utilizzabile cosi' com'e'.
+  Fatto un paio di logos con GIMP!! (Bello!)
+  Piccoli cambiamenti nel meccanismo di syscall per quanto riguarda l'allocazione su registri.
+
+
+15-11-1999
+  **Ale & Marco**
+  Prima versione di mallosso. Funzionera'?? (non credo...)
+
+17-11-1999
+  **Ale**
+  Messo a posto fat.c. Da testare.
+  Tolto malloc.c e malloc.h, divenuti obsoleti a causa di mallosso()
+  
+18-11-1999
+  **Ale**
+  Cambiata gestione di interrupts attraverso funzioni in assembler per
+    distinguere la parte di macchina che specifica il contesto dalla parte
+    in C che specifica le azioni.
+
+19-11-1999
+  **Ale**
+  Tolte funzioni ormai inutilizzabili in process.c, quasi tutto e' da rifare.
+  Aggiunto stampa informazioni ib caso di page fault
+
+21-11-1999
+  **Ale**
+  Fatta Create_Process_From_ELF(). Sembra funzionare. Ho caricato un processo
+    da disco e l'ho schedulato.
+
+23-11-1999
+  **Ale**
+  Pulizia generale e rifacimento del Makefile
+
+  **Marco**
+  Risistemata l'interfaccia di memory (l'interfaccia!!!) e aggiunto un
+  nuovo prototipo: adesso le variabili sono invisibili dall'esterno.
+  Dovrebbe essere definitiva.
+  Eliminato (credo) il bug dell'andata a capo della printk: da testare con
+  le variabili.
+
+25-11-1999
+  **Ale**
+  Aggiunte funzioni per la gestione dei semafori Booleani
+  Aggiunto P e V nel modulo memory.c
+  Sistemati gli header dei files in kernel/*.c
+
+  **Ale & Marco**
+  Studi preparatori sui segnali e messaggi
+  Aggiunto file include/signals.h
+
+  **Marco**
+  Sistemati gli header dei files in include/*.h
+
+30-11-1999
+  **Ale**
+  Prima versione funzionante (sembra) della gestione dei segnali
+  Corretto bug negli handler delle interruzioni.
+  Aggiunto Mutex a gdt.c
+  Corretta inizializzazione del semaforo in memory.c
+  **Ale**
+  Sistemata drectory test, ritoccato il Makefile.
+  Nuovi target per il Makefile principale: make Lib e make Test.
+  Adesso il programma in test compila usando la libOSSO.a
+
+15-12-1999
+  Aggiornamento Sommario, per mancanza di aggiornamenti continui
+  **Marco & Ale**
+  Creazione di un nuovo boot loader che carica i file di partenza (pre-kernel
+    e kernel) da disco FAT con supporto della directory BOOTMODU.LES che
+    contiene i moduli da caricare a Boot time.
+  
+17-12-1999
+  ** Ale **
+  Prima implementazione del sistema di messaggi.
+  Cambiata l'interfaccia e implementazione di syscall per gestire
+    valori di ritorno (passati tramite EAX)
+  Creazione di interfacce (syscall) per i processi utente per le funzioni
+    di messaggi (send, receive, getbuf), mallosso. La receive e' attualmente
+    soltanto non bloccante.
+  Aggiunta syscall che restituisce il numero di processo (getpid).
+  Aggiunta di moduli di librerie e include corrispondenti alle nuove
+    funzioni per i processi.
+  Test per lo scambio di messaggi: sembra funzionare, anche i dati passati
+    sembrano corretti. E', ovviamente, da testare meglio.
+  Riportati alcuni errori (GPF, Page Fault) sporadici e, sembra,
+    irriproducibili, da imputare
+    probabilmente a strani influssi negativi provenienti dalla luna
+    in vista della fine del millennio.
+  Aggiunti semafori per il controllo della concorrenza sulla struttura
+    task. Semaforizzate funzioni in memory.c, messages.c, signals.c
+
+19-12-1999
+  ** Ale **
+  Aggiunto un semaforo intero con il numero dei messaggi in attesa di recv
+    di un processo.
+  Aggiunte P non bloccanti per semafori interi e booleani.
+  Cambiata recmsg. Adesso, in base al parametro, decide se bloccarsi o meno
+    in caso di assenza di messaggi. Da testare molto approfonditamente.
+
+21-12-1999
+  ** Marco **
+	Aggiunta gestione di dispositivi a caratteri e funzioni di READ /
+        WRITE sugli stessi.
+
+03-01-2000
+  ** Ale **
+  Correzione delle funzioni contenenti cli() e sti().
+  Test abbastanza completi di exit_process().
+  Attualmente Osso ha generato 605 processi e alla fine il numero di pagine
+    libere e di entries nella gdt era identico a quello iniziale.(!)
+  Ci sono problemi nelle interruzioni. (credo che avvenga quando il processo
+    interrotto e' a livello 3, ma e' solo una supposizione.)
+  Aggiunte funzioni di controllo dello stato da tastiera.
+  Corretto gdt.c e la gestione della GDT. Adesso il bit OS Avail del descr.
+    e' usato per dire se e' valido o libero in GDT[].
+
+04-01-2000
+  ** Ale **
+  Bug Fix!: Corretto bug nella gestione degli interrupts. Adesso OSSO e'
+    decisamente stabile.
+  Effettuato test di fork() e exit_process() con 4050 processi creati e poi
+    distrutti.
+  Aggiunto array Hardware_Semaphores[] per gli irq.
+  Create le routines che effettuano le V sui semafori suddetti.
+
+05-01-2000
+  ** Ale **
+  Aggiunte syscall per i semafori.
+  Aggiunta syscall per prendere l'indirizzo di un Hardware Semaphore.
+  Implementato un primo driver di prova. Funziona!
+
+06-01-2000
+  ** Ale **
+  Creata directory driver con sottodirs lib e lib/include che contengono
+    la libreria dei drivers e i loro includes.
+  Aggiornati makefiles di conseguenza.
+
+12-01-2000
+  ** Ale **
+  Test e test sui drivers...
+  Rilevato problema nel caricamento dei moduli, probabilmente nello scorrimento
+    della FAT.
+  Creato primo driver di tastiera.

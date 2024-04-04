@@ -1,0 +1,345 @@
+<html>
+	<head>
+		<title>Os from scratch</title>
+	</head>
+	<body>
+		<h1>
+			<center>Interrupt Request</center>
+		</h1>
+		<br>
+		<h2>
+Gli irq vengono gestiti dal chip 8259. Ogni chip riesce a gestire fino a 8 irq, vengono messi 2 chip in cascata per poter gestire fino a 16 irq. Ecco qui una tabella che riassume le funzioni corrispondenti ai vari irq:<br>
+<table cellpadding="2" cellspacing="2" border="1"
+ style="text-align: left; width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">0<br>
+      </td>
+      <td style="vertical-align: top;">Timer<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">1<br>
+      </td>
+      <td style="vertical-align: top;">Tastiera<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">2<br>
+      </td>
+      <td style="vertical-align: top;">cascata<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">3<br>
+      </td>
+      <td style="vertical-align: top;">COM2/COM4<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">4<br>
+      </td>
+      <td style="vertical-align: top;">COM1/COM3<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">5<br>
+      </td>
+      <td style="vertical-align: top;">LPT2<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">6<br>
+      </td>
+      <td style="vertical-align: top;">floppy<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">7<br>
+      </td>
+      <td style="vertical-align: top;">LPT1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">8<br>
+      </td>
+      <td style="vertical-align: top;">Real time Clock<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">9<br>
+      </td>
+      <td style="vertical-align: top;">libero<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">10<br>
+      </td>
+      <td style="vertical-align: top;">libero<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">11<br>
+      </td>
+      <td style="vertical-align: top;">libero<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">12<br>
+      </td>
+      <td style="vertical-align: top;">libero<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">13<br>
+      </td>
+      <td style="vertical-align: top;">coprocessore<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">14<br>
+      </td>
+      <td style="vertical-align: top;">primo hard disk<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; height: 10%; width: 10%;">15<br>
+      </td>
+      <td style="vertical-align: top;">secondo hard disk<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br><br>
+I due chip dell'Irq vengono comandati  tramite due tipi di comandi, ICW e OCW che vanno inviati sequenzialmente:
+<ul>
+        <li>ICW: Word per il comando di inizializzazione
+	<li>OCW: Word per il comando di operazione
+</ul>
+Ecco una descrizione dei vari comandi:<br>
+ICW1<br>
+<table cellpadding="2" cellspacing="2" border="1"
+ style="text-align: left; width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; height: 12%; width: 12%;">0<br>
+      </td>
+      <td style="vertical-align: top; width: 12%;">0<br>
+      </td>
+      <td style="vertical-align: top; width: 12%;">0<br>
+      </td>
+      <td style="vertical-align: top; width: 12%;">1<br>
+      </td>
+      <td style="vertical-align: top; width: 12%;">LTIM<br>
+      </td>
+      <td style="vertical-align: top; width: 12%;">0<br>
+      </td>
+      <td style="vertical-align: top; width: 12%;">SNGL<br>
+      </td>
+      <td style="vertical-align: top; width: 12%;">ICW4<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Allora:
+<ul>
+        <li>ICW4: indica se spediamo il comando ICW4 oppure no (per gli IA* da mettere SEMPRE ad 1)
+	<li>SNGL:indica quanti pic abbiamo
+	        <ul>
+		        <li>quando a 0 indica 2 PIC in cascata
+			<li>quando a 1 indica solo il PIC master
+		</ul>
+	<li>LTIM:indica come interpretare gli interrupt
+	        <ul>
+		        <li>quando 0 indica di lanciare INTR sul fronte di salita
+			<li>quando a 1 indica di lanciare INTR al cambiamento di livello
+		</ul>        
+</ul>
+<br><br>
+ICW2<br>
+<table cellpadding="2" cellspacing="2" border="1"
+ style="text-align: left; width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 12%;">off7</td>
+      <td style="vertical-align: top; width: 12%;">off6</td>
+      <td style="vertical-align: top; width: 12%;">off5</td>
+      <td style="vertical-align: top; width: 12%;">off4</td>
+      <td style="vertical-align: top; width: 12%;">off3</td>
+      <td style="vertical-align: top; width: 12%;">0</td>
+      <td style="vertical-align: top; width: 12%;">0</td>
+      <td style="vertical-align: top; width: 12%;">0</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Qui dobbiamo inserire il numero dell'interrupt che rappresenza IRQ0.<br><br>
+ICW3
+Indica a quale IRQ è collegato il canale slave sul canale master. Di solito viene collegato sul canale IRQ2.
+<br><br>
+ICW4<br>
+<table cellpadding="2" cellspacing="2" border="1"
+ style="text-align: left; width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 12%;">0</td>
+      <td style="vertical-align: top; width: 12%;">0</td>
+      <td style="vertical-align: top; width: 12%;">0 </td>
+      <td style="vertical-align: top; width: 12%;">SFNM</td>
+      <td style="vertical-align: top; width: 12%;">BUF</td>
+      <td style="vertical-align: top; width: 12%;">M/S</td>
+      <td style="vertical-align: top; width: 12%;">AEOI</td>
+      <td style="vertical-align: top; width: 12%;">CPU</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<ul>
+        <li>CPU: modello di cpu usato
+	<ul>
+	        <li>1 = modo IA*
+		<li>0 = modo MC-80/85
+	</ul>
+	
+	 <li>AEOI
+	<ul>
+	        <li>1 = EOI automatico
+		<li>0 = EOI manuale
+	</ul>
+	
+        <li>M/S
+	<ul>
+	        <li>1 = master PIC
+		<li>0 = slave PIC
+	</ul>
+	
+	 <li>BUF:
+	<ul>
+	        <li>1 = modo bufferizzato
+		<li>0 = modo non bufferizzato
+	</ul>
+	
+        <li>SFNM:
+	<ul>
+	        <li>1 = irq innestati
+		<li>0 = irq non innestati
+	</ul>
+</ul>
+Ora che conosciamo i comandi possiamo fare una funzione che ci inizializza l'8259. Per comunicare con l'8259 si usano le porta 0x20 e 0x21 per l'8259 principale e 0xA0 e 0xA1 per il controller slave.
+<pre>
+
+enum{
+        M_PIC =  0x20,     // I/O for master PIC              
+        S_PIC =  0xA0   , // I/O for slave PIC               
+
+	
+        M_VEC =  0x20 ,    //Dove viene mappato IRQ0
+        S_VEC =  M_VEC+8   ,//Dove viene mappato IRQ8
+	
+        ICW1 =  0x11 ,   // 0001   0001      
+	
+        ICW2_M = M_VEC,                        // ICW2 per il master
+	ICW2_S = S_VEC    ,                    // ICW2 per lo slave
+	
+	ICW3_M =  (1 << 2),             // ICW3 per il master
+	ICW3_S = 3                ,        // ICW3 per lo slave
+
+        ICW4 =  0x01, //ICW4
+};
+
+//Inizializza l'8259
+void Init8259(void){
+	outportb_p(M_PIC, ICW1);	// Inizio l'inizializzazione 
+	outportb_p(S_PIC, ICW1);
+
+	outportb_p(M_PIC + 1, ICW2_M);	//la base nel vettore di interrupt
+	outportb_p(S_PIC + 1, ICW2_S);
+
+	outportb_p(M_PIC + 1, ICW3_M);	//la cascata
+	outportb_p(S_PIC + 1, ICW3_S);	
+
+	outportb_p(M_PIC + 1, ICW4);	//finisco l'inizializzazione
+	outportb_p(S_PIC + 1, ICW4);
+}
+</pre>
+
+Spero che i commenti al codice siano chirificatori. Per finire con l'8259 dobbiamo vedere come esso gestisce l'abilitazione o la disablitazione di un irq.<br>
+L'8259 contiene tre registri:
+<ol>
+        <li>IRR = interrupt request register, in questo registro sono memorizzati tutti gli irq che sono in attesa di essere serviti
+	<li>ISR = interrupt service register, indica quale irq in questo momento si sta eseguendo
+	<li>IMR = interrupt masked register, indica quel irq deve essere preso in considerazione dall'8259
+</ol>
+Pertanto dobbiamo impostare l'IMR di ognuno dei due 8259 per specificare l'interrupt che vogliamo abilitare o disabilitare. Quindi possiamo scrivere queste 2 funzioni:
+<pre>
+word irq_mask;
+	
+/*abilita la ricezioni di un irq*/
+bool enable_irq(word irq_no){
+        //controllo se è un irq valido
+        if(irq_no <= 15){
+	        //faccio in modo che il bit corrispondente all'irq valga 0.
+		//Es. se irq_no vale 6 succede ciò:
+		//(1 << irq_no)   =  1000000
+		//~(1 << irq_no) = 0111111
+		//irq_mask &= ~(1 << irq_no);  =  xxxx xxxx x0xx xxxx
+		irq_mask &= ~(1 << irq_no);
+		
+		//se l'irq è maggiore di 8 mi assicuro che la linea 2 (quella della cascata) sia attivata
+		if (irq_no >= 8)
+			irq_mask &= ~(1 << 2);
+			
+		//sendo all'8259 la nuova configurazione dell'IMR
+		outportb_p(M_PIC + 1, irq_mask & 0xFF);
+		outportb_p(S_PIC + 1, (irq_mask >> 8) & 0xFF);
+		return true;
+	}
+	return false;
+}
+
+/* disabilita la ricezione di un irq */
+bool disable_irq(word irq_no){
+        if(irq_no <= 15){
+	        //mi occupo di mettere ad 1 il bit corrisponde all'irq che ci interessa
+		//es. se irq_no vale 3
+		//(1 << irq_no)  =  1000
+		//irq_mask |= (1 << irq_no)  =  xxxx xxxx xxxx 1xxx
+		irq_mask |= (1 << irq_no);
+		
+		//se gli irq alti (del pic slave) lo disabilito così è un po' più efficente ^__^
+		if ((irq_mask & 0xFF00) == 0xFF00)
+			irq_mask |= (1 << 2);
+
+		outportb_p(M_PIC + 1, irq_mask & 0xFF);
+		outportb_p(S_PIC + 1, (irq_mask >> 8) & 0xFF);
+		return true;
+	}
+	return false;
+}
+</pre>
+Fino a qui dovrebbe essere tutto chiaro, ci manca solo un ultima funzione da implementare ed è esattamente quella per capire quale irq è in esecuzione effettivamente, per fare ciò basta esaminare il registro ISR.
+<pre>
+
+
+size_t get_cur_irq(){
+	byte irq;
+	
+	//indico che voglio leggere l'ISR	
+	outportb_p(M_PIC, 0x0B);
+	irq = inportb_p(M_PIC);
+	
+	//se l'8259 master non ha nessun interrupt attivo controllo lo slave
+	if (irq == 0) {
+		outportb_p(S_PIC, 0x0B);
+		 irq = inportb_p(S_PIC);
+		return find_first_bit(&irq, sizeof(byte)) ;
+	}
+	return find_first_bit(&irq, sizeof(byte));
+}
+</pre>
+La funzione find_first_bit cerca il primo bit settato, essa è definita nell'header bitops.h.
+Finisce qui questa lezione sull'irq.
+		</h2>
+	</body>
+</html>

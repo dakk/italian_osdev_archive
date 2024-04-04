@@ -1,0 +1,45 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+     Title: Note riguardo i threads
+        By: iurlano
+Ultima mod: 03/04/2001
+
+- Il codice minimale per il supporto dei Threads dovrebbe essere finito.
+
+- Sembra funzionare. Sono state aggiunte le funzioni di libreria,
+  il wrapper per il lancio di thread dai processi utenti con loro distruzione
+  Fatti alcuni test. Sembra funzionare a modo
+  La funzione per lanciare i thread e' Create_Thread(function).
+  E' stata testata la condivisione della memoria.
+
+- Esiste una tabella Threads[] dove sono contenuti tutti i threads con
+  il loro contesto ed i puntatori agli stacks. Nei processi ci sono indici
+  su questa struttura. Le costanti che regolano queste dimensioni sono in
+  src/include/constants.h ed alcune sono state spostate in config.h globale
+  (usare make xconfig)
+
+- E' ancora tutto da testare e da semaforizzare.
+
+- E' stata aggiunta la costante THREAD_INVALID e cambiata da 0 a -1
+
+- I semafori sono stati riprogettati per utilizzare per le code dei processi
+  in attesa un campo next presente nelle strutture thread, riducendo
+  DRASTICAMENTE le dimensioni delle strutture Processi e Threads

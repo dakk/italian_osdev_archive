@@ -1,0 +1,10 @@
+Usage of dma_memory functions.
+
+void * DMA_Memory_Get_Block(dword * physical_address)
+
+Allocates a new block (4Kb) of memory in low memory. Then maps it in the
+process' address space. Returns the logical address and puts in *physical_address the physical address of the allocated block.
+
+int DMA_Memory_Free_Block(void * address)
+
+Releases a previously allocated block in low mem. Address is the logical address.

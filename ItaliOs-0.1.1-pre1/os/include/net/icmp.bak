@@ -1,0 +1,8 @@
+#ifndef _ICMP_H_
+#define _ICMP_H_
+
+#include <rete.h>
+
+void ServerEcho(u_int Ip,u_char *buffer1,u_short lungh);
+u_char Ping();
+#endif

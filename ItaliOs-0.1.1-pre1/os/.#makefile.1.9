@@ -1,0 +1,104 @@
+CFLAG=-fomit-frame-pointer -O $(ALIB)  -Wall
+
+KERNEL=kernel.bin
+
+#dispositivo dove installare
+FLOPPY=/dev/fd0
+
+KERNELIMG=boot_image.img
+BOOTIMAG=boot/bootsec
+FSIMG=fs/fs.disk
+
+	export CC=gcc
+	export LIB=../include
+	export ALIB=-I$(LIB)/libc -I$(LIB)/utils -I$(LIB)/hardware -I$(LIB)/app -I$(LIB)/audio -I$(LIB)/fs -I$(LIB)/mem -I$(LIB)/an -I$(LIB)/task -I$(LIB)/net
+	export CFLAG=-fomit-frame-pointer -O $(ALIB)  -Wall -mcpu=i386 -D_ITALIOS_ -march=i386 -m386
+
+	export INDENT=indent -br   -sc -ce -cdw -npcs -nbc  -brs -nbap -nbfda -nbad -nip -npsl -i8
+        export INDENTLUCA =indent -bl -sc -ce -cdw -npcs -nbc -bls -nbap -nbfda -nbad -nip -npsl -i8
+	export AR=ar
+	export ARFLAGS=rv
+
+
+# Programma per cancellare i file oggetto e gli eseguibili
+	export REMOVE=rm -f
+
+
+all:
+
+	#entro in ogni cartella ed eseguo i makefile interni
+	cd hardware && $(MAKE)
+	cd kernel && $(MAKE)
+	cd libc && $(MAKE)
+	cd mem && $(MAKE)
+	cd fs && $(MAKE)
+	cd app && $(MAKE)
+	cd task && $(MAKE)
+	cd net && $(MAKE)
+	#linko tutti i file oggetti
+	$(LD)  -Bstatic --oformat binary -o$(KERNEL) -L./app -L./task -L./kernel -L./hardware -L./fs  -L./libc  -L./mem -L./net --whole-archive -t -lkernel -lhardware -lfs -llibc -lmem -lapp -ltask -lnet -lnet2 -Ttext 0x10000 -Map kernel.map
+	./lunghezza
+	cd boot && $(MAKE)
+
+
+
+install: all
+	./formatta
+	cat $(BOOTIMAG) $(FSIMG) $(KERNEL) > $(KERNELIMG)
+	dd if=$(KERNELIMG) of=$(FLOPPY)
+
+xinstall: all
+	echo "const char* exepath = \" $PWD/fs/format\";" > install/xinstall/path.h
+	cd install/xinstall && make
+	cd install/xinstall && xinstall
+	cat $(BOOTIMAG) $(FSIMG) $(KERNEL) > $(KERNELIMG)
+	dd if=$(KERNELIMG) of=$(FLOPPY)
+
+
+# cancella
+clean:
+	$(REMOVE) $(KERNELIMG) $(KERNEL) kernel.map
+	cd boot && $(MAKE) clean
+	cd hardware && $(MAKE) clean
+	cd kernel && $(MAKE) clean
+	cd libc && $(MAKE) clean
+	cd mem && $(MAKE) clean
+	cd fs && $(MAKE) clean
+	cd app && $(MAKE) clean
+	cd task && $(MAKE) clean
+	cd net &&  $(MAKE) clean
+	#cd install/xinstall && make clean
+
+tar:
+	$(MAKE) clean
+	$(MAKE) indent
+
+	./comprimi
+	
+	
+tar:
+	$(MAKE) clean
+	./comprimi
+
+indent:
+	cd hardware && $(MAKE) indent
+	cd kernel && $(MAKE) indent
+	cd libc && $(MAKE) indent
+	cd mem && $(MAKE) indent
+	cd fs && $(MAKE) indent
+	cd app && $(MAKE) indent
+	cd task && $(MAKE) indent
+	cd net && $(MAKE) indent
+
+indentluca:
+	cd hardware && $(MAKE) indentluca
+	cd kernel && $(MAKE) indentluca
+	cd libc && $(MAKE) indentluca
+	cd mem && $(MAKE) indentluca
+	cd fs && $(MAKE) indentluca
+	cd app && $(MAKE) indentluca
+	cd task && $(MAKE) indentluca
+
+	
+rete :
+	cd net && $(MAKE)

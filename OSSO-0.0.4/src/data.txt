@@ -1,0 +1,33 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+Descriptions of informations gathered from the BIOS
+
+Address:  Size:   Description:
+
+  0x1000            Disk geometry got from BIOS ( disk 0x80 )
+
+  0x1000    WORD    ax (status int 0x13 with ah=0x8)
+  0x1002    WORD    bx 
+  0x1004    WORD    cx
+  0x1006    WORD    dx
+  0x1008    WORD    di
+  0x100A    WORD    es

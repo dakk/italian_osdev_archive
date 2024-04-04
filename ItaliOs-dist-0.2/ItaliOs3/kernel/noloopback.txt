@@ -1,0 +1,39 @@
+Documento per l'installazione di ItaliOs senza il supporto al loopback.
+
+  Bene partiamo subito:
+    
+    intanto, se non installati, installiamo gli mtools.
+    
+    scompattiamo, entrimao in ItaliOs3 e diamo i comandi:
+    # make floppy
+    # make dep
+    # make install
+    
+    al make install dice che solo root puo' eseguire l'operazione,
+    adesso le strade sono 2:
+    
+    o creare un floppy di ItaliOs:
+      
+      # dd if=disko.img of=/dev/fd0
+      
+    oppure lavorare sull'immaginee quindi modificare il file /etc/mtools.conf
+    e modificare cosi' la riga "drive b" :
+      
+      drive b: file="(path di italios)/disko.img"
+      questo consente di trattare l'immagine disko.img come se fosse b:,
+      quindi nei comandi successivi basta cambiare "a:" in "b:"
+      
+    bene a questo punto copiamo il kernel
+    # mcopy kernel.bin a:
+    
+    adesso compiliamo e copiamo la shell
+    # cd program/shell  
+    # make
+    # mcopy shell.elf a:
+    
+    compiliamo e proviamo anche gli altri prog con la stessa procedura della
+    shell, avviamo bochs o riavviamo con ItaliOs e......
+    .... buon divertimento.
+    
+       miki00.
+       

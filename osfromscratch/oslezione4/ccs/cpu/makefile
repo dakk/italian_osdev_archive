@@ -1,0 +1,14 @@
+LIBNAME=libcpu.a
+
+include ../../make.regole
+
+# Gli oggetti da compilare per creare il kernel
+OBJS = gdt.o idt.o
+
+all : $(OBJS)
+	$(AR) $(ARFLAGS)  $(LIBNAME) $(OBJS)
+
+# cancella
+clean:
+	$(REMOVE) $(OBJS) $(LIBNAME)
+

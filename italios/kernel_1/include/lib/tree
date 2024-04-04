@@ -1,0 +1,537 @@
+#ifndef _TREE_H_
+#define _TREE_H_
+
+
+#include <cstddef>
+#include <cstdlib>
+
+template<typename TYPE>
+class rbtree{
+	public:
+		//rbtree();
+		void init();
+//		~rbtree();
+		void insert(TYPE item);
+		//la funzione restituisce l'indirizzo dell'oggetto se è presente e NULL se non è presente
+		TYPE* find(TYPE key_item, TYPE* oggetto);
+		//restituisce l'elemento + piccolo, se l'albero è vuoto restituisce NULL
+		TYPE* min(TYPE* elem);
+		
+		//restituisce true se ha cancellato l'elemento e 
+		//false se l'elemento non è presente
+		bool remove(TYPE key_item);		
+	private:
+		typedef enum {Red,Black} rbtree_colour_t;
+		// Tipo di struttura per i nodi 
+		typedef struct rbtree_node {
+    		TYPE item;
+    		struct rbtree_node *left, *right;
+    		rbtree_colour_t colour;
+		} rbtree_node_t;
+
+		//La radice dell'abero
+		rbtree_node_t *_root;
+    	int _n;
+    	rbtree_node_t **_stack;		
+		static const size_t RBTREE_STACK_SIZE = 1000;
+		
+		rbtree_node_t *rbtree_restructure(int tos, rbtree_node_t *x,rbtree_node_t *y, rbtree_node_t *z){
+			rbtree_node_t *parent, *mid_node;
+    
+    		if(y == x->left) {
+				if(z == y->left) {  /* in-order:  z, y, x */
+				    mid_node = y;
+	    			y->left = z;
+	    			x->left = y->right;
+	    			y->right = x;
+				}
+				else {  /* in-order:  y, z, x */
+	    			mid_node = z;
+	    			y->right = z->left;
+	    			z->left = y;
+	    			x->left = z->right;
+	    			z->right = x;
+				}
+    		}else {
+				if(z == y->left) {  /* in-order:  x, z, y */
+	    			mid_node = z;
+	    			x->right = z->left;
+	    			z->left = x;
+	    			y->left = z->right;
+	    			z->right = y;
+				}else {  /* in-order:  x, y, z */
+	    			mid_node = y;
+	    			x->right = y->left;
+	    			y->left = x;
+	    			y->right = z;
+				}
+    		}
+
+		    if(tos != 0) {
+				parent = _stack[tos-1];
+        		if(x == parent->left) {
+	    			parent->left = mid_node;
+        		}
+        	else {
+	    		parent->right = mid_node;
+        	}
+    	}else {
+        	_root = mid_node;
+    	}
+	    return mid_node;
+}
+		
+};
+
+
+/*
+template<typename TYPE> rbtree<TYPE>::rbtree(){
+			kout << "\nwe sono il costruttore di rbtree";
+			_root = NULL;
+		    _stack = (rbtree_node_t **)malloc(RBTREE_STACK_SIZE * sizeof(rbtree_node_t *));
+    		_n = 0;
+}
+*/
+
+template<typename TYPE> void rbtree<TYPE>::init(){
+			_root = NULL;
+		    _stack = (rbtree_node_t **)malloc(RBTREE_STACK_SIZE * sizeof(rbtree_node_t *));
+    		_n = 0;
+}
+
+
+/*
+template<typename TYPE> rbtree<TYPE>::~rbtree(){
+    rbtree_node_t *p, **stack;
+    int tos;
+
+    // In ordine cancello tutti i nodi, uso uno stack per memorizzare i nodi    
+    if(_root) {
+        stack = _stack;
+	stack[0] = _root;
+        tos = 1;
+	while(tos) {
+	    p = stack[--tos];
+	    if(p->left) {
+		stack[tos++] = p->left;
+	    }
+	    if(p->right) {
+		stack[tos++] = p->right;
+	    }
+	    free(p);
+	}
+	free(stack);
+    }
+    
+    free(_root);
+
+}
+*/
+template<typename TYPE> void rbtree<TYPE>::insert(TYPE item){
+    rbtree_node_t *x, *p, *q, *m, **attach_x;
+    rbtree_colour_t col;
+    rbtree_node_t **stack=NULL;
+    int tos;
+
+    tos = 0;    
+    if((p = _root)) {
+        stack = _stack;
+    
+	/* Repeatedly explore either the left branch or the right branch
+	 * depending on the value of the key, until an empty branch is chosen.
+	 */
+        for(;;) {
+	    stack[tos++] = p;
+	    if(item < p->item) {
+                p = p->left;
+		if(!p) {
+		    p = stack[--tos];
+		    attach_x = &p->left;
+		    break;
+		}
+	    }
+	    else if(item > p->item) {
+		p = p->right;
+		if(!p) {
+		    p = stack[--tos];
+		    attach_x = &p->right;
+		    break;
+		}
+	    }
+	    else {
+	        return;
+	    }
+	}
+	col = Red;
+    }
+    else {
+	attach_x = &_root;
+	col = Black;
+    }
+
+    x = (rbtree_node_t*)malloc(sizeof(rbtree_node_t));
+    x->left = x->right = NULL;
+    x->item = item;
+    x->colour = col;
+
+    *attach_x = x;
+    _n++;
+
+    /* Restructuring or recolouring will be needed if node x and its parent, p,
+     * are both red.
+     */
+    if(tos > 0) while(p->colour == Red) {  /* Double red problem. */
+
+	/* Obtain a pointer to p's parent, m, and sibling, q. */
+	m = stack[--tos];
+	q = p == m->left ? m->right : m->left;
+	
+	/* Determine whether restructuring or recolouring is needed. */
+        if(!q || q->colour == Black) {
+            /* Sibling is black.  ==>  Perform restructuring. */
+	    
+	    /* Restructure according to the left to right order, of nodes
+	     * m, p, and x.
+	     */
+	    m = rbtree_restructure(tos, m, p, x);
+            m->colour = Black;
+	    m->left->colour = m->right->colour = Red;
+
+	    /* Restructuring eliminates the double red problem. */
+	    break;
+	}
+        /* else */
+	
+	/* Sibling is also red.  ==>  Perform recolouring. */
+	p->colour = Black;
+	q->colour = Black;
+
+	if(tos == 0) break;  /* The root node always remains black. */
+	    
+	m->colour = Red;
+
+	/* Continue, checking colouring higher up. */
+	x = m;
+	p = stack[--tos];
+    }
+    
+    return;
+}
+
+//la funzione restituisce oggetto
+//oggetto vale il valore dell'elemento se è presente e NULL se non è presente
+template<typename TYPE> TYPE* rbtree<TYPE>::find(TYPE key_item, TYPE* oggetto){
+    rbtree_node_t *p, *next_p;
+	
+    if((next_p = _root)) {
+	/* Repeatedly explore either the left or right branch, depending on the
+	 * value of the key, until the correct item is found.
+	 */
+        do {
+	    p = next_p;
+	    if(key_item < p->item) {
+			next_p = p->left;
+	    }
+	    else if(key_item > p->item) {
+			next_p = p->right;
+	    }
+	    else {
+		/* Item found. */
+				*oggetto = p->item;
+                return oggetto;
+	    }
+	} while(next_p);
+    }
+    return NULL;
+}
+
+template<typename TYPE> TYPE* rbtree<TYPE>::min(TYPE* elem){
+    rbtree_node_t *p, *next_p;
+
+
+    if((next_p = _root)) {
+        /* To locate the minimum, the left branches is repeatedly chosen until
+	 * we can explore no further.
+         */
+        do {
+	    p = next_p;
+            next_p = p->left;
+	} while(next_p);
+    }
+    else {
+		return NULL;
+    }
+	
+    *elem = p->item;
+    return elem;
+}
+
+template<typename TYPE> bool rbtree<TYPE>::remove(TYPE key_item){
+    rbtree_node_t *p, *r, *x, *y, *z, *b, *new_y;
+    rbtree_node_t *m;
+    rbtree_colour_t remove_col;
+    rbtree_node_t **stack;
+    int i, tos;
+
+
+    /* Attempt to locate the item to be deleted. */
+    if((p = _root)) {
+	stack = _stack;
+	tos = 0;
+	
+        for(;;) {
+	    stack[tos++] = p;
+	    if(key_item < p->item) {
+                p = p->left;
+	    }
+	    else if(key_item > p->item) {
+		p = p->right;
+	    }
+	    else {
+		/* Item found. */
+                break;
+	    }
+            if(!p) return false;
+	}
+    }
+    else {
+        return false;
+    }
+
+    /* p points to the node to be deleted, and is currently on the top of the
+     * stack.
+     */
+    if(!p->left) {
+        tos--;  /* Adjust tos to remove p. */
+	/* Right child replaces p. */
+	if(tos == 0) {
+            r = _root = p->right;
+	    x = y = NULL;
+	}
+	else {
+	    x = stack[--tos];
+	    if(p == x->left) {
+	        r = x->left = p->right;
+	        y = x->right;
+	    }
+	    else {
+	        r = x->right = p->right;
+	        y = x->left;
+	    }
+	}
+	remove_col = p->colour;
+    }
+    else if(!p->right) {
+	tos--;  /* Adjust tos to remove p. */
+	/* Left child replaces p. */
+	if(tos == 0) {
+            r = _root = p->left;
+	    x = y = NULL;
+	}
+	else {
+	    x = stack[--tos];
+	    if(p == x->left) {
+		r = x->left = p->left;
+		y = x->right;
+	    }
+	    else {
+		r = x->right = p->left;
+		y = x->left;
+	    }
+	}
+	remove_col = p->colour;
+    }
+    else {
+        /* Save p's stack position. */
+	i = tos-1;
+	
+        /* Minimum child, m, in the right subtree replaces p. */
+	m = p->right;
+        do {
+	    stack[tos++] = m;
+            m = m->left;
+	} while(m);
+	m = stack[--tos];
+
+	/* Update either the left or right child pointers of p's parent. */
+	if(i == 0) {
+            _root = m;
+	}
+	else {
+	    x = stack[i-1];  /* p's parent. */
+            if(p == x->left) {
+	        x->left = m;
+	    }
+	    else {
+	        x->right = m;
+            }
+	}
+	
+	/* Update the tree part m is removed from, and assign m the child
+	 * pointers of p (only if m is not the right child of p).
+	 */
+	stack[i] = m;  /* Node m replaces node p on the stack. */
+	x = stack[--tos];
+	r = m->right;
+        if(tos != i) {  /* x is equal to the parent of m. */
+	    y = x->right;
+	    x->left = r;
+	    m->right = p->right;
+	}
+	else { /* m was the right child of p, and x is equal to m. */
+            y = p->left;
+	}
+        m->left = p->left;
+
+	/* We treat node m as the node which has been removed. */
+	remove_col = m->colour;
+	m->colour = p->colour;
+    }
+
+    /* Get return value and free the space used by node p. */
+    //return_item = p->item;
+    free(p);
+
+    _n--;
+    
+    /* The pointers x, y, and r point to nodes which may be involved in
+     * restructuring and recolouring.
+     *  x - the parent of the removed node.
+     *  y - the sibling of the removed node.
+     *  r - the node which replaced the removed node.
+     * From the above code, the next entry off the stack will be the parent of
+     * node x.
+     */
+
+    /* The number of black nodes on paths to all external nodes (NULL child
+     * pointers) must remain the same for all paths.  Restructuring or
+     * recolouring of nodes may be necessary to enforce this.
+     */
+    if(remove_col == Black) {
+        /* Removal of a black node requires some adjustment. */
+	
+	if(!r || r->colour == Black) {
+	    /* A black node replaced the deleted black node.  Note that
+	     * external nodes (NULL child pointers) are always black, so
+	     * if r is NULL it is treated as a black node.
+	     */
+
+	    /* This causes a double-black problem, since node r would need to
+	     * be coloured double-black in order for the black colour on
+	     * paths through r to remain the same as for other paths.
+	     */
+
+            /* If r is the root node, the double-black colour is not necessary
+	     * to maintain the colour balance.  Otherwise, some adjustment of
+	     * nearby nodes is needed in order to eliminate the double-black
+	     * problem.  NOTE:  x points to the parent of r.
+	     */
+	    if(x) for(;;) {
+
+		/* There are three adjustment cases:
+		 *  1.  r's sibling, y, is black and has a red child, z.
+		 *  2.  r's sibling, y, is black and has two black children.
+		 *  3.  r's sibling, y, is red.
+		 */
+		if(y->colour == Black) {
+
+		    /* Note the conditional evaluation for assigning z. */
+		    if(((z = y->left) && z->colour == Red) ||
+		       ((z = y->right) && z->colour == Red)) {		    
+		        /* Case 1:  perform a restructuring of nodes x, y, and
+			 * z.
+			 */
+			
+			b = rbtree_restructure(tos, x, y, z);
+			b->colour = x->colour;
+			b->left->colour = b->right->colour = Black;
+			
+			break;
+		    }
+		    else {
+			/* Case 2:  recolour node y red. */
+			
+		        y->colour = Red;
+			
+			if(x->colour == Red) {
+			    x->colour = Black;
+			    break;
+			}
+			/* else */
+
+			if(tos == 0) break;  /* Root level reached. */
+                        /* else */
+			
+			r = x;
+			x = stack[--tos];  /* x <- parent of x. */
+			y = x->left == r ? x->right : x->left;
+                    }
+		}
+		else {
+		    /* Case 3:  Restructure nodes x, y, and z, where:
+		     *  - If node y is the left child of x, then z is the left
+		     *    child of y.  Otherwise z is the right child of y.
+		     */
+                    if(x->left == y) {
+			new_y = y->right;
+			z = y->left;
+		    }
+		    else {
+			new_y = y->left;
+			z = y->right;
+		    }
+		    
+		    rbtree_restructure(tos, x, y, z);
+		    y->colour = Black;
+		    x->colour = Red;
+
+                    /* Since x has moved down a place in the tree, and y is the
+		     * new the parent of x, the stack must be adjusted so that
+		     * the parent of x is correctly identified in the next call
+		     * to rbtree_restructure().
+		     */
+		    stack[tos++] = y;
+
+		    /* After restructuring, node r has a black sibling, new_y,
+		     * so either case 1 or case 2 applies.  If case 2 applies
+		     * the double-black problem does not reappear.
+		     */
+		    y = new_y;
+		    
+		    /* Note the conditional evaluation for assigning z. */
+		    if(((z = y->left) && z->colour == Red) ||
+		       ((z = y->right) && z->colour == Red)) {		    
+		        /* Case 1:  perform a restructuring of nodes x, y, and
+			 * z.
+			 */
+			
+			b = rbtree_restructure(tos, x, y, z);
+			b->colour = Red;  /* Since node x was red. */
+			b->left->colour = b->right->colour = Black;
+		    }
+		    else {
+			/* Case 2:  recolour node y red. */
+
+			/* Note that node y is black and node x is red. */
+			
+		        y->colour = Red;
+			x->colour = Black;
+                    }
+
+		    break;
+		}
+	    }
+	}
+	else {
+	    /* A red node replaced the deleted black node. */
+
+	    /* In this case we can simply colour the red node black. */
+	    r->colour = Black;
+	}
+    }
+    
+    return true;
+}
+	
+
+#endif

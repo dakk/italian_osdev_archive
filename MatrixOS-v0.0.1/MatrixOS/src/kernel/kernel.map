@@ -1,0 +1,377 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD string.o
+LOAD video.o
+LOAD bochsdebug.o
+LOAD stringutil.o
+LOAD kout.o
+LOAD klog.o
+LOAD kdbg.o
+LOAD kerr.o
+Address of section .text set to 0x10000
+                0x0000000008048000                PROVIDE (__executable_start, 0x8048000)
+                0x0000000008048000                . = (0x8048000 + SIZEOF_HEADERS)
+
+.interp
+ *(.interp)
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.dyn
+ *(.rel.init)
+ *(.rel.text .rel.text.* .rel.gnu.linkonce.t.*)
+ *(.rel.fini)
+ *(.rel.rodata .rel.rodata.* .rel.gnu.linkonce.r.*)
+ *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*)
+ *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*)
+ *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*)
+ *(.rel.ctors)
+ *(.rel.dtors)
+ *(.rel.got)
+ *(.rel.bss .rel.bss.* .rel.gnu.linkonce.b.*)
+
+.rela.dyn
+ *(.rela.init)
+ *(.rela.text .rela.text.* .rela.gnu.linkonce.t.*)
+ *(.rela.fini)
+ *(.rela.rodata .rela.rodata.* .rela.gnu.linkonce.r.*)
+ *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*)
+ *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*)
+ *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*)
+ *(.rela.ctors)
+ *(.rela.dtors)
+ *(.rela.got)
+ *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.init
+ *(.init)
+
+.plt
+ *(.plt)
+
+.text           0x0000000000010000     0x1541
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x0000000000010000       0x58 main.o
+                0x0000000000010000                _start
+                0x000000000001000a                main
+ .text          0x0000000000010058      0x2e8 string.o
+                0x00000000000100e2                strcpy
+                0x000000000001007e                strcat
+                0x0000000000010266                strncmp
+                0x0000000000010218                strncpy
+                0x00000000000101aa                strncat
+                0x0000000000010126                strcmp
+                0x0000000000010058                strlen
+                0x00000000000102f2                strchr
+ .text          0x0000000000010340      0x3c1 video.o
+                0x00000000000105fe                hardware::driver::video::Video::GotoXY(unsigned int, unsigned int)
+                0x00000000000106da                hardware::driver::video::Video::getWidth()
+                0x00000000000103ca                hardware::driver::video::Video::Clear(hardware::driver::video::Color)
+                0x00000000000106e0                hardware::driver::video::Video::getHeight()
+                0x00000000000105e2                hardware::driver::video::Video::NewLine()
+                0x00000000000106ce                hardware::driver::video::Video::getTextColor()
+                0x00000000000106ec                hardware::driver::video::Video::getY()
+                0x0000000000010668                hardware::driver::video::Video::setBackColor(hardware::driver::video::Color)
+                0x00000000000106aa                hardware::driver::video::Video::setTextColor(hardware::driver::video::Color)
+                0x0000000000010340                hardware::driver::video::Video::Init()
+                0x000000000001044e                hardware::driver::video::Video::Print(char const*)
+                0x0000000000010380                hardware::driver::video::Video::Clear()
+                0x000000000001048c                hardware::driver::video::Video::Print(char)
+                0x00000000000106f2                hardware::driver::video::Video::getFormedColor()
+                0x00000000000106e6                hardware::driver::video::Video::getX()
+                0x000000000001069c                hardware::driver::video::Video::getBackColor()
+ *fill*         0x0000000000010701        0x1 90909090
+ .gnu.linkonce.t._Z8outportbth
+                0x0000000000010702       0x22 video.o
+                0x0000000000010702                outportb(unsigned short, unsigned char)
+ .text          0x0000000000010724      0x130 bochsdebug.o
+                0x00000000000107f6                hardware::driver::vm::BochsDebug::RegisterTrace(hardware::driver::vm::TraceStatus)
+                0x00000000000107b4                hardware::driver::vm::BochsDebug::IstructionTrace(hardware::driver::vm::TraceStatus)
+                0x0000000000010776                hardware::driver::vm::BochsDebug::OutputMsg(char const*)
+                0x0000000000010838                hardware::driver::vm::BochsDebug::Stop()
+                0x0000000000010750                hardware::driver::vm::BochsDebug::OutputMsg(char)
+                0x0000000000010724                hardware::driver::vm::BochsDebug::Init()
+ .gnu.linkonce.t._Z8outportwtt
+                0x0000000000010854       0x22 bochsdebug.o
+                0x0000000000010854                outportw(unsigned short, unsigned short)
+ *fill*         0x0000000000010876        0x2 90909090
+ .text          0x0000000000010878      0x26b stringutil.o
+                0x0000000000010878                kframework::string::Util::toString(char*, int, int)
+                0x0000000000010936                kframework::string::Util::toString(char*, int, int, kframework::Base)
+                0x0000000000010a9c                kframework::string::Util::toString(char*, int, bool)
+ *fill*         0x0000000000010ae3        0x1 90909090
+ .text          0x0000000000010ae4      0x289 kout.o
+                0x0000000000010ae4                kservices::KOut::Write(char const*)
+                0x0000000000010c46                kservices::KOut::WriteLine(bool)
+                0x0000000000010c84                kservices::KOut::Write(unsigned char)
+                0x0000000000010c0e                kservices::KOut::Write(bool)
+                0x0000000000010afa                kservices::KOut::WriteLine(char const*)
+                0x0000000000010cf8                kservices::KOut::Write(unsigned char, kframework::Base)
+                0x0000000000010cbc                kservices::KOut::WriteLine(unsigned char)
+                0x0000000000010b16                kservices::KOut::Write(int)
+                0x0000000000010b50                kservices::KOut::WriteLine(int)
+                0x0000000000010bcc                kservices::KOut::WriteLine(int, kframework::Base)
+                0x0000000000010b8e                kservices::KOut::Write(int, kframework::Base)
+                0x0000000000010d30                kservices::KOut::WriteLine(unsigned char, kframework::Base)
+ *fill*         0x0000000000010d6d        0x3 90909090
+ .text          0x0000000000010d70      0x289 klog.o
+                0x0000000000010d70                kservices::KLog::Write(char const*)
+                0x0000000000010f10                kservices::KLog::Write(unsigned char)
+                0x0000000000010ed2                kservices::KLog::WriteLine(bool)
+                0x0000000000010fbc                kservices::KLog::WriteLine(unsigned char, kframework::Base)
+                0x0000000000010e1a                kservices::KLog::Write(int, kframework::Base)
+                0x0000000000010d86                kservices::KLog::WriteLine(char const*)
+                0x0000000000010f48                kservices::KLog::WriteLine(unsigned char)
+                0x0000000000010f84                kservices::KLog::Write(unsigned char, kframework::Base)
+                0x0000000000010da2                kservices::KLog::Write(int)
+                0x0000000000010e9a                kservices::KLog::Write(bool)
+                0x0000000000010e58                kservices::KLog::WriteLine(int, kframework::Base)
+                0x0000000000010ddc                kservices::KLog::WriteLine(int)
+ *fill*         0x0000000000010ff9        0x3 90909090
+ .text          0x0000000000010ffc      0x2b9 kdbg.o
+                0x0000000000010ffc                kservices::KDbg::Write(char const*)
+                0x0000000000011036                kservices::KDbg::Write(int)
+                0x0000000000011012                kservices::KDbg::WriteLine(char const*)
+                0x0000000000011176                kservices::KDbg::WriteLine(bool)
+                0x000000000001113e                kservices::KDbg::Write(bool)
+                0x0000000000011270                kservices::KDbg::WriteLine(unsigned char, kframework::Base)
+                0x00000000000110b6                kservices::KDbg::Write(int, kframework::Base)
+                0x00000000000110f4                kservices::KDbg::WriteLine(int, kframework::Base)
+                0x00000000000111bc                kservices::KDbg::Write(unsigned char)
+                0x00000000000111f4                kservices::KDbg::WriteLine(unsigned char)
+                0x0000000000011070                kservices::KDbg::WriteLine(int)
+                0x0000000000011238                kservices::KDbg::Write(unsigned char, kframework::Base)
+ *fill*         0x00000000000112b5        0x3 90909090
+ .text          0x00000000000112b8      0x289 kerr.o
+                0x00000000000113a0                kservices::KErr::WriteLine(int, kframework::Base)
+                0x00000000000113e2                kservices::KErr::Write(bool)
+                0x000000000001141a                kservices::KErr::WriteLine(bool)
+                0x00000000000112ce                kservices::KErr::WriteLine(char const*)
+                0x0000000000011504                kservices::KErr::WriteLine(unsigned char, kframework::Base)
+                0x0000000000011490                kservices::KErr::WriteLine(unsigned char)
+                0x00000000000114cc                kservices::KErr::Write(unsigned char, kframework::Base)
+                0x00000000000112b8                kservices::KErr::Write(char const*)
+                0x00000000000112ea                kservices::KErr::Write(int)
+                0x0000000000011458                kservices::KErr::Write(unsigned char)
+                0x0000000000011362                kservices::KErr::Write(int, kframework::Base)
+                0x0000000000011324                kservices::KErr::WriteLine(int)
+ *(.gnu.warning)
+
+.fini
+ *(.fini)
+                0x0000000000011541                PROVIDE (__etext, .)
+                0x0000000000011541                PROVIDE (_etext, .)
+                0x0000000000011541                PROVIDE (etext, .)
+
+.rodata         0x0000000000011541       0xac
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata        0x0000000000011541       0x25 main.o
+ .rodata        0x0000000000011566       0x1c bochsdebug.o
+ .rodata        0x0000000000011582        0xb stringutil.o
+ .rodata        0x000000000001158d       0x18 kout.o
+ .rodata        0x00000000000115a5       0x18 klog.o
+ .rodata        0x00000000000115bd       0x18 kdbg.o
+ .rodata        0x00000000000115d5       0x18 kerr.o
+
+.rodata1
+ *(.rodata1)
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame
+ *(.eh_frame)
+
+.gcc_except_table
+ *(.gcc_except_table)
+                0x00000000000115ed                . = (ALIGN (0x1000) - ((0x1000 - .) & 0xfff))
+                0x00000000000125ed                . = (0x1000 DATA_SEGMENT_ALIGN 0x1000)
+                0x00000000000125f0                . = ALIGN (0x4)
+                0x00000000000125f0                PROVIDE (__preinit_array_start, .)
+
+.preinit_array
+ *(.preinit_array)
+                0x00000000000125f0                PROVIDE (__preinit_array_end, .)
+                0x00000000000125f0                PROVIDE (__init_array_start, .)
+
+.init_array
+ *(.init_array)
+                0x00000000000125f0                PROVIDE (__init_array_end, .)
+                0x00000000000125f0                PROVIDE (__fini_array_start, .)
+
+.fini_array
+ *(.fini_array)
+                0x00000000000125f0                PROVIDE (__fini_array_end, .)
+
+.data           0x00000000000125f0        0x0
+ *(.data .data.* .gnu.linkonce.d.*)
+
+.data1
+ *(.data1)
+
+.tdata
+ *(.tdata .tdata.* .gnu.linkonce.td.*)
+
+.tbss
+ *(.tbss .tbss.* .gnu.linkonce.tb.*)
+ *(.tcommon)
+
+.eh_frame
+ *(.eh_frame)
+
+.gcc_except_table
+ *(.gcc_except_table)
+
+.dynamic
+ *(.dynamic)
+
+.ctors
+ *crtbegin*.o(.ctors)
+ *(EXCLUDE_FILE(*crtend*.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin*.o(.dtors)
+ *(EXCLUDE_FILE(*crtend*.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.jcr
+ *(.jcr)
+
+.got
+ *(.got.plt)
+ *(.got)
+                0x00000000000125f0                _edata = .
+                0x00000000000125f0                PROVIDE (edata, .)
+                0x00000000000125f0                __bss_start = .
+
+.bss            0x00000000000125f0       0x10
+ *(.dynbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x00000000000125f0       0x10 video.o
+                0x00000000000125fc                hardware::driver::video::Video::Cx
+                0x00000000000125f8                hardware::driver::video::Video::Cy
+                0x00000000000125f0                hardware::driver::video::Video::videomem
+                0x00000000000125f4                hardware::driver::video::Video::CColor
+ *(COMMON)
+                0x0000000000012600                . = ALIGN (0x4)
+                0x0000000000012600                . = ALIGN (0x4)
+                0x0000000000012600                _end = .
+                0x0000000000012600                PROVIDE (end, .)
+                0x0000000000012600                . = DATA_SEGMENT_END (.)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000      0x1cb
+ *(.comment)
+ .comment       0x0000000000000000       0x33 main.o
+ .comment       0x0000000000000033       0x33 string.o
+ .comment       0x0000000000000066       0x33 video.o
+ .comment       0x0000000000000099       0x33 bochsdebug.o
+ .comment       0x00000000000000cc       0x33 stringutil.o
+ .comment       0x00000000000000ff       0x33 kout.o
+ .comment       0x0000000000000132       0x33 klog.o
+ .comment       0x0000000000000165       0x33 kdbg.o
+ .comment       0x0000000000000198       0x33 kerr.o
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info .gnu.linkonce.wi.*)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+/DISCARD/
+ *(.note.GNU-stack)
+OUTPUT(../../bin/kernel.bin binary)

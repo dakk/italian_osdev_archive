@@ -1,0 +1,35 @@
+#include<interrupt.h>
+
+#define M_PIC =  0x20,     // I/O for master PIC              
+        S_PIC =  0xA0    // I/O for slave PIC               
+
+	
+#define 	M_VEC =  0x20     //Dove viene mappato IRQ0
+#define 	S_VEC =  M_VEC+8   //Dove viene mappato IRQ8
+	
+#define 	ICW1 =  0x11    // 0001   0001      
+	
+#define 	ICW2_M = M_VEC,                        // ICW2 per il master
+#define 	ICW2_S = S_VEC                      // ICW2 per lo slave
+	
+#define 	ICW3_M =  (1 << 2),             // ICW3 per il master
+#define 	ICW3_S = 3                       // ICW3 per lo slave
+
+#define		ICW4 =  0x01, //ICW4
+
+
+
+void Init8259(void){
+	outportb(M_PIC, ICW1);	// Inizio l'inizializzazione 
+	outportb(S_PIC, ICW1);
+
+	outportb(M_PIC + 1, ICW2_M);	//la base nel vettore di interrupt
+	outportb(S_PIC + 1, ICW2_S);
+
+	outportb(M_PIC + 1, ICW3_M);	//la cascata
+	outportb(S_PIC + 1, ICW3_S);	
+
+	outportb(M_PIC + 1, ICW4);	//finisco l'inizializzazione
+	outportb(S_PIC + 1, ICW4);
+}
+

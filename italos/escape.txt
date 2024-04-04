@@ -1,0 +1,18 @@
+		printf("\033[%u;%uH",y,x);   <- porta il cursore nella pos x,y
+		printf("\033[%u;%uf",y,x);   <- porta il cursore nella pos x,y
+x		printf("\033[%u;A",n);   <- porta il cursore verso l'alto di n posizioni
+x		printf("\033[%u;B",n);   <- porta il cursore verso il basso di n posizioni
+x		printf("\033[%u;C",n);   <- porta il cursore verso destra di n posizioni
+x		printf("\033[%u;D",n);   <- porta il cursore verso sinistra di n posizioni
+x		printf("\033[s");   <- salva la posizione del cursore
+x		printf("\033[u");   <- ripristina la posizione del cursore
+x		printf("\033[2J");   <- cancella lo schermo
+x		printf("\033[K");   <- cancella dalla posizione attuale a fine riga
+		printf("\033[1;32m");   <- colora di verde il foreground
+cambiando il 32 in 33,34,35,36 etc cambia il colore
+con la logica del TEXTATTR del pascal
+x		\033[A freccia su
+x		\033[B freccia giu'
+x 		\033[C freccia destra
+x		\033[D freccia sinistra
+l'inizio dello schermo non e' 0,0 ma 1,1

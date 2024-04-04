@@ -1,0 +1,6 @@
+#include <stdio.h>
+#include <libsmbclient.h>
+
+int main() {
+  smbc_open("//zetazeta/DOC",O_RDONLY,0);
+}

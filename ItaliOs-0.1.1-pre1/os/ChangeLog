@@ -1,0 +1,248 @@
+**********29/02/2003*********
+ABruzzo Silvio: rilasciato ItaliOs-0.1.1-pre1
+				corretto bug in fs/format.c
+**********28/02/2003*********
+Abruzzo SIlvio: 	integrato net all'os creando tutti i vari .h
+					fatto il merge del changelog
+					aggiornato cvs
+miki00:				corretto bug in funzione ogni()
+**********27/02/2003********
+Abruzzo Silvio: risolto bug nella info_file
+**********25/05/2003**********
+Abruzzo SIlvio: fine scrittura piccolo client irc
+				rilasciata versione 0.1.0
+**********23/02/2003***********
+ABruzzo SIlvio: SIstemazione generale
+                             rilasciata ItaliOs 0.1.0-rc2
+miki00:		 bug su ppp protocollo 0x80fd risolto migliorato irc.c (usabile)
+			irc a buon punto
+**********22/02/2003************
+Abruzzo SIlvio: sistemata la palette
+			    risolto il bug del alt gr che scriveva il carattere in modo ritardato
+miki00: ancora non funzia il PPP (cambiato in RFC)
+		rifatto completamente PPP
+		inizio col client IRC
+**********20/02/2003*************
+Abruzzo SIlvio: Implementate funzioni: linea, rettangolo, rattangolo_pieno
+			     riscritta gestione delle palette
+			     implementato 1 font e relative funzioni per stamapre un carattere o una stringha
+			     riveduta la funzione di riavvio per fargli stampare un bel banner in modalità grafica
+**********19/02/2003**************
+Abruzzo Silvio: inizio riscrittura driver della vga: implementato switchamento in modalità 13h e stampa di un pixel
+miki00: bug: buffer x userid troppo piccolo (mitico silvio :)) )
+**********18/02/2003***************
+Abruzzo Silvio: modificato leggermente il bootloader per permettere il resettamente della cpu
+**********17/02/2003***************
+miki00: inizio implementazione opzione crtscts per PPP
+		 sistemato il comando stato
+**********16/02/2003***************
+Abruzzo SIlvio: finito driver del mouse
+miki00: PPP funziona con qualsiasi provider (ConfReq iniziale in Tx aggiunta)
+		PPP finito
+		 debuggato anche la ricezione ACK del tcp
+*********15/02/2003****************
+Abruzzo Silvio: inizio scrittura driver del mouse per porte seriali
+miki00: sistemato ulteriormente PPP adattandolo a tutti i provider
+**********14/02/2003****************
+Abruzzo Silvio: risolti tutto questi bug:
+- All'inizio c'è scritto "premere paggsu e paggi" (senza la ù).
+- Se dai i comandi "ora" e "data" non va a capo e ti scrive l'output sulla stessa riga.
+ - Se dai il comando "colore testo/sfondo", non inserisci nessun valore numerico ma premi invio soltanto lo considera nero (0).
+ - Nel comando "aggiungi_file" se provo a scrivere "%" mi scrive "-n>" durante la digitazione, se provo a leggerlo mi fa vedere "%". Poi la $ non la scrive bene, fa un segno strano. Cmq queste cose succedono anke sulla shell
+- Scrive i numeri dal tastierino numerico anke se il bloc num è disattivato.
+- se scrivo "comando ", con uno  o + spazi successivi, dice "comando inesistente"
+- Se, facendo "cancella" scrivi il nome di un file che non esiste, non ti dice niente come se lo avesse cancellato.
+- I giochi sono un po'(tanto) disordinati.
+- Il gioco "dice": celgo un opzione e qualunque scelgo mi dice "Scegli il livello di difficoltà: ", inserisco il livello e dice "NOOOOOOOOOOOOOOOO hai perso tutto!"
+- Se uno vuole uscire dal gioco "indovina" come fa???
+- Facendo i vari tentativi ho visto che i numeri non sono sepre random: si aggirano tutti tra 100 e 300.
+- L'invio del tastierino numerico non funzica.
+- se levo il floppy e faccio "infodisk" mi visualizza lo stesso le informazioni.
+- se faccio "crea_con" senza disco si mette a dire "FDC: Hau cambiato disko, rimetti quello buono e riprova", all'infinito fino a quando non reinserisco il floppy. Cosi' come nei comandi che operano su file. (per poco non mi fotteva il lettore floppy -_-). 
+**********13/02/2003****************
+Abruzzo Silvio: eliminati bug nel rilevamente dell'irq corrente
+			    implementata funzione ffz che cerca il primo bit settato in un quad word
+			   risolzione bug della seriale			   
+miki00: migliorata ulteriormente la gestione del PPP
+**********10/02/2003******************
+miki00: integrazione di seriale.c che ha l'irq variabile
+           flag di trasmissione su buffTX di interfaccia (collisione tra 2 
+           tx contemporanee risolto)
+**********08-------->12/02/2003******
+Abruzzo Silvio: riscritto driver seriale per la gestione degli irq in modo + flessibile
+			     implemetata funzione per il determinamento del'irq chiamato
+**********07/02/2003********
+Abruzzo SIlvio: eliminato bug nella getstring che prendeva massimo 255 caratteri
+**********06/02/2003********
+Abruzzo Silvio: implemetata srand e rand con annenssa aggiutna libreria stdlib.h e relativo .c
+			    integrato nell'os gioco per indovinare i numeri di Any_d_y
+miki00: 		   corretto bug nella lettura in interrupt della seriale
+			 adattamento completo implementato ping, telnet
+	   		implementata funzione "rete"
+	   		inizio adattamento funzione TraduciDNS
+**********04/02/2003*********
+Luca Rostagno: aggiunta indentazione personale
+**********03/02/2003*********
+Abruzzo Silvio: risolto bug nel settaggio della velocità della seriale
+				implementata funzione strstr in string.h
+				risolti tutti i warning
+**********02/02/2003********
+miki00:		adattamento quasi completo (cambiato ancora ppp.c)
+**********01/02/2003*********
+Abruzzo Silvio: eliminata la paginazione e migliorato gestore della memoria con una pseudo-paginazione
+			riorganizzazione dell'albero delle dir
+**********30/01/2003**********
+Abruzzo Silvio: migliorata funzione uart_open
+				ricerca bug che non da avviare l'os su alcuni pc nel gestore della memoria
+**********29/01/2003**********
+Abruzzo Silvio: implemetata itoa e rimossa int_to_str
+				aggiunti tanti comemnto al driver della seriale
+**********28/01//2003*********
+Abruzzo Silvio: abbellito driver della seriale
+				implemenntato l'uso esclusivo della tastiera da parte di un task				
+miki00:  		comincia l'adattamento con ItaliaOs
+**********27/01/2003***********
+Abruzzo Silvio: implementato gestione dei buffer della seriale, per la gestione dell'isr
+miki00 : modificato PPP e adattato ad un ISP reale
+           	creata la funz NUMinIP e risposta DNS x localhost (italianos)
+           	interpretazione risposte DNS finito :)
+*********26/01/2003*************
+Abruzzo Silvio: riscritto quasi tutto il driver della seriale, aggiungendo la funzioje uar_open, uart_close, etc
+miki00: aggiunta interfaccia LOCALE oltre a PPP per i ping locali
+		 inizio DNS (segfault se 2 richieste e la seconda va a buon fine)           
+**********25/01/2003*************
+Abruzzo Silvio: aggiustati gli irs della seriale
+miki00: UDP OK, inizio sviluppo funzione ping (creazione file dedicato 
+           x icmp ed elimininazione serverecho.c)
+           comando PING funziona
+           risolto ulteriore bug sul calcolo check icmp e tcp
+**********24/01/2003************
+miki00: inizio sviluppo funzioni x UDP
+**********23/01/2003**************
+miki00: programma irc adesso funzia come un telnet :))
+miki00: in fase di sviluppo la funzione nonsoTCP che gestisce i pacchetti TCP senza socket
+**********22/01/2003*************
+miki00: risolto bug checkTCP e UDP e connessione tcp gestita
+**********20/01/2003**************
+Abruzzo Silvio: correzione bug nel gestore della memoria
+***********19/01/2003**************
+Abruzzo Silvio: modificata la app/shell.c per fare in modo che non venisse cancellato il prompt
+											per fare in modo che se ci sono degli spazi prima del comando funzini lo stesso
+				corretto in task.c la visualizzazione dello stato corrente di un taskk
+				corretto in dir.c la funzione read_dir che leggeva anche cartelle insesitenti
+				corretto in fs_app.c bug che tentava di leggere anche file inesistenti
+				corretto bug nella utility.c che non permetteva il slvataggio corretto della dir corrente se essa non era root
+				corretto bug in file.c  in rm_file per non far comparire nessun messaggio
+				modificati tutti i makefile mettendo uno stile di indentazione
+				corretto bug che dava kernel panic quando si eliminava un fie inesistente
+				aggiunta aggiorna_fs nella shell e nell'help
+***********18/01/2003**************
+Abruzzo Silvio: Corretto bug nella gdt.c che non permetteva una corretta compilazione da parte del gcc 2.95.3
+miki00 : risolto segmentation fault -> da vedere mtu,frammentazione,tcp
+***********17/01/2003**************
+Abruzzo Silvio:  implementato lo scheduler e aggiunto al pit il richiamo dello scheduler
+				  implementato inizializzazione del multitasker e funziona
+				  implementata struttura per il controllo dei task e relativa integrazione nel codice
+				  implementata suicide() ed omicide() per la gestione della fine di un task
+				  modificato il sistema di avvio: inizializzazione delle parti fondamentali(gdt, pic, mem e task)
+				  								   quindi creazione di un task per l'inizializzazione dell'hardware e dell'fs
+												   creazione di un task per la shell
+				 implementato nella shell il mìcomando ps per la visualizzazione dei processi attivi
+				 aggiunta alla guida di questo comando. 
+				 Bilancio della giornata 1500 righe
+				 Uff..........per oggi può bastare..... ^____^
+***********16/01/2003***************
+Abruzzo SIlvio: Inizio implementazione scruttura dei TSS. 
+				Creato task.c e task.h e relativi Makefile.
+				Creata add_task();
+***********15/01/2003****************
+Abruzzo Silvio: implementata estnzione della gdt. Creato hardware/gdt.c 
+				e cambiato l'avvio del sistemausando init_gdt()
+***********7------>14/01/2003*******
+Abruzzo SIlvio: prove teciniche per lo scheduler
+************6/1/2003*****************
+Abruzzo Silvio: risolto errore di compilazione della detect_UARTs()	
+************5/1/2003******************
+Rostagno Luca: modificata l'implementazione dei buffer per le seriali (messi in modo dinamico)
+************4/1/2003******************
+Rostagno Luca: implementati i buffer delle seriali
+************3/1/2003******************
+Rostagno Luca: aggiunte gli isr delle seriali e le abilitazioni dei 4 interrupt
+	       corretti i bug del settaggio della velocità
+************29/12/2002*****************
+Rostagno Luca: aggiunta funzione per il settaggio della velocità
+****************27/12/2002***************
+Abruzzo Silvio: eliminata cartela shell e spostato il relativo programma  in  app/
+				implementata funzione fseek
+****************26/12/2002***************
+Abruzzo Silvio: fine correzione bug del file system (almeno per il momento ^__^)
+****************25/12/2002***************
+Abruzzo Silvio: continuazione correzione bug del file system
+                                 aggiunta la funzione fputs
+				 creato nuovo file fio.c dove ci sono le funzioni per l'I/O su file
+****************24/12/2002***************
+Abruzzo Silvio: correzione bug del file system
+***************23/12/2002*****************
+Abruzzo Silvio: complemetamento della fopen aggiungendo modalità di lettura, scrittura
+                                 creazione delle funzioni fputc, fgetc, ftell
+				 aggiornamento delle applicazioni dell'fs con l'uso di queste funzioni
+************22/12/2002*****************
+Rostagno Luca: riscrittura del driver della seriale
+		fatta l'inizializzazione e mantenute intatte le funzioni di scrittura e
+		lettura in polling.
+***************20/12/2002******************
+Abruzzo Silvio: inizio revisione file system aggiungendo free e varie ottimizzazioni
+*************10/12/2002 ------------> 19/12/2002***********
+Abruzzo Silvio: finito driver della memoria: funzioni disponibili free, malloc, realloc
+*************9/12/2002*****************
+Abruzzo Silvio: correzione bug driver seriale
+				continuazione riscrittura driver memoria
+***************8/12/2002****************
+Abruzzo Silvio: aggiunto driver per la seriale
+				iniziata riscrittura gestore della memoria
+*****************7/12/2002***************
+Abruzzo Silvio: tolti tanti bug nel file sytem, iniziata astrazione nelle funzioni,
+							creanto il file entry.c con relativo .h per la gestione
+							delle liste per il fs
+***********6/12/2002***********************
+Abruzzo Silvio: tolti tanti bug nel file system + alcune ottizzazioni
+*************5/12/2002****************
+Abruzzo Silvio: dir.c: tolti tanti bug nella lettura delle dir
+				file.c: tolti tanti bug nella creazione dei file
+*************4/12/2002***************
+Abruzzo Silvio: dir.c: migliorate sottocartelle
+Abruzzo Silvio && Rostagno Luca: stdio.c: implementata puchar()
+									it.c: aggiunto codice ascii del'ESC(0x1b)
+									uart.c: aggiunta e contiene una piccola chat in seriale 
+									modifica makefile delle applicazioni
+									ushell.c: implementato comando per il funzionamento della chat
+*************3/12/2002****************
+Abruzzo Silvio: organizzazione dei file del fs: spaccato dir.c in dir.c e file.c
+				 dir.c: iniziata implementazione per le sottocartelle
+				 file.c: risolto un picco bug nella rimozione dei file
+				 shell.c: aggiunti relatvi comad per le sottocartelle
+				 fs_app.c: aggiunti programmi per la gestione delle sottocartelle
+*************2/12/2002****************
+Abruzzo Silvio: dir.c implementati file + grandi di un cluster e relativa eliminazione
+***********1/12/2002*******************
+Abruzzo Silvio: dir.c: implementata la rimozione dei file
+				ushell.c: implementato nella shell lz rimozione dei file
+				fs_app.c: implementato programma che elimina unfile
+************27/11/2002**************
+Abruzzo Silvio: guida.rtf: naggiustamento e cmpletamento della guida per l'utente
+				 eliminazione della cartella rtc e e video e modifica di relativi makefile
+				 Creazione tour nei sorgenti e spiegazione dlla stdio
+************26/11/2002**************
+Abruzzo Silvio: math.h aggiunte le funzioni seno, coseno e radice quadrata
+			         sistemazione del codice.
+*********25/11/2002******************
+Abruzzo SIlvio: vga.c : aggiunta la rand (ha ancora il seme fisso) e iniziato implemento ritorno in modalità testuale
+				math.h: aggiunte costanti di numeri importanti
+				dir.c: aggiunta rilevazione dell'esistenza del file durante la lettura
+*********24/11/2002******************
+Abruzzo SIlvio: vga.c : aggiunta la linea e il cerchio
+*********23/11/2002******************
+Abruzzo SIlvio: Iniziata implementazione della sk grafica
+**********22/11/2002******************
+Abruzzo Silvio : aggiunto lo scroller e riscritta stdio.c
+

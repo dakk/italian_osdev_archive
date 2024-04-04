@@ -1,0 +1,105 @@
+<html>
+	<head>
+		<title>Os for scratch: ItaLo</title>
+	</head>
+	<body>
+		<h1>
+			<center>Costruttori di oggetti globali</center>
+		</h1>
+		<br>
+		<h2>
+		In questa lezione tratteremo sopratutto il linker ld,  creeremo inoltre un bello script per il nostro ccs<br>
+		Prima di tutto iniziamo a vedere cosa fa di preciso un linker. Un linker unisce oggetti e archivi di file, riloca i dati e il codice, sistema i simboli. Di solito il linkaggio è la fase seguente alla compilazione. <br>
+		Per ora utilizziamo ld con questo comando:<br>
+		<pre>
+ld  -Bstatic --oformat binary  -occs.bin -L./main --whole-archive -t -lmain -Ttext 0x10000 -Map kernel.map
+		</pre>
+		Con questo gli diciamo che il kernel deve essere totalmente statico, che il codice deve iniziare all'indirizzo 0x10000 e che ci deve produrre una mappa del kernel.<br>
+		Dobbiamo creare il nostro script perché vogliamo conoscere a quali indirizzi il linker mette i costruttori e in questo modo poterli eseguire all'avvio del ccs.<br>
+		Per non perderci nello studio di come sono fatti gli script di ld prendiamo il suo script di default e poi lo modifichiamo con le caratteristiche che ci interessano.<br>
+		Per avere in output il file che viene usato bisogna usare l'opzione --verbose. Ecco il file opportunamente scritto, modificato per i nostri scopi.<br>
+		<pre>
+
+/*File generato da LD per produrre binari standard e modificato per ottenere caratteristiche particolari, come l'etichettamento delle zone di memoria dei costruttori*/
+
+OUTPUT_FORMAT("binary")
+OUTPUT_ARCH(i386)
+ENTRY(_start)
+SECTIONS
+{
+
+  . = 0x10000;
+   /*il codice*/
+  .text           :  { *(.text .stub .text.* .gnu.linkonce.t.*)  }
+
+  /*dati a sola lettura read only data*/
+  .rodata         : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
+  . = DATA_SEGMENT_ALIGN(0x1000, 0x1000);
+  . = ALIGN(32 / 8);
+  .data           :
+  {
+
+
+  /*costruttori del c++*/
+           __CTOR_LIST__ = .; LONG((__CTOR_END__ - __CTOR_LIST__) / 4 - 2) *(.ctors)   LONG(0) __CTOR_END__ = .;
+
+        __DTOR_LIST__ = .; LONG((__DTOR_END__ - __DTOR_LIST__) / 4 - 2) *(.dtors) LONG(0) __DTOR_END__ = .;
+
+    *(.data .data.* .gnu.linkonce.d.*)
+    SORT(CONSTRUCTORS)
+  }
+  .ctors          :
+  {
+    KEEP (*crtbegin.o(.ctors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o ) .ctors))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(.ctors))
+  }
+  .dtors          :
+  {
+    KEEP (*crtbegin.o(.dtors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o ) .dtors))
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*(.dtors))
+  }
+  .bss            :  {
+    *(.bss .bss.* .gnu.linkonce.b.*)
+   *(COMMON)
+   . = ALIGN(32 / 8);
+  }
+  . = ALIGN(32 / 8);
+  _end = .;
+  PROVIDE (end = .);
+  . = DATA_SEGMENT_END (.);
+}
+		</pre>
+Le righe che ho aggiunto sono queste:<br>
+<pre>
+  /*costruttori del c++*/
+           __CTOR_LIST__ = .; LONG((__CTOR_END__ - __CTOR_LIST__) / 4 - 2) *(.ctors)   LONG(0) __CTOR_END__ = .;
+
+        __DTOR_LIST__ = .; LONG((__DTOR_END__ - __DTOR_LIST__) / 4 - 2) *(.dtors) LONG(0) __DTOR_END__ = .;
+</pre>
+L'etichette __CTOR_LIST__ e __DTOR_LIST__ contengono l'inizio della zona di memoria ove ci sono gli indirizzi dei costruttori. Il primo valore in memoria contiene il numero dei costruttori. Quindi riusciamo a produrre questa funzione:
+<pre>
+
+void __do_global_ctors (void)
+{
+    //la lista dei costruttori è definita nello scrpt di ld
+  extern void (*__CTOR_LIST__)();
+  void (**constructor)() = &__CTOR_LIST__;
+  //il primo intero è il numero di costruttori
+  int total = *(int *)constructor;
+  constructor++;
+  // eseguo i costruttori uno alla volta
+  while(total--)
+    {
+      (*constructor)();
+      constructor++;
+    }
+}
+</pre>
+Ora è sufficiente fare in modo che questa funzione venga eseguita prima di caricare il main e abbiamo finito.
+		</h2>
+	</body>
+</html>

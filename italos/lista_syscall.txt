@@ -1,0 +1,162 @@
+DOCUMENTAZIONE DELLE SYSCALL
+
+INTERRUPT 85
+
+ATTENZIONE: << NON E' GARANTITA LA CONSISTENZA DEI REGISTRI PRIMA E DOPO L'INTERRUPT, PERTATO E' CONSIGLIATA
+UNA BELLA PUSHA E POPA PRIMA DI CHIAMARE
+LA SYSCALL O COMUNQUE DI FARE ATTENZIONE>>
+
+.......................................................................................................................................................
+Esempio:
+Dopo aver fatto:
+mov eax, 1 ;per documenzione in merito guardare la doc del relativo servizio
+mov ebx, valore
+int 0x55
+
+Anche se come output abbiamo solo eax (e quindi il valore di eax e cmq perso) anche il valore
+degli altri registri risulta indefinito e cmq diverso dai valori di partenza. Una possibile soluzione
+che cmq va adattata al porprio caso specifico potrebbe essere:
+pusha
+mov eax, 1
+mov ebx, valore
+int 0x55
+mov puntatore, eax
+popa
+........................................................................................................................................................
+
+-----------------------------------------------------------------------------------------
+PROTOTIPO: void* malloc(size_t len);
+INPUT: eax = 1
+ebx = dimensione in byte
+OUTPUT:
+eax = indirizzo dell'inizio del blocco di memoria
+
+Alloca delle memoria nello heap della dimesione specifica.
+Se non è possibile allocare memoria di quella dimensione l'indirizzo
+vale 0.
+La memoria allocata se tutto va a buon fine non è inizializzata ma
+contiene valori indefiniti.
+---------------------------------------------------------------------------------------
+PROTOTIPO: void free(void* ptr);
+INPUT: eax = 2
+ebx = indirizzo del blocco di memoria
+OUTPUT: nessuno
+
+Libera una zona di memoria precedentemente allocata con
+il servizio 1.
+Se il puntatore punta ad un indirizzo non valido non ci sono
+problemi. Se il puntatore punta ad un elemento che non rappresenta
+l'inizio di un blocco allo stesso modo non ci sono problemi.
+---------------------------------------------------------------------------------------
+PROTOTIPO: void* realloc(void* ptr, size_t len);
+INPUT: eax = 3
+ebx = indirizzo del blocco di memoria
+ecx = nuova lunghezza
+OUTPUT:
+eax = nuovo indirizzo dell'inizio del blocco di memoria
+
+Ridimensione o allarga memoria già allocata. Non è garantito che l'indirizzo del nuovo blocco di memoria
+inizi allo stesso indirizzo del precedente blocco di memoria.
+Propietà oscure:
+realloc(ptr, 0); equivale a fare free(ptr);
+realloc(NULL, len); equivale a fare malloc(len);
+---------------------------------------------------------------------------------------
+PROTOTIPO: void* calloc(size_t nmemb, size_t size);
+INPUT: eax = 4
+ebx = numero di elementi
+ecx = dimenzione ogni elemento
+OUTPUT:
+eax = indirizzo dell'inizio del blocco di memoria
+
+Alloca la memoria per nmeb elementi che hanno dimensione size e la inizializza a zero. Se fallisce
+restituisce 0 in eax, altrimenti mette in eax il nuovo indirizzo di memoria.
+---------------------------------------------------------------------------------------
+PROTOTIPO: void putchar(char carattere);
+INPUT: eax = 5
+ebx = carattere
+OUTPUT: carattere a video
+
+Stampa un carattere a video. Il carattere deve essere messo in formato ASCII.
+Se il codice è superiore a 255 il risultato è indefinito.
+---------------------------------------------------------------------------------------
+PROTOTIPO: size_t puts(char* str);
+INPUT: eax = 6
+ebx = puntatore al primo elemento del vettore
+OUTPUT: stringha a video
+eax = numero di caratteri stampati
+
+Stampa una stringha a video. Per stringha intendo un vettore di caratteri (char) in stile c, quindi
+terminante con il codice ascii zero. Il primo elemento di questa stringha è quello con indice zero. I
+caratteri nel vettore devono essere messi in formato ASCII.
+case SYS_SETBACKCOLOR:
+kout.set_back_color(ebx);
+return 0;
+---------------------------------------------------------------------------------------
+PROTOTIPO: void set_text_color(size_t color);
+INPUT: eax = 7
+ebx = indice del colore
+OUTPUT: nessuno
+
+Imposta il colore del carattere. Per i valori dei colori riferirsi alla tabella seguente:
+
+enum {NERO,
+BLU,
+VERDE,
+CELESTE,
+ROSSO,
+VIOLA,
+MARRONE,
+BIANCO_SPORCO,
+GRIGIO,
+BLU_CHIARO,
+VERDE_CHIARO,
+CELESTINO,
+ARANCIONE,
+ROSA,
+GIALLO,
+BIANCO,
+MAX_COLOR = 15,
+LAMPEGGIO = 128
+};
+---------------------------------------------------------------------------------------
+PROTOTIPO: void set_back_color(size_t color);
+INPUT: eax = 8
+ebx = indice del colore
+OUTPUT: nessuno
+
+Imposta il colore dello sfondo. Per i valori dei colori riferirsi alla tabella del servizio 7.
+----------------------------------------------------------------------------------------
+PROTOTIPO: size_t get_text_color(void);
+INPUT: eax = 9
+OUTPUT: eax = colore del testpo
+
+Restituisce il colore corrente del testo. Per i valori dei colori riferirsi alla tabella del servizio 7.
+----------------------------------------------------------------------------------------
+PROTOTIPO: size_t get_back_color(void);
+INPUT: eax = 9
+OUTPUT: eax = colore dello sfondo
+
+Restituisce il colore corrente dello sfondo. Per i valori dei colori riferirsi alla tabella del servizio 7.
+----------------------------------------------------------------------------------------
+PROTOTIPO: void _back_color(size_t color);
+INPUT: eax = 8
+ebx = indice del colore
+OUTPUT: nessuno
+
+Imposta il colore dello sfondo. Per i valori dei colori riferirsi alla tabella del servizio 7.
+
+INPUT: eax = 5
+ebx = carattere da ricevere
+OUTPUT: carattere a video
+eax = codice ascii del carattere
+
+Imposta il colore del carattere. Per i valori dei colori riferirsi alla tabella
+----------------------------------------------------------------------------------------
+PROTOTIPO: int vsprintf(char *str, const char *format, va_list ap);
+INPUT:  eax = 100
+			ebx = la stringa in cui bisogna scrivere
+			ecx = il formato della stringa
+			edx = la va_list dei paramentri
+OUTPUT:
+			eax = il numero di caratteri nella stringa
+----------------------------------------------------------------------------------------

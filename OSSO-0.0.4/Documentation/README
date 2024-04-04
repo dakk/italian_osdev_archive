@@ -1,0 +1,28 @@
+This file contains the directory organization of the various document
+collected (mostly to be created :-):
+
+KERNEL-HACKERS:
+This directory contains various informations about the kernel itself,
+mechanism, politics, data, and other informations dedicated to people who
+want to know how and why OSSO works this way.
+
+DEVELOPERS:
+This sections is specific to people who want to write some programs, like
+servers (osso drivers), that are not specifically kernel-related, but need
+some info about OS organization, etc...
+
+PROGRAMMERS:
+This is the last, and for all, non-considered section.
+In this directory you will find informations about OSSO programming in
+general, but for now OSSO hasn't a defined structure, so this has to
+remain empty for a while.
+
+DRAFTS-IT:
+This is the OSSO-STAFF service dir, where we put info, doubts, and the
+many things we have rounding in our minds. This probably will ever be in
+italian, cause our team is now composed by italian people, and it's more
+practical to use. Sorry, but it's only for internal use...
+
+Disclaimer: if you have read this, you probably understand why the last
+section is in italian... :-)
+HAVE FUN!

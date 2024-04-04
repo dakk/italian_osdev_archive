@@ -1,0 +1,7 @@
+#ifndef _MODEM_H_
+#define  _MODEM_H_
+
+#include <rete.h>
+ u_char connettiMDM(u_char *num);
+u_char ParlaModem();
+#endif

@@ -1,0 +1,24 @@
+ Circa un anno e mezzo fa, precisamente nel maggio del 2002, stufo di fare continui esperimenti con l'osdev e col kernel di linux, decisi così di creare un sistema operativo: SilviOs.
+SilviOs doveva essere il mio os che racchiudeva tutte le cose che avevo imparato fino ad allora. In quel periodo non esisteva ne' #kernel_help e ne' #italios, il canale di riferimento di SilviOs era #slackware (sul server azzurra).
+
+Gli unici che lavoravano al progetto eravamo io e Apu che faceva il betatester.
+Verso la fine di luglio uscì lo storico SilviOs 0.5 che aveva già uno scheduler, il gestore di memoria, una shell, etc...
+
+A quel punto ha iniziato ad aiutarmi anche sberla84, prima ha fatto il driver per lo speaker (creammo un formato di file proprietari per far suonare delle canzoni allo speaker del pc, la prima che abbiamo codificato era Fratelli D'Italia... :)
+
+Inseguito c'è venuta l'idea di cambiare il nome e indirizzare l'os per farlo completamente in italiano e il nome che avevamo inventato era ItalianOs, comunque abbiamo lavorato così fino a novembre quando è uscita la 0.1.
+Verso ottobre }tde{ ha iniziato a codare la gui e ha inventato il nome ItaliOs, ci è piaciuto e l'abbiamo adottato fatto sta che a novembre è uscito ItaliOs 0.1.
+
+A quel punto qualche santo che mi voleva bene ha fatto incrociare la strada di ItaliOs con miki00 che ha iniziato a sviluppare il net con enorme successo.
+
+In quel periodo #italios non esisteva ancora ma esisteva il chan #kernel_help che avevo creato verso settembre per parlare di kernel in generale e quello di fatto era diventato il chan di riferimento di italios.
+
+Il chan #italios verrà creato molto più tardi verso aprile, comunque per tutto l'inverno abbiamo lavorato: io alla 0.2, sberla ha implementato il driver della sound blaster 16 e miki al net.
+
+Ad aprile è successa un'altra cosa importante, questa volta la strada di italios si è incrociata con kgh6tt che dio solo sa perché ha avuto fiducia in noi e ci ha regalato il dominio: avevo fatto una promessa a kgh6tt che quando finiva la scuola avrei scritto una guida su come scrivere un os.
+
+A luglio quando sono andato in vacanza ho iniziato a scrivere os from scratch, doveva essere la guida su come sviluppare un os, sviluppando un os.
+
+Sinceramente mi sono sorpreso abbastanza perché più andavo avanti con os from scratch e vedevo che l'os che stavo scrivendo come os from scratch stava venendo MOLTO meglio della 0.2 allora ho deciso di cambiare l'impostazione di os from scratch e farlo diventare una guida su come scrivere un os , facendo contemporaneamente anche una documentazione di ItaliOs e quindi per la strada è morta la 0.2, e l'os di os from scratch di molto migliorato è diventata la 0.3 che stiamo tuttora lavorando...
+
+Silvio "kernel" Abruzzo

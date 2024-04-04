@@ -1,0 +1,18 @@
+Guida all'installazione di italios
+^^^^^^^^^^^^^^^^^^^
+
+ItaliOs al momento prevede il boot da floppy oppure da file tramite un emulatore tipo bochs. 
+Per compilare i sorgenti (prelevabili da www.italios.it ) è necessario disporre di gcc, g++ e nasm.
+Innanzitutto inserire un floppy vuoto e digitare
+--------> make floppy
+Questa procedura formatterà il floppy con la FAT12, se il conteggio non arriva fino a 2880 significa che 
+il floppy è danneggiato, provare con un altro floppy e destinare il corrente floppy ad esempio come 
+sotto bicchiere.
+Completata questa operazione digitare
+----->   make dep
+da una shell per creare le dipendenze dei file a questo punto digitare
+----->   make install
+Quest'ultima operazione deve essere compiuta avendo i privilegi di root.
+Se si vuole creare un immagine di boot impostare nel makefile la variabile LOOP a SI e ripetere tutte le operazoni.
+IMPORTANTE: per creare un immagine di boot è necessario che il kernel abbia il supporto per il loopback!!!
+Happy Hacking  ^__^

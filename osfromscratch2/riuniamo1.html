@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title>Os for scratch: ItaLo</title>
+	</head>
+	<body>
+		<h1>
+			<center>Uniamo il tutto</center>
+		</h1>
+		<br>
+		<h2>
+		Bene ora dobbiamo unire il tutto per formare l'os.<br>
+		Nella classe video abbiamo usato le funzioni itoa, utoa, etc. Io ho sviluppato un parte della libc, ma la includeremo in un secondo tempo nel kernel, per evitare di ingrandire il ccs inutilmente. Un  cosa da ricordare è che si preferisce mettere più codice possibile in userland piuttosto che kerneland: parleremo ancora dei vari land in una prossima lezione.<br>
+		Ho aggiunto quindi una cartella libc in include che contiene funzioni utili. Le funzioni le ho messe inline e non  in un altro file sperando che il gcc le includa direttamente nel codice, dato che sono abbastanza piccole. Ho aggiunto anche stddef.h mettendo le definizioni di size_t , ptrdiff_t, NULL e alcuni tipi utili:
+		<pre>
+			typedef unsigned char byte;
+			typedef unsigned short int word;
+			typedef unsigned int dword;
+			typedef unsigned long long qword; //8 byte
+		</pre>
+		<br>
+		Modifichiamo anche il main.c facendo in modo che invece di usare la vecchia funzione usi la nostra kout.<br>
+		Vi lascio allo studio dei sorgenti.
+		</h2>
+	</body>
+</html>

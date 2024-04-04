@@ -1,0 +1,65 @@
+/* richieste x kernel */
+variabile che si incrementa con i task su task.c (incluso)
+bug su serial.c (ti mando il mio)
+
+/* progetto net per italianOS (kernel2420) by miki00 :) */
+
+18/1/2003: risolto segmentation fault -> da vedere mtu,frammentazione,tcp
+22/1/2003: risolto bug checkTCP e UDP e connessione tcp gestita
+23/1/2003: programma irc adesso funzia come un telnet :))
+23/1/2003: in fase di sviluppo la funzione nonsoTCP che gestisce i pacchetti TCP senza socket
+24/1/2003: inizio sviluppo funzioni x UDP
+25/1/2003: UDP OK, inizio sviluppo funzione ping (creazione file dedicato 
+           x icmp ed elimininazione serverecho.c)
+           comando PING funziona
+           risolto ulteriore bug sul calcolo check icmp e tcp
+26/1/2003: aggiunta interfaccia LOCALE oltre a PPP per i ping locali
+26/1/2003: inizio DNS (segfault se 2 richieste e la seconda va a buon fine)           
+27/1/2003: modificato PPP e adattato ad un ISP reale
+           creata la funz NUMinIP e risposta DNS x localhost (italianos)
+           interpretazione risposte DNS finito :)
+28/1/2003: comincia l'adattamento con ItaliaOs
+02/2/2003: adattamento quasi completo (cambiato ancora ppp.c)
+06/2/2003: adattamento completo implementato ping, telnet
+	   implementata funzione "rete"
+	   inizio adattamento funzione TraduciDNS
+10/2/2003: integrazione di seriale.c che ha l'irq variabile
+           flag di trasmissione su buffTX di interfaccia (collisione tra 2 
+           tx contemporanee risolto)
+13/2/2003: migliorata ulteriormente la gestione del PPP
+15-02-2003: sistemato ulteriormente PPP adattandolo a tutti i provider
+
+da fare:
+    personalizzazione variabili di trasmissione
+    mtu, frammentazione ascoltaTCP,   risposte ICMP,   interfaccia + amichevole
+
+16-02-2003: PPP funziona con qualsiasi provider (ConfReq iniziale in Tx aggiunta)
+16-02-2003: PPP finito
+16-02-2003: debuggato anche la ricezione ACK del tcp
+17-02-2003: inizio implementazione opzione crtscts per PPP
+17-02-2003: sistemato il comando stato
+18-02-2003: bug: buffer x userid troppo piccolo (mitico silvio :)) )
+19-02-2003: .
+22-02-2003: ancora non funzia il PPP (cambiato in RFC)
+22-02-2003: rifatto completamente PPP
+22-02-2003: inizio col client IRC
+23-02-2003: bug su ppp protocollo 0x80fd risolto migliorato irc.c (usabile)
+23-02-2003: irc a buon punto
+24-02-2003: tutto ok con i buffer
+24-02-2003: inizio aggiunta barra leds :))
+26-02-2003: irc.con parser
+28-02-2003: 28-02-2003: 28-02-2003: 28-02-2003: ultimo change log qui
+01-03-2003: 03-03-2003: variabili Sok allobili
+03-03-2003: 06-03-2003: funzionante
+10-03-2003: reso circolari i buffer dei socket
+14-03-2003: debuggato la riceviTCP (da sistemare ulteriormente)
+14-03-2003: 17-03-2003: 22-03-2003: funzia
+22-03-2003: buffer circolare OK
+22-03-2003: 
+24-03-2003: quasi funzionante
+26-03-2003: da adesso comincio il discorso che le funzioni "manda" vengono chiamate dal task "ReteRX"
+29-03-2003: le funzioni dell'utente non chiamano direttamente le funzioni di protocollo
+30-03-2003: release di net funzionante con socket separati, creazione del socket raw
+06-04-2003: eliminato le varie funzioni alloca (+veloce)
+09-04-2003: fixato modem.c, ppp.c, tcp.c, socket.c (megafix)
+24-04-2003: risolti diversi bug:   ppp.c:(problemi con LCP) modem.c:(problemi con modem esterni) NUMinIP():problemi con il "100"

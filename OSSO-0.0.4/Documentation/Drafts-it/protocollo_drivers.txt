@@ -1,0 +1,76 @@
+PROTOCOLLO DRIVERS (Ste):
+
+- L'implementazione di un protocollo per i driver puo' essere (sara'!)
+  soggetta ad espansioni e/o distorsioni in base alla esigenze che
+  salteranno fuori di volta in volta.
+  Quindi potrebbe essere utile creare un numero di versione (modifiche pese)
+  e di release (aggiunta di cose che non pregiudicano il funzionamento dei
+  driver scritti prima) al protocollo stesso!
+  Almeno fino ad arrivare ad una versione omnicomprensiva (?).
+
+- ListaDrivers di "Modules PID Server" -> lista di Categorie;
+  Categoria -> lista di Drivers;
+  Driver: Nome, PID, Permessi, (Canale?!?), (Versione), (Descrizione)...
+  Descrizione (utile veramente?) si potrebbe richiedere direttamente al
+  driver: anche Versione?
+  Per quanto riguarda i permessi si potrebbe lasciare fare il controllo
+  anche alla coda messaggi del driver!
+
+- Nel boot sarebbe meglio che init caricasse per primo il MPS. Potrebbe
+  così caricare i successivi moduli lasciando a loro il compito di
+  registrarsi presso l'MPS. (Vedi protocollo sotto!).
+
+- "Modules PID Server" (MPS):
+  - Ha 2 interfacce:
+    - per i driver:
+        Driver -> MPS: INIT_REQUEST (pid, nome, categoria, versione,
+                       descrizione?, perm?)
+        MPS -> Driver: INIT_REPLY (Ok / Errore <- Inizio di un protocollo?)
+        MPS -> Driver: KILL_REQUEST (soft/hard?)
+        Driver -> MPS: TERMINATED (motivo?) (NOTA: non e' detto che sia una
+                       risposta a KILL! Altrimenti va sdoppiato il messaggio)
+    - per i processi:
+        Proc -> MPS: PID_REQUEST (nome, categoria, bit_che_forza_caricamento)
+        MPS -> Proc: PID_REPLY (pid / err_code=non_presente/no_perm/ecc...)
+        Proc -> MPS: ENUM_REQUEST (categoria)
+        MPS -> Proc: ENUM_REPLY (...)
+        Se implementato a livello di MPS (snellisce moduli):
+          Proc -> MPS: INFO_REQUEST (nome)
+          MPS -> Proc: INFO_REPLY (descrizione_modulo)
+
+  - Questa potrebbe essere (e' sicuramente) una cazzata:
+    - messaggio (Driver -> MPS) per comunicare che un modulo e' morto senza
+      dir nulla a MPS (pzzdmrd).
+    - QUESTO PORTA A UN GRAVE PROBLEMA DI SICUREZZA!!!
+    - ^- non pero' se MPS controlla! Basterebbe un messaggio del tipo:
+      "Toc toc! C'e' nessuno?!?"
+
+- Problema: nel caricamento on-demand, come si fa a sapere il nome del file
+  da caricare partendo da "nome_modulo" e "categoria"?
+  SOLUZIONE: directory moduli cosi' strutturata: le categoria sono directory,
+    mentre i moduli sono file!
+    CONSEGUENZE:
+      - directory di boot?
+        Si potrebbe spostare il caricamento dei moduli in INIT anche perche'
+        che senso ha caricare moduli che, se non specificati in INITCONF,
+        non vengono cacati nemmeno di striscio?!?
+        BOOT potrebbe contenere soltanto STARTER, KERNEL, LIBOSSO.SO,
+        INITCONF e INIT. Mentre per i moduli (tutti) potremmo avere una
+        direcory MODULES o DRIVERS (o con un nome assegnato in INITCONF)
+        strutturata gerarchicamente per categoria! Bisognerebbe sfruttare il
+        BIOS per il caricamento almeno dei moduli FAT, IDE, ecc... quindi
+        bisognerebbe fare il parsing di (parte di) INITCONF direttamente in
+        Kernel-Loader.
+
+- FINAL SOLUTION (per ora) (Ste+Ale):
+  La directory di BOOT conterra' STARTER, KERNEL, LIBOSSO.SO, INITCONF, INIT
+  e MPS.
+  INITCONF conterra' una variabile che indica il nome della directory dei
+  drivers (o meglio moduli) e altre da decidere (VERY CONFIGURABLE!!!).
+  Seguira' una sezione di pre-init che indichera' i moduli di cui init avra'
+  bisogno per accedere al disco root (tipicamente soltanto un protocollo di
+  bus ed un fs, ad es. IDE e FAT). Avra' poi la sezione normale di boot che
+  ha gia'.
+  INIT, per prima cosa eseguira' l'MPS e poi i driver precaricati dal
+  kernel-loader che vi si registreranno, e poi fara' piu' o meno quello che
+  fa adesso.

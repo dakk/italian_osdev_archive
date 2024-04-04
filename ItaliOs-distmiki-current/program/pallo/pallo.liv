@@ -1,0 +1,752 @@
+# file di configurazione di Pallo -> (pallo by Michele Nardella (miki00)) 
+#
+# per giocare:
+#   usare le frecce per muovere pallo, 
+#   'a' per sparare,
+#   spazio per terminare il livello corrente 
+#   'q' per uscire,
+#
+# comandi:
+# LivIni=X : livello iniziale del gioco (il gioco parte da livello X)
+# LivMax=X : ultimo livello del gioco
+# def PALLO = MxPIP : definizioni utente degli oggetti
+# Liv = X : a partire da questo, tutto cio' che viene definito e' relativo
+#           al livello X
+# # <- i commenti iniziano cosi'
+# pntTARMA=  : quanti punti vengono sottratti a pallo se si scontra con tarma
+# tfantasm=  : ogni quanti millisecondi si muove un fantasma
+# tgra=      : ogni quanti millisecondi si va verso il basso (con opzione 'g')
+# nvitepallo=: quante vite ha pallo (se non specificato le vite sono 3)
+# nvite=     : quante vite ha un oggetto (non pallo)(se non specificato 1)
+# tsparo=    : messo prima de LivIni definisce i colpi iniziali a disposizione
+#              se messi all'interno di un livello, li incrementa
+# gri=       : definizione griglia (caratteri accettati -> |\/ L_"U^
+# MxXXXXX    : specifica le proprieta' di un oggetto:
+#   r : che rimbalza
+#   t : trasparente
+#   N : che e' un nemico di pallo (quindi al tocco, pallo perde una vita)
+#   P : che e' pallo
+#   D : che e' un diamante (cioe' quando pallo lo tocca guadagna 100 punti)
+#   U : l'uscita (quando pallo la tocca, dopo aver preso i diamanti, finisce il livello)
+#   s : serpente (forse obsoleto? bah)
+#   i : insegue pallo
+#   O : e' un ostacolo
+#   a : si muove con l'AI (rete neurale moolto approssimata, bah!)
+#   T : che e' una tarma (quindi al tocco pallo perde punti)
+#   z : cerca di rimanere vicino all'oggetto successivo  (serpente CODA)
+#   Z : cerca di rimanere vicino all'oggetto precedente  (serpente TESTA)
+#   m : tipo mostro (cancella gli ostacoli, l'unica cosa che lo ferma sono 
+#       i diamanti)
+#   R : la posizione dell'oggetto e' riferita a quello dopo la parola "rif=1;"
+#
+#   S : le collisioni lo fanno spostare
+#   g : l'oggetto viene "tirato" verso il basso (gravita')
+#   l : che rimane sempre accostato alla destra di un oggetto
+#   I : con questa opzione e' possibile specificare un'immagine con il carattere 
+#       successivo:
+#      P : pallo
+#      f : fantasma
+#      F : robot che si orienta con l'AI
+#      D : diamante
+#      S : serpente (carattere 'O')
+#      O : ostacolo (carattere 'X')
+#      T : tarma (croce che gira)
+#      M : masso
+#      U : uscita (scritta "ESCI_")
+#      m : mostro (un coso con 6 denti bianchi)
+#      X : Croce gigante
+#      i : scritta "in costruzione"
+#      n : navicella
+#      > : con questa opzione e' possibile specificare un carattere 
+#          comeimmagine (es MxI>$ <- da' come immagine un segno dollaro '$')
+#      ? : con questa opzione e' possibile specificare un immagine prece- 
+#          dentemente creata con il comando img ( es: img 0 ciao;  MxOI?0,x,y;)
+#           caratteri speciali si possono fare precedendo una \
+#            es: \1 -> sposta il cursore in alto
+#            altri caratteri speciali sono:
+#            \1 verso su,  \2 verso giu  \3 verso destra  \4 verso sinistra
+#            \5,xyz  -> cambia colore x=1 brillante y=colore z=sfondo
+#
+# definizioni di default che possono essere cambiate
+# GRIGLIA    0x1000 MxO -> come immagine ha la griglia , da mettere in posizione 1,1
+# SERPENTE   0x0C20 MxNsiIS
+# SERPENTENO 0x1C00 MxOsiIS
+# TARMA      0x4800 MxTiIT
+# TARMAAI    0x6000 MxTaIT
+# FANTASMA   0x0820 MxNiIf
+# FANTASMAAI 0x2020 MxNaIF
+# DIAMANTE   0x0090 MxtDID
+# PALLO      0x0040 MxPIP
+# USCITA     0x0200 MxUIU
+# MASSO      0x0021 MxNrIM
+#
+#  Riassunto breve delle opzioni
+# movimento:
+#   r=rimbalzo,i=insegue,a=AI,z=serpentecoda ,
+#   Z=serpentetesta ,S=sposta,s=serpente, g=gravita'
+# tipo:
+#  t=trasparente,N=nemico,P=pallo,D=diamante,U=Uscita,O=ostacolo,T=tarma
+#  m=tipomostro
+# I=immagine: 
+#   P=pallo,f=fantasma,F=fantasmaAI,D=diamante,
+#   S=serpente,O=Ostacolo,T=tarma,M=masso,U=uscita,m=magnamagna
+#
+# Note: gli spazi tranne che in gri= non vengono considerati.
+#       per default il gioco colora gli oggetti a seconda del tipo:
+#       rosso : i nemici    (tipo N)
+#       giallo : i diamanti (tipo D)
+#       verde : gli ostacoli(tipo O)
+#       ciano : le tarme    (tipo T)
+#       bianco : pallo e la griglia
+   
+def MOSTRO = MximNIm;     # mostro che insegue
+def MOSTROAI = MxamNIm;   # mostro che si muove con AI
+def PALLOGR = MxgSPIP;    # pallo con gravita'
+def MASSIGR = MxgSOIM;    # masso con gravita'  
+def CROCE = MxiTIX;       # croce tarma che insegue 
+
+#img 0 \5,110\1\4|\3\3\3\3|\2\4\4\4\4\4\4*----*\2\4\4\4\4\4\4*----*;
+#img 0 \1\4^\3\3^\2\4\4\4\4()()\2\4\4\4\4\\__/;
+#img 1 \1\1\4/^^\\\2\4\4\4\4|OO|\2\4\4\4\4|\\/|;
+#img 2 \4\4/^^^^\\\2\4\4\4\4\4\4|\3\3\3\3|\2\4\4\4\4\4\4\\____/;
+#img 3 /\\\2\4\4||\2\4\4||\2\4\4||\2\4\4||\2\4\4\\/;
+img 1 \3-----*\2\4|\2\4\4\4\4\4\4\4|\3\3\3\3\3|\2\4\4\4\4\4\4\4|\3\3\3\3\3|;
+img 2 \1\1|\2\4|\2\4|\2\4|\2\4|;
+img 4 \4\4-----;
+img 3 \5,101    \2\4\4     ;
+#img 5 ----;
+#img 6 |\1\4|\1\4|;
+#img + \1\4-\1\4-;
+#img 9 \1\1\4<^>\2\4\4\4\4O/^\\O\2\4\4\4\4\4||\3||\2\4\4\4\4\4|\\_/|\2\4\4\4\4|\3|\2\4\4\4|\3|;
+
+#
+#    /^^\
+#    |OO|   
+#    |\/|   
+#   /^^^^\  
+#   |    |  
+#   \____/  
+#           
+
+tsparo=20;
+
+#livelli
+LivIni=18;
+LivMax=18;
+nvitepallo = 3;
+nvite=1;
+Liv=1,2,3;
+tfantasm=300;
+gri=_______________
+gri=|_ _ |_ _ |_ _ |
+gri=||  |||  | |  ||
+gri=| || | || | || |
+gri=||  |||  |||  ||
+gri=| || | || | || |
+gri=|L _| L _||L _||
+gri=L_ __L___ L____|
+gri=L_____________ |
+GRIGLIA,1,1;
+PALLO,7,2;
+FANTASMA,7,11;
+# MxNlIf,42,11;
+FANTASMA,42,11;
+FANTASMA,52,11;
+DIAMANTE,8,5;
+DIAMANTE,18,5;
+DIAMANTE,8,17;
+DIAMANTE,18,17;
+DIAMANTE,33,5;
+DIAMANTE,43,5;
+DIAMANTE,33,17;
+DIAMANTE,43,17;
+DIAMANTE,58,5;
+DIAMANTE,68,5;
+DIAMANTE,58,17;
+DIAMANTE,68,17;
+DIAMANTE,3,20;
+DIAMANTE,23,2;
+DIAMANTE,23,20;
+DIAMANTE,28,2;
+DIAMANTE,28,20;
+DIAMANTE,48,2;
+DIAMANTE,48,20;
+DIAMANTE,53,2;
+DIAMANTE,53,20;
+DIAMANTE,73,2;
+DIAMANTE,73,20;
+USCITA,71,25;
+Liv=2,3;
+tfantasm=200;
+FANTASMA,52,5;
+Liv=3;
+FANTASMA,32,5;
+Liv=4,5,6,7,8,9;
+tfantasm=120;
+Liv=1;
+tfantasm=300;
+
+Liv=5,6;
+gri=_______________
+gri=|              |
+gri=|  |L__L       |
+gri=|              |
+gri=|  L       L   |
+gri=| L   L        |
+gri=|L___________  |
+gri=|              |
+gri=L______________|
+GRIGLIA,1,1;
+
+Liv=5;
+PALLO,7,7;
+DIAMANTE,50,14;
+SERPENTE,51,14;
+SERPENTE,52,14;
+SERPENTE,53,14;
+SERPENTE,54,14;
+SERPENTE,55,14;
+SERPENTE,56,14;
+FANTASMA,52,10;
+MASSO,30,3;
+MASSO,20,9;
+MASSO,40,15;
+USCITA,40,18;
+
+Liv=6;
+PALLO,7,2;
+FANTASMAAI,52,11;
+FANTASMA,52,17;
+DIAMANTE,42,11;
+FANTASMAAI,32,11;
+FANTASMAAI,32,17;
+DIAMANTE,27,11;
+FANTASMAAI,22,17;
+DIAMANTE,17,11;
+FANTASMAAI,12,11;
+FANTASMA,12,17;
+DIAMANTE,7,11;
+FANTASMAAI,2,11;
+FANTASMAAI,2,17;
+DIAMANTE,50,14;
+USCITA,40,18;
+
+
+Liv=4;
+gri=_______________
+gri=|___ _____ __  |
+gri=||__________ |||
+gri=|||          |||
+gri=||  L______|  ||
+gri=||| |      | |||
+gri=| L_ _____ __|||
+gri=|L____ _ _____||
+gri=L______________|
+GRIGLIA,1,1;
+PALLO,2,2;
+FANTASMAAI,7,5;
+FANTASMAAI,7,20;
+FANTASMA,22,14;
+FANTASMA,52,14;
+FANTASMAAI,67,5;
+FANTASMA,72,23;
+DIAMANTE,12,20;
+DIAMANTE,37,20;
+DIAMANTE,62,20;
+DIAMANTE,67,8;
+DIAMANTE,37,11;
+DIAMANTE,72,5;
+USCITA,40,18;
+
+Liv=7;
+gri=________________
+gri=|     __ | |   |
+gri=| _      |     |
+gri=|____ __   L_ _|
+gri=| __     |     |
+gri=||  |_ __| __ _|
+gri=||  ||||   |   |
+gri=|L__ __|L|     |
+gri=L________L_L___|
+GRIGLIA,1,1;
+PALLO,7,2;
+FANTASMAAI,57,8;
+FANTASMAAI,57,17;
+FANTASMAAI,17,14;
+FANTASMAAI,47,23;
+DIAMANTE,72,23;
+DIAMANTE,72,2;
+FANTASMA,2,23;
+FANTASMA,27,17;
+FANTASMA,2,8;
+DIAMANTE,7,20;
+DIAMANTE,42,23;
+USCITA,6,7;
+
+Liv=8;
+gri=_______________
+gri=|__ _______ __ |
+gri=|| ____ ____  ||
+gri=|L_ _______ __||
+gri=|| ____ ____  ||
+gri=|L_ _______ __||
+gri=|| ____ ____  ||
+gri=|L_ _________ ||
+gri=L______________|
+GRIGLIA,1,1;
+PALLO,2,2;
+USCITA,66,22;
+DIAMANTE,7,8;
+DIAMANTE,69,5;
+DIAMANTE,7,14;
+DIAMANTE,69,11;
+DIAMANTE,7,20;
+DIAMANTE,69,17;
+DIAMANTE,74,23;
+FANTASMA,72,17;
+FANTASMA,61,23;
+FANTASMAAI,38,20;
+FANTASMAAI,38,14;
+FANTASMAAI,38,8;
+FANTASMAAI,36,17;
+FANTASMAAI,36,11;
+FANTASMAAI,36,5;
+Liv=9;
+gri=_______________
+gri=|   |          |
+gri=|   |          |
+gri=|   |          |
+gri=|              |
+gri=|              |
+gri=|    |         |
+gri=|    |         |
+gri=L____L________ |
+GRIGLIA,1,1;
+PALLO,2,2;
+USCITA,71,25;
+SERPENTE,60,3;
+SERPENTE,59,3;
+SERPENTE,58,3;
+SERPENTE,57,3;
+SERPENTE,56,3;
+SERPENTE,55,3;
+SERPENTE,54,3;
+SERPENTE,53,3;
+SERPENTE,52,3;
+DIAMANTE,5,3;
+DIAMANTE,5,5;
+DIAMANTE,62,15;
+DIAMANTE,62,3;
+DIAMANTE,32,3;
+
+TARMAAI,12,11;
+TARMAAI,22,11;
+TARMAAI,07,14;
+TARMA,12,17;
+TARMAAI,17,14;
+TARMA,22,17;
+TARMA,07,20;
+TARMA,17,20;
+
+TARMAAI,37,08;
+TARMAAI,42,11;
+TARMAAI,47,08;
+TARMAAI,52,11;
+TARMAAI,37,14;
+TARMA,42,17;
+TARMAAI,47,14;
+TARMA,52,17;
+TARMA,37,20;
+TARMAAI,42,23;
+TARMA,47,20;
+TARMAAI,52,23;
+
+TARMAAI,57,08;
+TARMAAI,62,11;
+TARMAAI,67,08;
+TARMAAI,72,11;
+TARMAAI,57,14;
+TARMA,62,17;
+TARMAAI,67,14;
+TARMA,72,17;
+TARMA,57,20;
+TARMAAI,62,23;
+TARMA,67,20;
+TARMAAI,72,23;
+FANTASMAAI,73,20;
+Liv=10;
+tfantasm=50;
+pntTARMA=50;
+gri=_______________
+gri=|              |
+gri=| L L L L L L ||
+gri=|            |||
+gri=| L L L L L L ||
+gri=|            |||
+gri=| L L L L L L ||
+gri=|              |
+gri=L_____________ |
+GRIGLIA,1,1;
+PALLO,2,2;
+USCITA,71,25;
+DIAMANTE,14,04;
+DIAMANTE,24,04;
+DIAMANTE,34,04;
+DIAMANTE,44,04;
+DIAMANTE,54,04;
+DIAMANTE,14,10;
+DIAMANTE,24,10;
+DIAMANTE,34,10;
+DIAMANTE,44,10;
+DIAMANTE,54,10;
+DIAMANTE,14,16;
+DIAMANTE,24,16;
+DIAMANTE,34,16;
+DIAMANTE,44,16;
+DIAMANTE,54,16;
+
+TARMAAI,12,06;
+TARMAAI,22,06;
+TARMAAI,32,06;
+TARMAAI,42,06;
+TARMAAI,52,06;
+TARMAAI,12,12;
+TARMAAI,22,12;
+TARMAAI,32,12;
+TARMAAI,42,12;
+TARMAAI,52,12;
+TARMAAI,12,18;
+TARMAAI,22,18;
+TARMAAI,32,18;
+TARMAAI,42,18;
+TARMAAI,52,18;
+Liv=11;
+tfantasm=40;
+pntTARMA=30;
+gri=_______________
+gri=|           _| |
+gri=|          | |||
+gri=|          |||||
+gri=|          |L_||
+gri=|    _  _      |
+gri=|    || ||     |
+gri=|              |
+gri=L_____________ |
+GRIGLIA,1,1;
+PALLO,2,2;
+USCITA,71,25;
+DIAMANTE,28,23;
+DIAMANTE,43,23;
+DIAMANTE,52,10;
+DIAMANTE,58,02;
+DIAMANTE,63,11;
+DIAMANTE,73,02;
+MxrDtID,20,2;
+FANTASMA,27,17;
+FANTASMA,42,17;
+TARMAAI,12,24;
+TARMAAI,13,24;
+TARMAAI,14,24;
+TARMAAI,15,24;
+
+TARMAAI,17,24;
+TARMAAI,18,24;
+TARMAAI,19,24;
+TARMAAI,20,24;
+
+TARMAAI,22,24;
+TARMAAI,23,24;
+TARMAAI,24,24;
+TARMAAI,25,24;
+Liv=12;
+tfantasm=50;
+pntTARMA=30;
+gri=_______________
+gri=|____ ____ ___ |
+gri=||___ _  _ __ ||
+gri=|||__ ____ _ |||
+gri=||||        ||||
+gri=|||L_ ____ _||||
+gri=||L__ _  _ __|||
+gri=|L___ ____ ___||
+gri=L_____________ |
+GRIGLIA,1,1;
+PALLO,2,2;
+USCITA,71,25;
+DIAMANTE,13,20;
+DIAMANTE,22,20;
+DIAMANTE,32,20;
+DIAMANTE,47,20;
+DIAMANTE,57,20;
+DIAMANTE,63,20;
+DIAMANTE,13,17;
+DIAMANTE,22,17;
+DIAMANTE,32,17;
+DIAMANTE,47,17;
+DIAMANTE,57,17;
+DIAMANTE,63,17;
+
+DIAMANTE,13,08;
+DIAMANTE,22,08;
+DIAMANTE,32,08;
+DIAMANTE,47,08;
+DIAMANTE,57,08;
+DIAMANTE,63,08;
+
+DIAMANTE,13,05;
+DIAMANTE,22,05;
+DIAMANTE,32,05;
+DIAMANTE,47,05;
+DIAMANTE,57,05;
+DIAMANTE,63,05;
+MxrOIO,11,5;
+MxrOIO,14,18;
+MxrOIO,61,5;
+MxrOIO,61,18;
+FANTASMAAI,7,5;
+FANTASMAAI,7,20;
+FANTASMAAI,62,8;
+FANTASMAAI,62,17;
+Liv=13;
+tsparo=25;
+tfantasm=60;
+pntTARMA=30;
+gri=_______________
+gri=|              |
+gri=|              |
+gri=|           __ |
+gri=|           |  |
+gri=|           L_ |
+gri=|              |
+gri=|              |
+gri=L_____________ |
+GRIGLIA,1,1;
+PALLO,3,3;
+USCITA,71,25;
+nvite=5;
+MOSTRO,58,20;
+MOSTROAI,38,20;
+nvite=1;
+FANTASMA,63,11;
+FANTASMA,67,11;
+FANTASMA,63,13;
+FANTASMA,67,13;
+DIAMANTE,73,11;
+DIAMANTE,73,13;
+Liv=14,15;
+tfantasm=90;
+tgra=240;
+pntTARMA=30;
+gri=_______________
+gri=|              |
+gri=|              |
+gri=|           ___|
+gri=|           |  |
+gri=|           L__|
+gri=|            | |
+gri=|            | |
+gri=L_____________ |
+pntTARMA=1;
+GRIGLIA,1,1;
+USCITA,71,25;
+Liv=14;
+PALLOGR,3,3;
+MxDID,72,8;
+MxDID,38,2;
+MxDID,62,17;
+DIAMANTE,8,10;
+MASSIOR,29,4;
+MASSIOR,62,2;
+MASSIOR,63,4;
+MxagNIF,50,5;
+CROCE,5,20;
+MxNiIS,4,20;
+MxNiIS,7,20;
+MxNiIS,5,19;
+MxNiIS,5,21;
+CROCE,56,10;
+CROCE,42,10;
+MxNIS,66,20;
+MxNIS,66,21;
+MxNIS,66,22;
+#MximNIm,13,17;
+#MxamNIm,15,17;
+#MximNIm,17,17;
+
+
+def NAVICELLA = MxNiTIn;
+Liv=15;
+PALLOGR,3,3;
+rif=1;
+MxNIO,40,3;
+MxgSROI?1,0,1;
+
+#MOSTRO
+rif=1;
+MxiDIS,50,15;
+MxNRIO,-2,0;
+MxNRIO,2,0;
+MxNRIO,0,2;
+MxNRIO,0,-2;
+MxSTRI?2,-4,0;
+MxSTRI?2,4,0;
+MxSTRI?4,0,-4;
+MxSTRI?4,0,4;
+DIAMANTE,8,10;
+
+
+
+Liv=16;
+tsparo=2;
+tfantasm=130;
+tgra=240;
+pntTARMA=30;
+gri=         _
+gri=/\/\/\/\/ \/\/\
+gri=\   \ \       /
+gri=/  \/  \ /\ \ \
+gri=\ \  /\  \ \ \/
+gri=/  \ \      \ \
+gri=\/ /  \ \  \/ /
+gri=/ / /\ \/     \
+gri=\__/\____/\/\_/
+
+pntTARMA=1;
+GRIGLIA,1,1;
+USCITA,66,24;
+PALLO,4,4;
+DIAMANTE,30,13;
+DIAMANTE,61,16;
+DIAMANTE,40,12;
+DIAMANTE,43,8;
+DIAMANTE,17,20;
+DIAMANTE,14,17;
+DIAMANTE,20,7;
+DIAMANTE,69,4;
+# MxTlIO,27,23;
+nvite=5;
+MxNiIf,3,16;
+MxNiIf,3,22;
+MxNiIf,24,15;
+MxNiIf,33,23;
+MxNiIf,40,19;
+MxNiIf,49,10;
+MxNiIf,54,22;
+MxNiIf,35,4;
+
+
+
+
+Liv=17;
+gri=_______________
+gri=| ________   | |
+gri=|L_____ | |LL ||
+gri=|| |_ |L_|L_ L||
+gri=||||||L |_| L| |
+gri=L_|_|||_L__||_||
+gri=|__| LL |___||||
+gri=|L  |_ | ____|||
+gri=L___LLL_LL____ |
+GRIGLIA,1,1;
+tfantasm=100;
+PALLO,2,2;
+MxOSTaIF,7,20;
+MxOSTaIF,22,11;
+MxOSTaIF,32,8;
+MxOSTaIF,27,17;
+MxOSTaIF,42,23;
+MxOSTaIF,67,17;
+MxOSTaIF,47,23;
+#MxONlIF,42,5;
+MxOlIO,42,5;
+MxOlIO,17,8;
+MxOlIO,2,17;
+MxOSTaIF,62,11;
+MxOSTaIF,72,2;
+
+
+DIAMANTE,27,14;
+DIAMANTE,17,20;
+DIAMANTE,22,23;
+DIAMANTE,32,11;
+DIAMANTE,42,17;
+DIAMANTE,51,23;
+DIAMANTE,67,20;
+DIAMANTE,62,8;
+DIAMANTE,72,8;
+DIAMANTE,7,8;
+DIAMANTE,37,5;
+USCITA,71,25;
+
+Liv=18,19;
+gri=_______________
+gri=|            " |
+gri=|            " |
+gri=|            " |
+gri=|            " |
+gri=|            " |
+gri=|            " |
+gri=|            " |
+gri=L_____________ |
+GRIGLIA,1,1;
+tfantasm=20;
+tgra=800;
+PALLO,2,2;
+USCITA,71,25;
+Liv=18;
+MxNlIO,13,3;
+MxNlIO,13,21;
+MxDOID,11,3;
+MxNI?3,11,5;
+MxDOID,11,7;
+MxNI?3,11,9;
+MxDOID,11,11;
+MxNI?3,11,13;
+MxDOID,11,15;
+MxNI?3,11,17;
+MxDOID,11,19;
+MxNI?3,11,21;
+MxNlIO,23,4;
+MxNlIO,23,22;
+MxDOID,21,4;
+MxNI?3,21,6;
+MxDOID,21,8;
+MxNI?3,21,10;
+MxDOID,21,12;
+MxNI?3,21,14;
+MxDOID,21,16;
+MxNI?3,21,18;
+MxDOID,21,20;
+MxNI?3,21,22;
+MxNlIO,33,3;
+MxNlIO,33,21;
+MxDOID,31,3;
+MxNI?3,31,5;
+MxDOID,31,7;
+MxNI?3,31,9;
+MxDOID,31,11;
+MxNI?3,31,13;
+MxDOID,31,15;
+MxNI?3,31,17;
+MxDOID,31,19;
+MxNI?3,31,21;
+MxNlIO,43,4;
+MxNlIO,43,22;
+MxDOID,41,4;
+MxNI?3,41,6;
+MxDOID,41,8;
+MxNI?3,41,10;
+MxDOID,41,12;
+MxNI?3,41,14;
+MxDOID,41,16;
+MxNI?3,41,18;
+MxDOID,41,20;
+MxNI?3,41,22;
+MxTOSgI?4,73,2;
+DIAMANTE,71,21;
+USCITA,71,25;
+Liv=19;
+MxNlIO,15,22;
+MxNlIO,19,22;
+MxNlIO,23,22;
+MxNlIO,27,22;

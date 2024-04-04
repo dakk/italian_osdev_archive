@@ -1,0 +1,5 @@
+#!/bin/bash
+numero=` ls -al kernel.bin | colrm 1 35 | colrm 8`
+len=`expr $numero / 512  + 1`
+#echo "numero=$numero len=$len"
+echo "KRNL_SIZE	equ	 $len	  ; Kernel size in sectors, starts at sector 2" > boot/kernel_len.inc

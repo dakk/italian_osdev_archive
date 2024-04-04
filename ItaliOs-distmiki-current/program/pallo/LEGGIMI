@@ -1,0 +1,67 @@
+* pallo *   un gioco tipo pacman(c) by Nardella Michele (miki00)
+
+ Una volta downloadati i tarball fare:
+  # tar xvzf pallo-x.y.tgz
+  # cd pallo-x.y
+  # make
+ dove x.y e' la versione.
+
+ per bsd fare:
+  # make BSD
+
+ e infine x giocare:
+  #./pallo1    <--  su console 
+  #./pallo     <--  su xterm 80x25
+
+ i comandi sono molto semplici:
+  le frecce spostano pallo
+  'a' per sparare
+  'q' per uscire
+  ' ' per finire il livello
+
+ C'e' il file di configurazione descritto in maniera 
+ dettagliata sullo stesso
+
+ Se e' presente il programma "resize" la finestra viene
+ ridimensionata automaticamente.
+
+ Ciao e buon divertimento. 
+
+
+
+
+ChangeLog mica tanto aggiornato:
+
+pallo-1.8
+ 21/10/2002 eliminata la variabile fantAI
+            aggiunta TARMAAI
+            aggiunta opz tarma 0x4000 che leva 2 punti ad ogni contatto
+pallo-1.9
+ 03/11/2002 aggiunta tasto spazio che esce dalla situazione corrente e
+                toglie 500 punti
+pallo-1.10
+ 25/12/2003 aggiunta opz 0x80000 che sposta
+pallo-1.14
+ 01/01/2004 aggiunta opzione r
+
+
+da fare:
+	aggiunta Help();
+
+
+Log:
+
+01-01-2004: le immagini sono configurabili dal file pallo.livelli (al max 10)
+01-01-2004: migliorato il relativo
+04-01-2004: implementata variabile nsparo -> che implementa il caricatore di pallo
+04-01-2004: implementato comando img+
+04-01-2004: versione funzionante, sistemati i livelli
+14-03-2004: adesso occupa meno CPU, aggiunto usleep(10000) al punto giusto.
+*** passaggio a pallo-1.16 ***
+15-03-2004: aggiunta funzione "l" (da sistemare) che e' come il rimbalzo ma non in diagonale, 
+            aggiunto un livello e corretto alcuni BUG
+15-03-2004: sistemata opzione "l" :)
+15-03-2004: sistemato lo schema 16
+15-03-2004: 15-03-2004: 15-03-2004: resize della finestra automatico a 80x25, rinominato ./parti in ./pallo in maniera da lanciare sempre ./pallo
+15-03-2004: 15-03-2004: aggiunto livello 17
+21-03-2004: fatto il livello 18

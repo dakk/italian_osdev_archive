@@ -1,0 +1,112 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+/* INTERRUPTS */
+
+
+
+Int #         Uso                           Modulo
+(HEX)
+				      		   
+ 0       Ecc: Division By zero           interrupts.c 
+ 1     	 Ecc: Single Step                interrupts.c    
+ 2       Ecc: NMI                        interrupts.c         	       	  
+ 3       Ecc: Break Point                interrupts.c 
+ 4	 Ecc: Overflow                   interrupts.c
+ 5	 Ecc: Bound Range Exceeded       interrupts.c
+ 6	 Ecc: Invalid OPCODE             interrupts.c
+ 7	 Ecc: Coprocessor Not Available  interrupts.c
+ 8	 Ecc: Double Fault               interrupts.c
+ 9	 Ecc: Coprocessor Seg Overrun    interrupts.c
+ A	 Ecc: Invalid TSS                interrupts.c
+ B	 Ecc: Segment Not Present        interrupts.c
+ C	 Ecc: Stack Fault                interrupts.c
+ D	 Ecc: General Protection Err     interrupts.c
+ E	 Ecc: Page Fault                 interrupts.c
+ F	 Ecc: Unknown                    interrupts.c
+10	 Ecc: Coprocessor Error          interrupts.c
+11	 Ecc: Alignment check            interrupts.c
+12	 Ecc: Machine Check              interrupts.c
+13	 Ecc: ?                          interrupts.c
+14	 Ecc: ?                          interrupts.c
+15	 Ecc: ?                          interrupts.c
+16	 Ecc: ?                          interrupts.c
+17	 Ecc: ?                          interrupts.c
+18	 Ecc: ?                          interrupts.c
+19	 Ecc: ?                          interrupts.c
+1A	 Ecc: ?                          interrupts.c
+1B	 Ecc: ?                          interrupts.c
+1C	 Ecc: ?                          interrupts.c
+1D	 Ecc: ?                          interrupts.c
+1E	 Ecc: ?                          interrupts.c
+1F	 Ecc: ?                          interrupts.c
+
+20       IRQ0: Timer                     scheduler.c
+21       IRQ1: Keyboard                  keyboard.c
+22       IRQ2: Cascade                   interrupts.c
+23       IRQ3: COM 2 ??                  interrupts.c
+24       IRQ4: COM 1 ??                  interrupts.c
+25       IRQ5: LPT 2 ??                  interrupts.c
+26       IRQ6: Floppy                    interrupts.c
+27       IRQ7: LPT 1 ??                  interrupts.c
+28       IRQ8: Unknown                   interrupts.c
+29       IRQ9: Unknown                   interrupts.c
+2A       IRQA: Unknown                   interrupts.c
+2B       IRQB: Unknown                   interrupts.c
+2C       IRQC: Unknown                   interrupts.c
+2D       IRQD: Unknown                   interrupts.c
+2E       IRQE: IDE 0                     hd.c
+2F       IRQF: IDE 1                     hd.c
+
+30       Available
+31       Available
+32       Available
+33       Available
+34       Available
+35       Available
+36       Available
+37       Available
+38       Available
+39       Available
+3A       Available
+3B       Available
+3C       Available
+3D       Available
+3E       Available
+3F       Available
+
+40       Syscall                         syscall.c
+41       Available
+42       Available
+43       Available
+44       Available
+45       Available
+46       Available
+47       Available
+48       Available
+49       Available
+4A       Available
+4B       Available
+4C       Available
+4D       Available
+4E       Available
+4F       Available
+  

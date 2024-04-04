@@ -1,0 +1,102 @@
+Archive member included because of file (symbol)
+
+./main/libmain.a(main.o)      (--whole-archive)
+./hardware/libhardware.a(video.o)
+                              (--whole-archive)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD ./main/libmain.a
+LOAD ./hardware/libhardware.a
+                0x0000000000010000                . = 0x10000
+
+.text           0x0000000000010000      0x530
+ *(.text.stub.text.*.gnu.linkonce.t.*)
+ .text          0x0000000000010000       0xb3 ./main/libmain.a(main.o)
+                0x0000000000010010                main
+                0x0000000000010000                _start()
+                0x000000000001008c                __do_global_ctors()
+ *fill*         0x00000000000100b3 0x808c15c00000001 00
+ .text          0x00000000000100b4      0x3f9 ./hardware/libhardware.a(video.o)
+                0x0000000000010206                Video::Video[in-charge]()
+                0x000000000001027e                Video::clear()
+                0x00000000000101ca                Video::Video[not-in-charge]()
+                0x00000000000100b4                Video::operator<<(int)
+                0x00000000000101ae                Video::operator<<(char)
+                0x0000000000010420                Video::set_text_color(unsigned char)
+                0x0000000000010194                Video::operator<<(char const*)
+                0x00000000000102ba                Video::accapo()
+                0x00000000000102fa                Video::put(char const*)
+                0x0000000000010438                Video::set_back_color(unsigned char)
+                0x0000000000010242                Video::init()
+                0x000000000001032c                Video::put(char)
+                0x0000000000010410                Video::get_formed_color()
+                0x0000000000010460                Video::get_back_color()
+                0x0000000000010452                Video::get_text_color()
+                0x0000000000010168                Video::operator<<(unsigned)
+ *fill*         0x00000000000104ad 0x808c15c00000001 00
+ .gnu.linkonce.t.utoa
+                0x00000000000104ae       0x82 ./hardware/libhardware.a(video.o)
+                0x00000000000104ae                utoa
+
+.rodata         0x0000000000010540       0x85
+ *(.rodata.rodata.*.gnu.linkonce.r.*)
+ .rodata.str1.1
+                0x0000000000010540        0xd ./main/libmain.a(main.o)
+ *fill*         0x000000000001054d 0x808c20400000013 00
+ .rodata.str1.32
+                0x0000000000010560       0x28 ./main/libmain.a(main.o)
+ .rodata        0x0000000000010588        0x4 ./hardware/libhardware.a(video.o)
+                0x0000000000010588                kout
+ *fill*         0x000000000001058c 0x808c20400000014 00
+ .rodata.str1.32
+                0x00000000000105a0       0x25 ./hardware/libhardware.a(video.o)
+                0x00000000000115c5                . = (0x1000 DATA_SEGMENT_ALIGN 0x1000)
+                0x00000000000115c8                . = ALIGN (0x4)
+
+.data           0x00000000000115c8       0x14
+                0x00000000000115c8                __CTOR_LIST__ = .
+                0x00000000000115c8        0x4 LONG 0x1 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
+ *(.ctors)
+ .ctors         0x00000000000115cc        0x4 ./hardware/libhardware.a(video.o)
+                0x00000000000115d0        0x4 LONG 0x0
+                0x00000000000115d4                __CTOR_END__ = .
+                0x00000000000115d4                __DTOR_LIST__ = .
+                0x00000000000115d4        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
+ *(.dtors)
+                0x00000000000115d8        0x4 LONG 0x0
+                0x00000000000115dc                __DTOR_END__ = .
+ *(.data.data.*.gnu.linkonce.d.*)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE ( *crtend.o).ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE ( *crtend.o).dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.bss            0x00000000000115dc       0x10
+ *(.bss.bss.*.gnu.linkonce.b.*)
+ .bss           0x00000000000115dc       0x10 ./hardware/libhardware.a(video.o)
+                0x00000000000115dc                mystdout
+ *(COMMON)
+                0x00000000000115ec                . = ALIGN (0x4)
+                0x00000000000115ec                . = ALIGN (0x4)
+                0x00000000000115ec                _end = .
+                0x00000000000115ec                PROVIDE (end, .)
+                0x00000000000115ec                . = DATA_SEGMENT_END (.)
+OUTPUT(ccs.bin binary)
+
+.comment        0x0000000000000000       0x20
+ .comment       0x0000000000000000       0x10 ./main/libmain.a(main.o)
+ .comment       0x0000000000000010       0x10 ./hardware/libhardware.a(video.o)

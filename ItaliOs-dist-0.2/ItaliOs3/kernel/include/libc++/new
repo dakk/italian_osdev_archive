@@ -1,0 +1,32 @@
+#ifndef NEW_STL
+#define NEW_STL
+
+#include <cstdlib>
+
+// New which throw bad_alloc
+inline void *operator new (size_t x) throw (){
+	return malloc (x);
+}
+
+// Delete operator
+inline void operator delete (void* x) throw (){
+	free (x);
+}
+
+// New which throw bad_alloc
+inline void *operator new[] (size_t x) throw (){
+	return malloc (x);
+}
+
+// Delete operator
+inline void operator delete[] (void* x) throw (){
+	free (x);
+}
+
+// Specify the position
+inline void *operator new (size_t x, const void* p) throw () { return const_cast <void*> (p); }
+inline void operator delete (void *x, const void *p) throw () {};
+inline void *operator new[] (size_t x, const void *p) throw () { return const_cast <void*> (p); }
+inline void operator delete[] (void *x, const void *p) throw () {};
+
+#endif

@@ -1,0 +1,13 @@
+26\11\2004 - È uscita la versione 0.0.1
+
+09\11\2004 - Iniziato il nuovo boot loader
+
+10\10\2004 - ada si unisce al gruppo di programmatori MatrixOS.
+
+16\09\2004 - Utilizzo come boot Loader Dream Catcher.
+
+14\09\2004 - Ho deciso di riscrivere il kernel di MatrixOS e cambiare boot loader.
+
+07\09\2004 - Copiato da DreamOS la idt, l'irq e il pic8259. 
+
+31\08\2004 - Iniziato MatrixOS.

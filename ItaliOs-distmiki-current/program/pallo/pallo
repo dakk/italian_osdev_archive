@@ -1,0 +1,4 @@
+resize -s 25 80 2>/dev/null
+xset r rate 100 30
+./pallo1
+xset r rate 250 30

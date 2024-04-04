@@ -1,0 +1,29 @@
+#OSSO Configuration File
+#Definisce le opzioni di configurazione del sistema boot
+#
+#Sintassi :
+#
+#<Nome> <tipo> <nome univoco> <valore di Default> <Commento ....>
+#Il nome compare poi nel .h
+#il tipo puo' essere value (tipo #define CENTO 100)
+#oppure string  (tipo #define CENTO "100")
+#oppure boolean (tipo #define CENTO 1)
+#oppure define  (tipo #define CENTO)
+#
+
+
+write string TESTPROGRAMS =
+SHELL makevar shelltest 1 TESTPROGRAMS First Shell Prototype
+MPSCOM makevar mpscom 1 TESTPROGRAMS MPS Commander
+HIWORLD makevar hiworldtest 0 TESTPROGRAMS Hello World Program
+TESTPID makevar pidtest 0 TESTPROGRAMS getpid() syscall Test Program
+FORKTEST makevar forktest 0 TESTPROGRAMS fork() syscall Test Program #1
+FORKTST2 makevar forktest2 0 TESTPROGRAMS fork() syscall Test Program #2
+THREADT makevar threadtest 0 TESTPROGRAMS Thread test program
+TESTMSG makevar msgtest 0 TESTPROGRAMS Message passing subsytem Test Program #1
+TESTMSG2 makevar msgtest2 0 TESTPROGRAMS Message passing subsytem Test Program #2
+EVENTEST makevar eventtest 0 TESTPROGRAMS Event subsytem Test Program #1
+EVENTES2 makevar eventtest2 0 TESTPROGRAMS Event subsytem Test Program #2
+EVENTES3 makevar eventtest3 0 TESTPROGRAMS Event subsytem Test Program #3
+MEM makevar memtest 0 TESTPROGRAMS Mem information Program
+mount makevar mounttest 0 TESTPROGRAMS Mount information Program

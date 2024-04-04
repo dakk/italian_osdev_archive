@@ -1,0 +1,142 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+OSSO is a Micro Kernel OS I started writing for fun.
+Its goal was to work and load a program and make it run.
+
+* Currently implemented features *
+
+- True 32 bit x86 protected mode 
+- Multitasking
+- Indipendence of processes' address space
+- Semaphores
+- Paging
+- Signals
+- Message passing
+- Loading from ELF file
+- A little libc with some functions(fork() kill() exit() printf() ...)
+- An interrupt based syscall mechanism
+- A round robin scheduler
+- Some driver prototypes
+- The boot loader knows the FAT filesystem
+- You can use gcc to write your own program and make OSSO load and run it
+- Support for dynamically linked ELF executables (New) 
+- Dynamically linked lib C (New) 
+
+* And now the bad things:
+
+- It has been written in an untidy way, so a lot of the code is not so good
+- Performance is missing (because I'd prefer it working, than crashing very 
+  fast :-))
+- It has been tested only on a few machines
+- A lot of the comments are in italian (yet)
+
+* Requirements for compiling OSSO
+
+- Linux
+- Gcc
+- Make
+- Nasm
+- Mtools (mformat, mcopy)
+
+* How to get OSSO
+
+- Try looking on OSSO webpage on sourceforge (http://osso.sourceforge.net)
+- You can access CVS by this way:
+  You have to set the CVS_RSH variable :
+   for csh:
+    setenv CVS_RSH ssh 
+   for bash:
+    export CVS_RSH=ssh
+
+  then, for anonymous cvs do the following:
+
+    cvs -d:pserver:anonymous@cvs.OSSO.sourceforge.net:/cvsroot/OSSO login
+    cvs -d:pserver:anonymous@cvs.OSSO.sourceforge.net:/cvsroot/OSSO co OSSO 
+
+ Or you can register as a developer in sourceforge (http://www.sourceforge.net)
+ and contact me (as OSSO's admin) for being registered as a developer and use
+
+    cvs -dloginname@cvs.OSSO.sourceforge.net:/cvsroot/OSSO co OSSO
+
+  where loginname is your login at sourceforge.
+  By the way, if you are interested, I suggest that you read the CVS docs
+  at sourceforge's site docs page.
+
+* How to use OSSO *
+  
+  After You've downloaded the source (from the step above) you can use the
+  makefile to compile and install OSSO on a floppy. Change in the src dir.
+  Put an empty floppy in the first drive (/dev/fd0)
+
+- Type ' make dep '. This remakes all the dependencies with the 
+  right directories
+
+- Type ' make Disk '. This compiles the kernel and the bootloader, then
+  puts OSSO on the floppy. It is formatted with a FAT filesystem.
+  Now you've got a bootable floppy that just loads and runs OSSO.
+
+- Create a directory named ' BOOT ' in the root of the floppy with
+  ' mmd a:/BOOT '. All the files in this directory are loaded in memory
+  by the bootloader, before starting OSSO. When OSSO finishes its 
+  initialization, it searches this modules for INIT and launches it.
+
+- Type ' make Lib ' to compile the libOSSO (the minimal libc I have wrote for
+  OSSO)
+
+- Type ' make Drivers ' to compile the few drivers and INIT
+
+- Now you have to put INIT in a:/BOOT, so type ' mcopy drivers/INIT a:/BOOT/ '
+
+- Now you've got to tell INIT what it has to load on startup, so write down
+  a text file named INITCONF (there's one in the src dir, and the syntax for
+  it is explained in drivers/InitSyntax.txt) and put it (guess where?) in
+  the floppy: ' mcopy INITCONF a:/BOOT/ '
+
+- All the modules specified in INITCONF have to be copied in that dir too.
+  so ' mcopy drivers/IDE a:/BOOT/ ' and so on...
+
+  Warning: From OSSO version 0.0.2 you must also put libOSSO.so
+     into the BOOT dir so do: 
+     ' mcopy lib/libOSSO.so a:/BOOT/LIBOSSO.SO '
+
+The result is a FAT floppy with OSSO in the main dir and INIT and the other
+modules in the BOOT dir.
+
+WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+
+OSSO should not damage anything, nor write to any disk or system memory, but I
+cannot be sure, having tested it only on a few computers. So I suggest that you
+unplug your disks before booting OSSO ( it is ok if you back up them too).
+Perhaps you should try it with Vmware or Bochs or other virtual machine
+emulators. If you have 128MB of memory or more, you shouldn't try it, because
+of an open problem, otherwise unpredictable results are quite sure.
+
+Now put the floppy in your computer drive and reboot....
+
+Hint : OSSO writes a lot of data to the screen. To scroll up & down you can
+       use SHIFT+PgUp & SHIFT+PgDown as on Linux.
+       Other keys like Home and Up print some debug data.
+       Ctrl + Alt + Canc reboots ( WOW! )
+
+Have fun!
+If you want to help, you're welcome.
+You can contact me at iurlano@cli.di.unipi.it
+

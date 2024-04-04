@@ -1,0 +1,22 @@
+#OSSO Configuration File
+#Definisce le opzioni di configurazione globali
+#
+#Sintassi :
+#
+#<Nome> <tipo> <nome univoco> <valore di Default> <Commento ....>
+#Il nome compare poi nel .h
+#il tipo puo' essere value (tipo #define CENTO 100)
+#oppure string  (tipo #define CENTO "100")
+#oppure boolean (tipo #define CENTO 1)
+#oppure define  (tipo #define CENTO)
+#
+write header c
+GENERAL_PARAMETERS_ADDRESS value genparmaddr 0x7c000 General Parameters Address
+LINE_BUFFERED_OUTPUT define linebufferedoutput 0 Line buffered output feature
+SERIAL_LOGGING define seriallog 0 Use logging on serial port
+SERIAL_LOG_BOOT define bootseriallog 0 Log boot messages
+SERIAL_LOG_KERNEL define kernelseriallog 0 Log kernel messages
+SERIAL_LOG_PORT value seriallogport 0 Serial port to use for logging (0=first)
+SERIAL_INPUT define serialinput 0 Get input from serial port instead of keyboard
+SERIAL_INPUT_PORT value serialinputport 0 Serial port to use for input (0=first)
+write footer c

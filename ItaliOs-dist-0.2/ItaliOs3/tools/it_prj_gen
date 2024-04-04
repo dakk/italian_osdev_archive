@@ -1,0 +1,1 @@
+cp /usr/local/share/italios/makefile.template $(pwd)/Makefile

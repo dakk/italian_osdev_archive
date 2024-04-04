@@ -1,0 +1,8 @@
+#ifndef _CMATH_H_
+#define  _CMATH_H_
+
+extern "C"{
+	#include <math.h>
+}
+
+#endif

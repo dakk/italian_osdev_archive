@@ -1,0 +1,62 @@
+#include<io.h>
+#include<interrupt.h>
+
+extern colore;
+int main();
+
+
+
+
+/*è la prima funzione che sarà chiamata!!!
+IMPORTANTE: deve essere anche la prima implementata nel file dove c'è il main*/
+void _start(){
+	main();
+	while(1);
+}
+
+
+
+
+
+
+int main(){
+colore=0x1E;
+klear();
+printk("\t\tBenvenuti in Black & White Operating System\n\n");
+printk("\t\t\t- Ideato da Black & White -\n\n");
+printk(" Ringraziamo tutti coloro che ci hanno aiutato e che ci aiuteranno nell'impresa");
+
+printk("\n\n\n\n\n\n\n\n\t\t\t\t Grazie !!");
+
+
+Init_PIC8259();	
+initIDT();
+
+Init_IDT_entry(pic_handler,0x21);
+
+//enable_irq(0xFD,0x21);
+
+
+//abilita_irq(0xfd, 0x21);
+	abilita_irq(2,0x21);
+
+
+
+	while(1);
+	return 0;
+}
+
+
+
+/* Si preme un cazzo di tasto e quindi si mette in moto la linea all' indirizzo 0x21 ... questo vettore viene messo sul bus dati che la cpu legge e che utilizza come indice all' interno del cazzo di idt*/
+
+
+
+void exec_irq(void)
+{
+inportb(0x60);
+printk("\nLa tua tastiera ti parla ^_^: Stampo 2 volte; alla pressione a al rilascio\n");
+outportb(0x20,0x20);
+}
+
+

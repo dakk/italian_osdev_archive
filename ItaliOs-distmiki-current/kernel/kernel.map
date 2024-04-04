@@ -1,0 +1,1211 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+p                   0x4               lib/sc.o
+tos                 0x4               lib/sc.o
+n_sets              0x4               lib/sc.o
+x                   0x4               lib/sort.o
+visit_nos           0x4               lib/sc.o
+n_visited           0x4               lib/sc.o
+low_link_nos        0x4               lib/sc.o
+current_graph       0x4               lib/dfs_bfs.o
+sets_f              0x4               lib/sc.o
+n_written           0x4               lib/sc.o
+compare_fn          0x4               lib/sort.o
+n_unvisited         0x4               lib/sc.o
+temp_merge_array    0x4               lib/sort.o
+dfs_result          0x4               lib/dfs_bfs.o
+unvisited           0x4               lib/sc.o
+sc_stack            0x4               lib/sc.o
+sets_s              0x4               lib/sc.o
+vertices            0x4               lib/sc.o
+sp                  0x4               lib/sc.o
+sc_vertices         0x4               lib/sc.o
+element_size        0x4               lib/sort.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD main/aamain.o
+LOAD main/debug.o
+LOAD main/exec.o
+LOAD main/syscall.o
+LOAD main/var_amb.o
+LOAD hardware/8259.o
+LOAD hardware/delay.o
+LOAD hardware/dma.o
+LOAD hardware/floppy.o
+LOAD hardware/irq.o
+LOAD hardware/key_traslation.o
+LOAD hardware/pit.o
+LOAD hardware/rtc.o
+LOAD hardware/serial.o
+LOAD hardware/speaker.o
+LOAD hardware/tastiera.o
+LOAD hardware/video.o
+LOAD cpu/cpu_oper.o
+LOAD cpu/gdt.o
+LOAD cpu/idt.o
+LOAD cpu/paging.o
+LOAD mm/desc_mem.o
+LOAD mm/fis_mmu.o
+LOAD mm/kmmu.o
+LOAD mm/mem.o
+LOAD mm/mmu.o
+LOAD mm/pagine_libere.o
+LOAD mm/pagine_virtuali.o
+LOAD task/hardware_task.o
+LOAD task/messaggi.o
+LOAD task/politic.o
+LOAD task/sem.o
+LOAD task/task.o
+LOAD dispositivi/hmu.o
+LOAD fs/fat.o
+LOAD fpu_emu/fpu_emu.o
+LOAD fpu_emu/fpu_emu_comp.o
+LOAD fpu_emu/fpu_emu_control.o
+LOAD fpu_emu/fpu_emu_data.o
+LOAD fpu_emu/fpu_emu_demo.o
+LOAD fpu_emu/fpu_emu_exception.o
+LOAD fpu_emu/fpu_emu_exp.o
+LOAD fpu_emu/fpu_emu_math.o
+LOAD fpu_emu/fpu_emu_mov.o
+LOAD fpu_emu/fpu_emu_reg.o
+LOAD fpu_emu/fpu_emu_trig.o
+LOAD fpu_emu/my_double.o
+LOAD libc/ctype.o
+LOAD libc/math.o
+LOAD libc/sprintf.o
+LOAD libc/sscanf.o
+LOAD libc/stdio.o
+LOAD libc/stdlib.o
+LOAD libc/string.o
+LOAD libc/time.o
+LOAD libc/vsprintf.o
+LOAD libc/vsscanf.o
+LOAD lib/avl.o
+LOAD lib/bheap.o
+LOAD lib/bst.o
+LOAD lib/dfs_bfs.o
+LOAD lib/hashtbl.o
+LOAD lib/mst.o
+LOAD lib/rand.o
+LOAD lib/rbtree.o
+LOAD lib/sc.o
+LOAD lib/search.o
+LOAD lib/sort.o
+LOAD lib/tree23.o
+LOAD libc/log.o
+LOAD libc/modf.o
+                0x00010000                . = 0x10000
+
+.text           0x00010000    0x17154
+ *(.text.stub.text.*.gnu.linkonce.t.*)
+ .text          0x00010000      0x270 main/aamain.o
+                0x00010034                process1(void)
+                0x00010014                process0(void)
+                0x0001006c                dummy(void)
+                0x00010000                _start
+                0x0001023c                __do_global_ctors(void)
+                0x0001009c                main
+                0x00010074                get_ser_bios_mem(void)
+ .gnu.linkonce.t.time_irq__Fv
+                0x00010270        0xc main/aamain.o
+                0x00010270                time_irq(void)
+ *fill*         0x0001027c        0x4 00
+ .text          0x00010280      0x1f0 main/debug.o
+                0x00010344                Debug::operator<<(unsigned int)
+                0x00010304                Debug::stop(void)
+                0x000102ac                Debug::register_trace(unsigned short)
+                0x00010280                Debug::istruction_trace(unsigned short)
+                0x00010398                Debug::operator<<(char)
+                0x00010378                Debug::operator<<(char const *)
+                0x00010420                Debug::put(char)
+                0x000103e8                Debug::put(char const *)
+                0x000103bc                Debug::Debug(void)
+                0x00010314                Debug::operator<<(int)
+ .text          0x00010470      0x690 main/exec.o
+                0x00010aac                exec_CCC(char *, char *, unsigned char *)
+                0x00010510                {anonymous}::indirizzo_simbolo(unsigned int, void *)
+                0x000105b4                {anonymous}::elenco_rel(void *, unsigned int *)
+                0x0001088c                {anonymous}::riloca({anonymous}::oggetto)
+                0x00010578                {anonymous}::nome_sezione(void *, unsigned int, char *)
+                0x000106bc                {anonymous}::stampa_simbolo(unsigned int, void *)
+                0x00010470                {anonymous}::cerca_sezione(char *, void *)
+                0x00010664                {anonymous}::nome_simbolo(unsigned int, void *, char *)
+                0x00010634                {anonymous}::valore_simbolo(unsigned int, void *)
+                0x000104fc                {anonymous}::info_sezione(void *, unsigned int)
+                0x00010a5c                exec(char *, char *)
+                0x000108c0                {anonymous}::parser(char *, unsigned char *)
+                0x00010860                {anonymous}::numero_oggetti_rilocabili(unsigned int, void *)
+                0x000104e4                {anonymous}::indirizzo_sezione(void *, unsigned int)
+                0x0001075c                {anonymous}::cerca_simbolo_rilocabile(unsigned int, unsigned int, void *)
+                0x00010724                {anonymous}::stampa_oggetto({anonymous}::oggetto)
+ .text          0x00010b00      0x350 main/syscall.o
+                0x00010bb4                very_syscall_handler
+                0x00010dfc                init_syscall(void)
+                0x00010ded                internal_syscall_handler
+                0x00010b00                null_syscall
+ .text          0x00010e50      0x3f0 main/var_amb.o
+                0x0001113c                leggi_valore(char *, char *)
+                0x00011078                {anonymous}::modifica_elem(char *, char *)
+                0x00010e50                {anonymous}::init_list(void)
+                0x0001110c                init_variabili_ambiente(void)
+                0x00010ffc                {anonymous}::prendi_valore(char *, char *)
+                0x00011190                setta_valore(char *, char *)
+                0x00010e5c                {anonymous}::add_elem(char *, char *)
+                0x00010f94                {anonymous}::cerca_var(char *)
+ .text          0x00011240      0x180 hardware/8259.o
+                0x000112b8                enable_irq(unsigned short)
+                0x00011364                get_cur_irq(void)
+                0x00011308                disable_irq(unsigned short)
+                0x00011240                init8259(void)
+ .text          0x000113c0      0x220 hardware/delay.o
+                0x000113c0                __delay(unsigned int)
+                0x000113f8                delayCalibInt(void)
+                0x00011434                calibrateDelayLoop(void)
+                0x000113d8                delay
+ .text          0x000115e0      0x100 hardware/dma.o
+                0x00011630                _dma_xfer(unsigned char, unsigned char, unsigned int, unsigned int, unsigned char)
+                0x000115e0                dma_xfer(unsigned char, unsigned long, unsigned int, unsigned char)
+ .text          0x000116e0      0xd20 hardware/floppy.o
+                0x000117b4                {anonymous}::getbyte(void)
+                0x0001180c                {anonymous}::waitfdc(bool)
+                0x0001190c                {anonymous}::seek(int)
+                0x00011a58                {anonymous}::classifica_rtc_floppy(unsigned char)
+                0x00011f68                read_block(int, unsigned char *, unsigned int)
+                0x000121d4                floppy_r_buff(int, unsigned char *, int)
+                0x00012160                write_block(int, unsigned char *, unsigned long)
+                0x000119e8                {anonymous}::block2hts(int, int *, int *, int *)
+                0x00011f44                _write_block(int, unsigned char *, unsigned long)
+                0x00011b6c                {anonymous}::fdc_rw(int, unsigned char *, bool, unsigned int)
+                0x000122a8                floppy_w_buff(int, unsigned char *, int)
+                0x00011898                {anonymous}::motoron(void)
+                0x000118b4                {anonymous}::motoroff(void)
+                0x00011dac                init_floppy(void)
+                0x000118d0                {anonymous}::recalibrate(void)
+                0x00011978                {anonymous}::reset(void)
+                0x00011e6c                _read_block(int, unsigned char *, unsigned int)
+                0x00011f30                de_init_floppy(void)
+                0x00011740                {anonymous}::free_bufrx(void)
+                0x00011758                {anonymous}::fdc_handler(void)
+                0x00011b14                {anonymous}::leggi_versione(void)
+                0x00011760                {anonymous}::sendbyte(int)
+                0x000116e0                {anonymous}::init_bufrx(void)
+ .text          0x00012400      0x110 hardware/irq.o
+                0x00012420                free_irq
+                0x0001241c                null_handler
+                0x0001243c                do_irq
+                0x000124b8                init_irq
+                0x00012491                internal_handler
+                0x00012464                _do_irq
+                0x00012400                my_print
+                0x000124a4                add_irq
+ .text          0x00012510     0x2ca0 hardware/key_traslation.o
+                0x00014d84                scan2ascii(int)
+                0x00012510                init_map(void)
+                0x00015050                sys_getchar(void)
+                0x00015070                sys_gets(char *)
+ .text          0x000151b0      0x114 hardware/pit.o
+                0x000151b0                pit_count::pit_count(unsigned int, pit_count::canale, pit_count::mode, pit_count::access_mode, pit_count::count_mode)
+                0x00015278                pit_count::carica(void)
+                0x0001524c                pit_count::set_access_mode(pit_count::access_mode)
+                0x00015264                pit_count::set_mode(pit_count::mode)
+                0x000152a4                pit_count::set_frequenza(unsigned int)
+                0x00015214                pit_count::set_canale(pit_count::canale)
+                0x00015238                pit_count::set_count_mode(pit_count::count_mode)
+ *fill*         0x000152c4        0xc 00
+ .text          0x000152d0      0x3a0 hardware/rtc.o
+                0x00015498                leggi_ore
+                0x000152d0                leggi_numero_giorno_della_settimana
+                0x00015404                leggi_secondi
+                0x0001531c                leggi_giorno_del_mese
+                0x0001544c                leggi_minuti
+                0x00015308                leggi_nome_giorno_della_settimana
+                0x000153b0                leggi_anno
+                0x00015368                leggi_numero_mese
+                0x000154e0                init_rtc
+ .text          0x00015670      0x5a0 hardware/serial.o
+                0x00015b18                add_char_to_buffer(serial_info *, unsigned char)
+                0x00015a3c                close_port(serial_info *)
+                0x00015be0                uart_gets_interrupt(serial_info *, unsigned char *)
+                0x00015690                uart_gets_polling(serial_info *, unsigned char *)
+                0x00015950                init_uart(void)
+                0x00015b80                uart_getchar_interrupt(serial_info *)
+                0x00015670                uart_getchar_polling(serial_info *)
+                0x00015728                uart_open(unsigned char, unsigned char, unsigned int, unsigned char, unsigned char, unsigned char, unsigned char)
+                0x000156ec                uart_putchar_polling(serial_info *, unsigned char)
+                0x000159bc                set_UART_speed(serial_info *, unsigned int)
+                0x00015a6c                isr_com(void)
+                0x000156bc                uart_puts_polling(serial_info *, unsigned char *)
+ .text          0x00015c10       0x8c hardware/speaker.o
+                0x00015c70                beep(void)
+                0x00015c60                nosound(void)
+                0x00015c10                sound(unsigned short)
+ *fill*         0x00015c9c        0x4 00
+ .text          0x00015ca0      0x2b0 hardware/tastiera.o
+                0x00015d88                {anonymous}::key_task(void)
+                0x00015d24                {anonymous}::vedi_carattere_raw(void)
+                0x00015ca0                {anonymous}::key_handler(void)
+                0x00015ec0                kbpress(void)
+                0x00015d60                {anonymous}::leggi_carattere_normale(void)
+                0x00015e00                setleds(unsigned char)
+                0x00015e30                init_tastiera(void)
+                0x00015e8c                get_char(void)
+                0x00015ce8                {anonymous}::leggi_carattere_raw(void)
+ .gnu.linkonce.t.scrivi__t16buffer_circolare1ZUcUc
+                0x00015f50       0x40 hardware/tastiera.o
+                0x00015f50                buffer_circolare<unsigned char>::scrivi(unsigned char)
+ .gnu.linkonce.t.leggi__t16buffer_circolare1ZUcPUc
+                0x00015f90       0x30 hardware/tastiera.o
+                0x00015f90                buffer_circolare<unsigned char>::leggi(unsigned char *)
+ .gnu.linkonce.t.vedi__t16buffer_circolare1ZUcPUc
+                0x00015fc0       0x30 hardware/tastiera.o
+                0x00015fc0                buffer_circolare<unsigned char>::vedi(unsigned char *)
+ .gnu.linkonce.t.leggi__t16buffer_circolare1ZUiPUi
+                0x00015ff0       0x30 hardware/tastiera.o
+                0x00015ff0                buffer_circolare<unsigned int>::leggi(unsigned int *)
+ .gnu.linkonce.t.init__t16buffer_circolare1ZUiUi
+                0x00016020       0x38 hardware/tastiera.o
+                0x00016020                buffer_circolare<unsigned int>::init(unsigned int)
+ *fill*         0x00016058        0x8 00
+ .gnu.linkonce.t.scrivi__t16buffer_circolare1ZUiUi
+                0x00016060       0x40 hardware/tastiera.o
+                0x00016060                buffer_circolare<unsigned int>::scrivi(unsigned int)
+ .gnu.linkonce.t.init__t16buffer_circolare1ZUcUi
+                0x000160a0       0x34 hardware/tastiera.o
+                0x000160a0                buffer_circolare<unsigned char>::init(unsigned int)
+ .gnu.linkonce.t.init__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastieraP7comandoUi
+                0x000160d4       0x4c hardware/tastiera.o
+                0x000160d4                {anonymous}::tastiera::init(comando *, unsigned int)
+ .gnu.linkonce.t.close__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastiera
+                0x00016120       0x30 hardware/tastiera.o
+                0x00016120                {anonymous}::tastiera::close(void)
+ .gnu.linkonce.t.leggi__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastieraR4dato
+                0x00016150       0x18 hardware/tastiera.o
+                0x00016150                {anonymous}::tastiera::leggi(dato &)
+ .gnu.linkonce.t.scrivi__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastieraG4dato
+                0x00016168        0x4 hardware/tastiera.o
+                0x00016168                {anonymous}::tastiera::scrivi(dato)
+ .gnu.linkonce.t.leggi_errore__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastieraP4dato
+                0x0001616c        0x4 hardware/tastiera.o
+                0x0001616c                {anonymous}::tastiera::leggi_errore(dato *)
+ .gnu.linkonce.t.controlla__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastieraG7comando
+                0x00016170        0x4 hardware/tastiera.o
+                0x00016170                {anonymous}::tastiera::controlla(comando)
+ .gnu.linkonce.t.leggi_nome__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastiera
+                0x00016174        0x8 hardware/tastiera.o
+                0x00016174                {anonymous}::tastiera::leggi_nome(void)
+ .gnu.linkonce.t.leggi_no_irq__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastiera
+                0x0001617c        0x8 hardware/tastiera.o
+                0x0001617c                {anonymous}::tastiera::leggi_no_irq(void)
+ .gnu.linkonce.t.leggi_irq__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastieraPUc
+                0x00016184        0x8 hardware/tastiera.o
+                0x00016184                {anonymous}::tastiera::leggi_irq(unsigned char *)
+ .gnu.linkonce.t.leggi_no_porte__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastiera
+                0x0001618c        0x8 hardware/tastiera.o
+                0x0001618c                {anonymous}::tastiera::leggi_no_porte(void)
+ *fill*         0x00016194        0xc 00
+ .gnu.linkonce.t.leggi_porte__Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastieraPUs
+                0x000161a0       0x20 hardware/tastiera.o
+                0x000161a0                {anonymous}::tastiera::leggi_porte(unsigned short *)
+ .text          0x000161c0      0x7b0 hardware/video.o
+                0x000168c4                Video::get_formed_color(void)
+                0x000161f0                Video::operator<<(unsigned int)
+                0x00016410                Video::put(char const *)
+                0x00016284                Video::operator<<(char)
+                0x00016444                Video::get_pos(void)
+                0x00016244                Video::operator<<(long double)
+                0x000161c0                Video::operator<<(int)
+                0x00016224                Video::operator<<(char const *)
+                0x000164d0                Video::put(char)
+                0x00016338                Video::gotoxy(unsigned int)
+                0x000162a8                Video::Video(void)
+                0x000168ec                Video::set_back_color(unsigned char)
+                0x000162f0                Video::init(void)
+                0x00016358                Video::clear(void)
+                0x00016450                Video::scroll(void)
+                0x000163a8                Video::accapo(void)
+                0x000168d8                Video::set_text_color(unsigned char)
+                0x00016914                Video::get_back_color(void)
+                0x00016904                Video::get_text_color(void)
+ .text          0x00016970       0x2c cpu/cpu_oper.o
+                0x00016970                get_flag(void)
+                0x00016978                check_fpu(void)
+ .text          0x0001699c      0x11c cpu/gdt.o
+                0x0001699c                set_gdtr(unsigned long long *, unsigned int)
+                0x00016a04                init_gdt(void)
+ *fill*         0x00016ab8        0x8 00
+ .text          0x00016ac0      0xa10 cpu/idt.o
+                0x00016d44                {anonymous}::isr9(void)
+                0x00016b04                {anonymous}::isr0(void)
+                0x00016dc4                {anonymous}::isr11(void)
+                0x000170b4                {anonymous}::isr16(void)
+                0x00017488                idt::get(unsigned int)
+                0x00016b44                {anonymous}::isr1(void)
+                0x000171fc                idt::add(void (*)(int), unsigned int)
+                0x00017134                idt::add(void (*)(void), unsigned int)
+                0x000174c0                idt::sti(void)
+                0x00016e94                {anonymous}::isr14(void)
+                0x000172bc                idt::init(void)
+                0x00016ae0                {anonymous}::set_idtr({anonymous}::int_gate *, unsigned int)
+                0x00016ac0                {anonymous}::mint_null(void)
+                0x00016e04                {anonymous}::isr12(void)
+                0x000174bc                idt::cli(void)
+                0x00016b84                {anonymous}::isr2(void)
+                0x00016d84                {anonymous}::isr10(void)
+                0x00016c04                {anonymous}::isr4(void)
+                0x00016cc4                {anonymous}::isr7(void)
+                0x00017444                idt::del(unsigned int)
+                0x00016bc4                {anonymous}::isr3(void)
+                0x00016e44                {anonymous}::isr13(void)
+                0x00016c44                {anonymous}::isr5(void)
+                0x000170f4                {anonymous}::isr17(void)
+                0x00016d04                {anonymous}::isr8(void)
+                0x00016c84                {anonymous}::isr6(void)
+ .text          0x000174d0      0x2e0 cpu/paging.o
+                0x00017528                table_presente(unsigned int)
+                0x00017720                abilita_hardware_paging(void)
+                0x00017768                disabilita_hardware_paging(void)
+                0x00017538                set_present(unsigned int *)
+                0x00017518                pagina_presente(unsigned int)
+                0x00017500                get_table_addr(unsigned int)
+                0x000176d8                prendi_prima_pagina_libera(unsigned int *)
+                0x00017540                set_assent(unsigned int *)
+                0x000174e8                crea_page_table(unsigned int *, unsigned int)
+                0x000174d0                crea_page_dir(unsigned int *, unsigned int)
+                0x0001750c                get_page_addr(unsigned int)
+                0x00017590                print_paging(unsigned int *)
+ .text          0x000177b0      0x1f0 mm/desc_mem.o
+                0x00017908                libera_desc_mem(mem_desc *, void *)
+                0x0001782c                setta_desc_mem(mem_desc *, void *, unsigned int)
+                0x000177b0                init_desc_mem(mem_desc *)
+ .text          0x000179a0      0x250 mm/fis_mmu.o
+                0x00017b48                rilascia_pagina(void *)
+                0x00017bc4                libera_spazio_fisico(void *, void *)
+                0x00017ac4                prendi_pagina_fisica(void)
+                0x000179e4                init_spazio_fisico(void)
+                0x000179a0                count_memory(void)
+                0x00017b90                prendi_spazio_fisico(void *, void *)
+ .text          0x00017bf0      0x150 mm/kmmu.o
+                0x00017bf0                init_kmmu(void)
+ .text          0x00017d40      0x210 mm/mem.o
+                0x00017e40                krealloc
+                0x00017dfc                kfree
+                0x00017da8                kmalloc
+                0x00017d40                kcalloc
+ .text          0x00017f50      0x170 mm/mmu.o
+                0x00018040                alloca(unsigned int, mem_desc *)
+                0x00018094                dealloca(void *, mem_desc *)
+                0x00017fa4                init_kernel_mmu(mem_desc *)
+                0x00017f50                init_mmu(mem_desc *)
+ .text          0x000180c0      0x170 mm/pagine_libere.o
+                0x00018144                prendi_pagina_virtuale(unsigned int, unsigned int *)
+                0x000180c0                {anonymous}::isset(unsigned int, unsigned int *)
+                0x000180fc                init_spazio_virtuale_libero(unsigned int *)
+                0x0001820c                libera_pagina_virtuale_libera(unsigned int, unsigned int *)
+                0x00018160                prendi_spazio_virtuale(unsigned int, unsigned int *)
+                0x000180dc                {anonymous}::setbitmapbit(unsigned int, unsigned int *, unsigned int)
+ .text          0x00018230      0x260 mm/pagine_virtuali.o
+                0x000183d0                libera_spazio_virtuale(mem_desc *, void *, unsigned int)
+                0x00018410                libera_pagina_virtuale(mem_desc *, void *)
+                0x00018230                init_spazio_virtuale(mem_desc *)
+                0x00018308                setta_spazio_virtuale(unsigned int *, void *, unsigned int)
+                0x00018348                setta_pagina_virtuale(unsigned int *, void *, void *)
+ .text          0x00018490       0x70 task/hardware_task.o
+                0x00018490                switch_task(unsigned int)
+                0x0001849c                make_tss(void (*)(void), void (*)(void))
+                0x000184e8                del_tss(void *)
+ .text          0x00018500      0x310 task/messaggi.o
+                0x00018500                {anonymous}::cerca_primo_libero(void)
+                0x00018598                send(unsigned int, unsigned int, void *, unsigned int)
+                0x000187a0                init_msg(void)
+                0x0001876c                stato_casella(unsigned int)
+                0x00018524                {anonymous}::esistente(unsigned int)
+                0x00018564                chiudi_account(unsigned int)
+                0x000186a0                receive(unsigned int, void *)
+                0x00018544                apri_account(void)
+ .text          0x00018810      0x150 task/politic.o
+                0x00018810                init_sched_politic(void)
+                0x00018920                find_next_task(void)
+                0x00018848                prendi_biglietti(unsigned int, unsigned int)
+                0x000188d0                libera_biglietti(biglietto_t)
+ .gnu.linkonce.t.init__t6rbtree1ZQ232_GLOBAL_.N.task_politic.ccR1Mhgd9biglietto
+                0x00018960       0x30 task/politic.o
+                0x00018960                rbtree<{anonymous}::biglietto>::init(void)
+ .gnu.linkonce.t.insert__t6rbtree1ZQ232_GLOBAL_.N.task_politic.ccR1Mhgd9bigliettoGQ232_GLOBAL_.N.task_politic.ccR1Mhgd9biglietto
+                0x00018990      0x1d0 task/politic.o
+                0x00018990                rbtree<{anonymous}::biglietto>::insert({anonymous}::biglietto)
+ .gnu.linkonce.t.remove__t6rbtree1ZQ232_GLOBAL_.N.task_politic.ccR1Mhgd9bigliettoGQ232_GLOBAL_.N.task_politic.ccR1Mhgd9biglietto
+                0x00018b60      0x460 task/politic.o
+                0x00018b60                rbtree<{anonymous}::biglietto>::remove({anonymous}::biglietto)
+ .gnu.linkonce.t.find__t6rbtree1ZQ232_GLOBAL_.N.task_politic.ccR1Mhgd9bigliettoGQ232_GLOBAL_.N.task_politic.ccR1Mhgd9bigliettoPQ232_GLOBAL_.N.task_politic.ccR1Mhgd9biglietto
+                0x00018fc0       0x50 task/politic.o
+                0x00018fc0                rbtree<{anonymous}::biglietto>::find({anonymous}::biglietto, {anonymous}::biglietto *)
+ .text          0x00019010       0x70 task/sem.o
+                0x00019038                sem::prendi(void)
+                0x0001902c                sem::init(void)
+                0x00019010                sem::sem(void)
+                0x00019064                sem::lascia(void)
+ .text          0x00019080      0x3b0 task/task.o
+                0x000191d0                attiva_scheduler
+                0x00019304                get_task_name
+                0x00019334                suicide
+                0x000191d8                disattiva_scheduler
+                0x0001934c                sleep
+                0x000192e8                kill
+                0x00019418                sveglia
+                0x00019080                scheduler
+                0x000191e0                init_scheduler
+                0x000193c4                addormenta
+                0x000192e0                get_current_task
+                0x00019234                add_task
+ .text          0x00019430      0x2c0 dispositivi/hmu.o
+                0x00019504                add_driver(dispositivo *, unsigned int)
+                0x00019494                {anonymous}::unset_irq(unsigned short)
+                0x000196d0                del_driver(dispositivo *)
+                0x000194bc                init_hmu(void)
+                0x0001944c                {anonymous}::unset_port(unsigned short)
+                0x000196d4                usa_dispositivo(unsigned int)
+                0x00019430                {anonymous}::set_port(unsigned short)
+                0x00019468                {anonymous}::set_irq(unsigned short)
+ .text          0x000196f0      0x580 fs/fat.o
+                0x0001974c                leggi_floppy(unsigned int, unsigned int, unsigned char *)
+                0x00019850                nextCluster(disco *, int)
+                0x000198c8                clusterByte(disco *, int)
+                0x000196f0                strcasecmp(char *, char *)
+                0x00019bd0                leggi_file(int, void *)
+                0x00019990                trova_file(char *, unsigned int)
+                0x000198e4                init_fat(void)
+                0x00019c2c                carica_file(char *, void *)
+ .text          0x00019c70       0xac fpu_emu/fpu_emu.o
+                0x00019c70                fpu_emu::fpu_emu(void)
+ *fill*         0x00019d1c        0x4 00
+ .text          0x00019d20      0x740 fpu_emu/fpu_emu_comp.o
+                0x00019d34                fpu_emu_comp::fcom(void)
+                0x00019efc                fpu_emu_comp::fcom(double)
+                0x0001a1f8                fpu_emu_comp::fcompp(void)
+                0x00019d20                fpu_emu_comp::fpu_emu_comp_init(fpu_emu_reg *, fpu_emu_exception *)
+                0x0001a0b8                fpu_emu_comp::fcomp(unsigned int)
+                0x00019e30                fpu_emu_comp::fcom(float)
+                0x0001a054                fpu_emu_comp::fcomp(void)
+                0x00019db4                fpu_emu_comp::fcom(unsigned int)
+                0x0001a124                fpu_emu_comp::fcomp(float)
+                0x0001a18c                fpu_emu_comp::fcomp(double)
+                0x0001a280                fpu_emu_comp::fxam(void)
+                0x00019fd0                fpu_emu_comp::ftst(void)
+ .text          0x0001a460      0x570 fpu_emu/fpu_emu_control.o
+                0x0001a83c                fpu_emu_control::fnsave(reg *)
+                0x0001a460                fpu_emu_control::fninit(void)
+                0x0001a528                fpu_emu_control::fldcw(unsigned short)
+                0x0001a820                fpu_emu_control::fsave(reg *)
+                0x0001a56c                fpu_emu_control::fnstcw(unsigned short *)
+                0x0001a510                fpu_emu_control::fclex(void)
+                0x0001a590                fpu_emu_control::fstsw(unsigned short *)
+                0x0001a4e4                fpu_emu_control::fnclex(void)
+                0x0001a548                fpu_emu_control::fstcw(unsigned short *)
+                0x0001a4cc                fpu_emu_control::finit(void)
+                0x0001a6fc                fpu_emu_control::ffree(unsigned short)
+                0x0001a77c                fpu_emu_control::fdecstp(void)
+                0x0001a6e0                fpu_emu_control::fstenv(rs *)
+                0x0001a760                fpu_emu_control::fwait(void)
+                0x0001a764                fpu_emu_control::fnop(void)
+                0x0001a5b4                fpu_emu_control::fnstsw(unsigned short *)
+                0x0001a768                fpu_emu_control::fpu_emu_control_init(fpu_emu_reg *, fpu_emu_exception *)
+                0x0001a900                fpu_emu_control::frstor(reg *)
+                0x0001a660                fpu_emu_control::fnstenv(rs *)
+                0x0001a5d8                fpu_emu_control::fldenv(rs *)
+                0x0001a7d0                fpu_emu_control::fincstp(void)
+ .text          0x0001a9d0      0xc20 fpu_emu/fpu_emu_data.o
+                0x0001ab30                fpu_emu_data::fld(double)
+                0x0001b304                fpu_emu_data::fxch(unsigned short)
+                0x0001b498                fpu_emu_data::fst(unsigned int)
+                0x0001b3e0                fpu_emu_data::fstp(long double *)
+                0x0001ad94                fpu_emu_data::fild(short)
+                0x0001b0cc                fpu_emu_data::fild(long long)
+                0x0001b534                fpu_emu_data::fstp(unsigned int)
+                0x0001a9d0                fpu_emu_data::fld(float)
+                0x0001b28c                fpu_emu_data::fxch(void)
+                0x0001ac6c                fpu_emu_data::fld(long double)
+                0x0001b3a4                fpu_emu_data::fst(long double *)
+                0x0001af3c                fpu_emu_data::fild(int)
+                0x0001ad44                print_bin(unsigned long long)
+                0x0001b390                fpu_emu_data::fpu_emu_data_init(fpu_emu_reg *, fpu_emu_exception *)
+ .text          0x0001b5f0      0x110 fpu_emu/fpu_emu_demo.o
+                0x0001b5f0                fpu_demo(void)
+ .text          0x0001b700       0xd0 fpu_emu/fpu_emu_exception.o
+                0x0001b77c                fpu_emu_exception::del(void)
+                0x0001b7a4                fpu_emu_exception::get_last(void)
+                0x0001b708                fpu_emu_exception::add(exceptions)
+                0x0001b700                fpu_emu_exception::get_address(void)
+                0x0001b7bc                fpu_emu_exception::fpu_emu_exception(void)
+                0x0001b79c                fpu_emu_exception::get_first(void)
+ .text          0x0001b7d0       0x14 fpu_emu/fpu_emu_exp.o
+                0x0001b7d0                fpu_emu_exp::fpu_emu_exp_init(fpu_emu_reg *, fpu_emu_exception *)
+ *fill*         0x0001b7e4        0xc 00
+ .text          0x0001b7f0     0x2a90 fpu_emu/fpu_emu_math.o
+                0x0001da7c                fpu_emu_math::fidiv(int)
+                0x0001cc8c                fpu_emu_math::fisubr(int)
+                0x0001d848                fpu_emu_math::fdivp(unsigned short)
+                0x0001e044                fpu_emu_math::fidivr(short)
+                0x0001d03c                fpu_emu_math::fmulp(void)
+                0x0001c4a0                fpu_emu_math::fisub(int)
+                0x0001c370                fpu_emu_math::fisub(short)
+                0x0001d638                fpu_emu_math::fdiv(short, short)
+                0x0001c680                fpu_emu_math::fsubr(double)
+                0x0001df48                fpu_emu_math::fdivrp(unsigned short)
+                0x0001cd94                fpu_emu_math::fmul(float)
+                0x0001d340                fpu_emu_math::fimul(short)
+                0x0001b86c                fpu_emu_math::fadd(float)
+                0x0001bb0c                fpu_emu_math::faddp(unsigned short)
+                0x0001db7c                fpu_emu_math::fdivr(float)
+                0x0001cf58                fpu_emu_math::fmul(short, short)
+                0x0001c010                fpu_emu_math::fsub(double)
+                0x0001c770                fpu_emu_math::fsubr(short, short)
+                0x0001b7f0                fpu_emu_math::fabs(void)
+                0x0001e26c                fpu_emu_math::fpu_emu_math_init(fpu_emu_reg *, fpu_emu_exception *)
+                0x0001be20                fpu_emu_math::fiadd(int)
+                0x0001c110                fpu_emu_math::fsub(short, short)
+                0x0001d754                fpu_emu_math::fdivp(void)
+                0x0001d548                fpu_emu_math::fdiv(double)
+                0x0001ca1c                fpu_emu_math::fsubrp(void)
+                0x0001c26c                fpu_emu_math::fsubp(unsigned short)
+                0x0001c59c                fpu_emu_math::fsubr(float)
+                0x0001c8cc                fpu_emu_math::fsubrp(unsigned short)
+                0x0001d120                fpu_emu_math::fmulp(short)
+                0x0001cb54                fpu_emu_math::fisubr(short)
+                0x0001bc08                fpu_emu_math::faddp(void)
+                0x0001dc60                fpu_emu_math::fdivr(double)
+                0x0001de64                fpu_emu_math::fdivrp(void)
+                0x0001ce70                fpu_emu_math::fmul(double)
+                0x0001d21c                fpu_emu_math::fimul(int)
+                0x0001e170                fpu_emu_math::fidivr(int)
+                0x0001ba30                fpu_emu_math::fadd(short, short)
+                0x0001dd50                fpu_emu_math::fdivr(short, short)
+                0x0001b948                fpu_emu_math::fadd(double)
+                0x0001d94c                fpu_emu_math::fidiv(short)
+                0x0001bf1c                fpu_emu_math::fsub(float)
+                0x0001b824                fpu_emu_math::fchs(void)
+                0x0001bcf0                fpu_emu_math::fiadd(short)
+                0x0001d464                fpu_emu_math::fdiv(float)
+ .text          0x0001e280      0x3a0 fpu_emu/fpu_emu_mov.o
+                0x0001e5a4                fpu_emu_mov::fcmovnu(unsigned int)
+                0x0001e454                fpu_emu_mov::fcmovbe(unsigned int)
+                0x0001e294                fpu_emu_mov::fcmovb(unsigned int)
+                0x0001e304                fpu_emu_mov::fcmovnb(unsigned int)
+                0x0001e534                fpu_emu_mov::fcmovu(unsigned int)
+                0x0001e3e4                fpu_emu_mov::fcmovne(unsigned int)
+                0x0001e4c4                fpu_emu_mov::fcmovnbe(unsigned int)
+                0x0001e374                fpu_emu_mov::fcmove(unsigned int)
+                0x0001e280                fpu_emu_mov::fpu_emu_mov_init(fpu_emu_reg *, fpu_emu_exception *)
+ .text          0x0001e620       0xe8 fpu_emu/fpu_emu_reg.o
+                0x0001e6e8                fpu_emu_reg::set_fop(unsigned long long)
+                0x0001e63c                fpu_emu_reg::get_sr(void)
+                0x0001e698                fpu_emu_reg::get_fip(void)
+                0x0001e648                fpu_emu_reg::set_sr(unsigned short)
+                0x0001e664                fpu_emu_reg::set_tr(unsigned short)
+                0x0001e620                fpu_emu_reg::get_cr(void)
+                0x0001e62c                fpu_emu_reg::set_cr(unsigned short)
+                0x0001e6b0                fpu_emu_reg::set_fip(unsigned long long)
+                0x0001e658                fpu_emu_reg::get_tr(void)
+                0x0001e6d0                fpu_emu_reg::get_fop(void)
+                0x0001e688                fpu_emu_reg::set_opcode(unsigned short)
+                0x0001e674                fpu_emu_reg::get_opcode(void)
+ *fill*         0x0001e708        0x8 00
+ .text          0x0001e710     0x1fb0 fpu_emu/fpu_emu_trig.o
+                0x0001f0b4                fpu_emu_trig::get_nearest(void)
+                0x0001f00c                fpu_emu_trig::converti(int)
+                0x0001e710                fpu_emu_trig::fpu_emu_trig_init(fpu_emu_reg *, fpu_emu_exception *)
+                0x0001fc00                fpu_emu_trig::fcos(void)
+                0x00020698                fpu_emu_trig::fsincos(void)
+                0x0001efdc                fpu_emu_trig::fattoriale(long)
+                0x0001f174                fpu_emu_trig::fsin(void)
+ .text          0x000206c0     0x1030 fpu_emu/my_double.o
+                0x00021530                myfloat::sottrai128(myfloat::int128, myfloat::int128)
+                0x00020f64                myfloat::dividi(myfloat::my_double, myfloat::my_double)
+                0x00021438                myfloat::somma128(myfloat::int128, myfloat::int128)
+                0x000206c0                myfloat::somma(myfloat::my_double, myfloat::my_double)
+                0x000211bc                myfloat::compare(myfloat::my_double, myfloat::my_double, fpu_emu_reg *)
+                0x00020c0c                myfloat::moltiplica(myfloat::my_double, myfloat::my_double)
+                0x0002167c                myfloat::confronta128(myfloat::int128, myfloat::int128)
+ .text          0x000216f0      0x220 libc/ctype.o
+                0x00021884                tonumber
+                0x00021758                islower
+                0x000217b8                tolower
+                0x0002176c                isspace
+                0x000218b8                todigit
+                0x000218dc                isxdigit
+                0x00021788                isupper
+                0x0002172c                isalpha
+                0x000216f0                isalnum
+                0x00021860                isnumber
+                0x000217d0                isspecial
+                0x000218f8                isdigit
+                0x00021748                iscntrl
+                0x0002179c                toupper
+ .text          0x00021910       0x80 libc/math.o
+                0x00021910                fmod
+                0x00021954                pow
+ .text          0x00021990       0x20 libc/sprintf.o
+                0x00021990                sprintf
+ .text          0x000219b0       0x20 libc/sscanf.o
+                0x000219b0                sscanf
+ .text          0x000219d0       0x9c libc/stdio.o
+                0x00021a10                putchar
+                0x000219d0                printf
+                0x00021a28                gets
+                0x00021a00                puts
+                0x00021a20                getchar
+                0x00021a38                scanf
+ *fill*         0x00021a6c        0x4 00
+ .text          0x00021a70      0xe90 libc/stdlib.o
+                0x00022840                malloc
+                0x000226ac                strtoul
+                0x000221c0                dcvt
+                0x00022610                strtou
+                0x00022464                strtol
+                0x000228d8                calloc
+                0x000221ec                strtod
+                0x000223a8                strtoi
+                0x00021a70                rand
+                0x00022870                realloc
+                0x00021af0                max
+                0x00021ca0                fcvt
+                0x00021ad0                srand
+                0x00021b00                min
+                0x00021b10                ecvt
+                0x00022064                ucvt
+                0x00021f40                gcvt
+                0x00021ae4                abs
+                0x00022858                free
+ .text          0x00022900      0x3f0 libc/string.o
+                0x00022900                strcpy
+                0x000229dc                strlwr
+                0x00022bc4                reverse
+                0x00022ba0                memcpy
+                0x00022bfc                itoa
+                0x00022acc                strrchr
+                0x00022c68                utoa
+                0x00022a18                strcat
+                0x00022af4                strstr
+                0x0002297c                strncmp
+                0x00022924                strncpy
+                0x00022b48                memcmp
+                0x00022a44                strscn
+                0x00022a90                strncat
+                0x00022b80                memset
+                0x00022950                strcmp
+                0x000229b8                strupr
+                0x00022a00                strlen
+                0x00022a74                strchr
+ .text          0x00022cf0      0x190 libc/time.o
+                0x00022cf0                bisestile
+                0x00022d40                time
+ .text          0x00022e80      0x450 libc/vsprintf.o
+                0x00022e80                vsprintf
+ .text          0x000232d0      0x340 libc/vsscanf.o
+                0x000232d0                vsscanf
+ .text          0x00023610      0x830 lib/avl.o
+                0x00023dd0                _avl_delete
+                0x00023e04                _avl_find
+                0x00023db4                _avl_insert
+                0x000238fc                avl_find
+                0x00023c4c                avl_delete_min
+                0x00023968                avl_delete
+                0x00023d9c                _avl_free
+                0x000236dc                avl_insert
+                0x00023e20                _avl_find_min
+                0x0002394c                avl_find_min
+                0x00023d84                _avl_alloc
+                0x00023664                avl_free
+                0x00023610                avl_alloc
+                0x00023dec                _avl_delete_min
+ .text          0x00023e40      0x2f0 lib/bheap.o
+                0x000240e4                _bh_n
+                0x000240c4                _bh_decrease_key
+                0x00023e90                bh_free
+                0x00023fe0                bh_siftup
+                0x00024078                _bh_delete_min
+                0x00023fa8                bh_decrease_key
+                0x00023e40                bh_alloc
+                0x000240a4                _bh_insert
+                0x00024124                _bh_dump
+                0x000240ec                _bh_key_comps
+                0x0002410c                _bh_free
+                0x000240f4                _bh_alloc
+                0x00023ec4                bh_min
+                0x00023f30                bh_delete
+                0x00023ed0                bh_insert
+ .text          0x00024130      0x3c0 lib/bst.o
+                0x000242a4                bst_find_min
+                0x00024498                _bst_delete_min
+                0x00024460                _bst_insert
+                0x000242c8                bst_delete
+                0x00024430                _bst_alloc
+                0x000243dc                bst_delete_min
+                0x0002447c                _bst_delete
+                0x00024254                bst_find
+                0x00024130                bst_alloc
+                0x000241d8                bst_insert
+                0x000244cc                _bst_find_min
+                0x0002415c                bst_free
+                0x00024448                _bst_free
+                0x000244b0                _bst_find
+ .text          0x000244f0      0x2d0 lib/dfs_bfs.o
+                0x000245ac                dfs_recursive
+                0x00024778                dfs_bfs_result_free
+                0x000244f0                dfs
+                0x00024614                bfs
+                0x000247b8                dfs_bfs_result_print
+ .text          0x000247c0      0x210 lib/hashtbl.o
+                0x00024934                hash_tbl_delete
+                0x00024864                hash_tbl_insert
+                0x000247c0                hash_tbl_alloc
+                0x00024808                hash_tbl_free
+                0x000248dc                hash_tbl_find
+ .text          0x000249d0      0x200 lib/mst.o
+                0x00024b98                mst_result_free
+                0x000249d0                mst_prim
+ .text          0x00024bd0      0x160 lib/rand.o
+                0x00024bd0                casual
+                0x00024cf0                casual_n
+ .text          0x00024d30      0x940 lib/rbtree.o
+                0x000255cc                _rbtree_free
+                0x00025600                _rbtree_delete
+                0x00024f18                rbtree_find
+                0x0002529c                rbtree_delete_min
+                0x00024de0                rbtree_insert
+                0x00024f60                rbtree_find_min
+                0x00025650                _rbtree_find_min
+                0x0002554c                rbtree_restructure2
+                0x00024d30                rbtree_alloc
+                0x00025634                _rbtree_find
+                0x000255b4                _rbtree_alloc
+                0x00024f88                rbtree_delete
+                0x000254b8                rbtree_restructure
+                0x00024d70                rbtree_free
+                0x000255e4                _rbtree_insert
+                0x0002561c                _rbtree_delete_min
+ .text          0x00025670      0x370 lib/sc.o
+                0x00025670                sc
+                0x0002583c                sc_recursive
+                0x000259d4                sc_result_print
+                0x00025994                sc_result_free
+ .text          0x000259e0       0x60 lib/search.o
+                0x000259e0                binarysearch
+ .text          0x00025a40      0x970 lib/sort.o
+                0x00025c78                mergesort0
+                0x00025a40                quicksort
+                0x00025f6c                radixsort
+                0x00025e00                mergesort
+                0x00025cd8                mergesort0_recursive
+                0x00026174                heapsort
+                0x00025e6c                mergesort_recursive
+                0x00025a9c                quicksort_recursive
+ .text          0x000263b0      0xd40 lib/tree23.o
+                0x00027098                _tree23_delete_min
+                0x000270b0                _tree23_find
+                0x00027048                _tree23_free
+                0x000270cc                _tree23_find_min
+                0x0002643c                tree23_free
+                0x0002688c                tree23_find
+                0x000264cc                tree23_insert
+                0x00026978                tree23_delete
+                0x0002707c                _tree23_delete
+                0x000263b0                tree23_alloc
+                0x00027030                _tree23_alloc
+                0x00026970                tree23_find_min
+                0x00026e40                tree23_delete_min
+                0x00027060                _tree23_insert
+ .text          0x000270f0       0x1c libc/log.o
+                0x00027102                log
+                0x000270f0                logf
+                0x000270f9                logl
+ .text          0x0002710c       0x48 libc/modf.o
+                0x0002710c                modf
+                0x00027154                PROVIDE (etext, .)
+
+.rodata         0x00027160     0x21d4
+ *(.rodata.rodata.*.gnu.linkonce.r.*)
+ .rodata        0x00027160      0x100 main/aamain.o
+ .rodata        0x00027260       0x1b main/debug.o
+ *fill*         0x0002727b        0x5 00
+ .rodata        0x00027280      0x1e0 main/exec.o
+ .rodata        0x00027460      0x260 main/syscall.o
+ .rodata        0x000276c0       0x40 main/var_amb.o
+ .rodata        0x00027700       0x94 hardware/delay.o
+ *fill*         0x00027794        0xc 00
+ .rodata        0x000277a0      0x1e0 hardware/floppy.o
+ .rodata        0x00027980       0x62 hardware/key_traslation.o
+ .rodata        0x000279e2       0x7c hardware/rtc.o
+ *fill*         0x00027a5e        0x2 00
+ .rodata        0x00027a60      0x2c0 hardware/serial.o
+ .rodata        0x00027d20       0x36 hardware/tastiera.o
+ *fill*         0x00027d56        0xa 00
+ .rodata        0x00027d60      0x180 hardware/video.o
+ .rodata        0x00027ee0       0x60 cpu/gdt.o
+ .rodata        0x00027f40      0x3e0 cpu/idt.o
+ .rodata        0x00028320       0xa0 cpu/paging.o
+ .rodata        0x000283c0       0x40 mm/desc_mem.o
+ .rodata        0x00028400       0xe0 mm/fis_mmu.o
+ .rodata        0x000284e0       0xa0 mm/kmmu.o
+ .rodata        0x00028580       0x80 mm/mmu.o
+ .rodata        0x00028600       0x80 mm/pagine_libere.o
+ .rodata        0x00028680       0x40 mm/pagine_virtuali.o
+ .rodata        0x000286c0       0x40 task/messaggi.o
+ .rodata        0x00028700       0x40 task/politic.o
+ .rodata        0x00028740       0x60 task/task.o
+ .rodata        0x000287a0       0x60 dispositivi/hmu.o
+ .rodata        0x00028800        0x8 fpu_emu/fpu_emu_comp.o
+ .rodata        0x00028808       0x10 fpu_emu/fpu_emu_data.o
+ .rodata        0x00028818       0x78 fpu_emu/fpu_emu_demo.o
+ .rodata        0x00028890       0x30 fpu_emu/fpu_emu_math.o
+ .rodata        0x000288c0       0x20 fpu_emu/fpu_emu_reg.o
+ .rodata        0x000288e0      0x600 fpu_emu/fpu_emu_trig.o
+ .rodata        0x00028ee0        0x8 fpu_emu/my_double.o
+ .rodata        0x00028ee8       0x1f libc/ctype.o
+ *fill*         0x00028f07        0x1 00
+ .rodata        0x00028f08       0x40 libc/stdlib.o
+ *fill*         0x00028f48       0x18 00
+ .rodata        0x00028f60       0x40 libc/string.o
+ .rodata        0x00028fa0       0x30 libc/time.o
+ .rodata        0x00028fd0      0x150 libc/vsprintf.o
+ .rodata        0x00029120      0x17c libc/vsscanf.o
+ .rodata        0x0002929c       0x1c lib/avl.o
+                0x0002929c                AVL_info
+ *fill*         0x000292b8        0x8 00
+ .rodata        0x000292c0       0x20 lib/bheap.o
+                0x000292c0                BHEAP_info
+ .rodata        0x000292e0       0x1c lib/bst.o
+                0x000292e0                BST_info
+ .rodata        0x000292fc       0x1c lib/rbtree.o
+                0x000292fc                RBTREE_info
+ .rodata        0x00029318       0x1c lib/tree23.o
+                0x00029318                TREE23_info
+                0x00029334                . =  ALIGN (0x4)
+
+.data           0x00029340      0x16c
+                0x00029340                __CTOR_LIST__ = .
+                0x00029340        0x4 LONG 0x5 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
+ *(.ctors)
+ .ctors         0x00029344        0x4 main/debug.o
+ .ctors         0x00029348        0x4 main/var_amb.o
+ .ctors         0x0002934c        0x4 hardware/tastiera.o
+ .ctors         0x00029350        0x4 hardware/video.o
+ .ctors         0x00029354        0x4 mm/mem.o
+                0x00029358        0x4 LONG 0x0
+                0x0002935c                __CTOR_END__ = .
+                0x0002935c                __DTOR_LIST__ = .
+                0x0002935c        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
+ *(.dtors)
+                0x00029360        0x4 LONG 0x0
+                0x00029364                __DTOR_END__ = .
+ *(.data.data.*.gnu.linkonce.d.*)
+ *fill*         0x00029364       0x1c 00
+ .data          0x00029380       0x40 main/exec.o
+                0x00029380                {anonymous}::tipi
+ .data          0x000293c0        0x8 hardware/delay.o
+ .data          0x000293c8       0x30 hardware/dma.o
+                0x000293f0                CountPort
+                0x000293e8                AddrPort
+                0x000293d8                ClearReg
+                0x000293d0                ModeReg
+                0x000293c8                MaskReg
+                0x000293e0                PagePort
+ .data          0x000293f8       0x18 hardware/floppy.o
+                0x00029404                {anonymous}::statsz
+                0x00029405                {anonymous}::sr0
+                0x000293fc                fdc_track
+                0x000293fd                {anonymous}::status
+                0x00029408                {anonymous}::tbaddr
+                0x000293f8                Bufrx
+ .data          0x00029410       0x1c hardware/rtc.o
+                0x00029410                giorni_della_settimana
+ .data          0x0002942c        0x4 hardware/serial.o
+                0x0002942c                default_irq
+ .data          0x00029430        0x4 hardware/tastiera.o
+ *fill*         0x00029434        0xc 00
+ .gnu.linkonce.d.__vt_Q237_GLOBAL_.N.hardware_tastiera.cctUFP7c8tastiera
+                0x00029440       0x40 hardware/tastiera.o
+                0x00029440                {anonymous}::tastiera virtual table
+ .data          0x00029480        0x8 hardware/video.o
+                0x00029484                kout
+                0x00029480                {anonymous}::escape
+ .data          0x00029488        0x4 cpu/idt.o
+                0x00029488                {anonymous}::active
+ .data          0x0002948c        0x4 task/politic.o
+                0x0002948c                {anonymous}::current_max_ticket
+ .data          0x00029490        0xc task/task.o
+                0x00029490                {anonymous}::current_task
+                0x00029498                {anonymous}::active
+                0x00029494                {anonymous}::num_task
+ .data          0x0002949c        0x4 libc/ctype.o
+ .data          0x000294a0        0x8 libc/stdlib.o
+ .data          0x000294a8        0x4 lib/rand.o
+
+.ctors
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE ( *crtend.o).ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE ( *crtend.o).dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.bss            0x000294c0    0x6ae04
+ *(.bss.bss.*.gnu.linkonce.b.*)
+ .bss           0x000294c0    0x20020 main/aamain.o
+                0x000294c0                kernel_desc
+                0x000494c8                bios_ser_mem
+ .bss           0x000494e0        0x4 main/debug.o
+                0x000494e0                debug
+ .bss           0x000494e4        0x4 main/exec.o
+                0x000494e4                {anonymous}::image
+ .bss           0x000494e8        0x8 main/var_amb.o
+                0x000494e8                {anonymous}::amb_sem
+                0x000494ec                {anonymous}::testa
+ .bss           0x000494f0        0x4 hardware/8259.o
+                0x000494f0                {anonymous}::irq_mask
+ *fill*         0x000494f4        0xc 00
+ .bss           0x00049500       0xa0 hardware/floppy.o
+                0x00049581                {anonymous}::done
+                0x00049520                bufrx
+                0x00049580                {anonymous}::motor
+ .bss           0x000495a0       0x40 hardware/irq.o
+                0x000495a0                handler
+ .bss           0x000495e0     0x1220 hardware/key_traslation.o
+ .bss           0x0004a800       0x24 hardware/serial.o
+                0x0004a802                serial
+                0x0004a800                NUMBER_OF_COMS
+                0x0004a814                pserial
+ .bss           0x0004a824       0x28 hardware/tastiera.o
+                0x0004a848                {anonymous}::pid_key
+                0x0004a824                {anonymous}::mykeyboard
+                0x0004a828                {anonymous}::buffer_raw
+                0x0004a838                {anonymous}::buffer
+ .bss           0x0004a84c       0x24 hardware/video.o
+                0x0004a84c                mystdout
+                0x0004a86c                {anonymous}::poss
+                0x0004a868                {anonymous}::offs
+                0x0004a85c                {anonymous}::vtseq
+ *fill*         0x0004a870       0x10 00
+ .bss           0x0004a880       0x40 cpu/gdt.o
+                0x0004a880                gdt
+ .bss           0x0004a8c0      0x820 cpu/idt.o
+                0x0004a8c0                {anonymous}::_IDT
+ .bss           0x0004b0e0    0x20020 mm/fis_mmu.o
+                0x0006b0e0                {anonymous}::num_pages
+                0x0004b0e0                {anonymous}::page_bitmap
+ .bss           0x0006b100        0x4 mm/kmmu.o
+                0x0006b100                kernel_dir
+ .bss           0x0006b104       0x10 mm/mem.o
+                0x0006b108                {anonymous}::sem_calloc
+                0x0006b110                {anonymous}::sem_realloc
+                0x0006b10c                {anonymous}::sem_free
+                0x0006b104                {anonymous}::sem_malloc
+ .bss           0x0006b114        0x4 mm/pagine_libere.o
+                0x0006b114                {anonymous}::num_pages
+ *fill*         0x0006b118        0x8 00
+ .bss           0x0006b120     0x2ee0 task/messaggi.o
+                0x0006b120                {anonymous}::ufficio_postale
+ .bss           0x0006e000        0xc task/politic.o
+                0x0006e000                {anonymous}::lotteria
+ *fill*         0x0006e00c       0x14 00
+ .bss           0x0006e020    0x157e0 task/task.o
+                0x0006e020                tick
+                0x0006e040                {anonymous}::tasks
+ .bss           0x00083800    0x101c0 dispositivi/hmu.o
+                0x00093800                {anonymous}::irq
+                0x00093820                {anonymous}::vett_dev
+                0x00083800                {anonymous}::porte
+ .bss           0x000939c0       0x80 fs/fat.o
+                0x000939c0                boot
+                0x00093a18                d
+ .bss           0x00093a40        0x8 fpu_emu/fpu_emu_demo.o
+                0x00093a40                pippo
+ *fill*         0x00093a48       0x18 00
+ .bss           0x00093a60      0x800 libc/stdio.o
+ .bss           0x00094260       0x10 lib/rand.o
+ *(COMMON)
+ COMMON         0x00094270        0x8 lib/dfs_bfs.o
+                                  0x0 (size before relaxing)
+                0x00094270                current_graph
+                0x00094274                dfs_result
+ COMMON         0x00094278       0x3c lib/sc.o
+                                  0x0 (size before relaxing)
+                0x00094278                p
+                0x0009427c                tos
+                0x00094280                n_sets
+                0x00094284                visit_nos
+                0x00094288                n_visited
+                0x0009428c                low_link_nos
+                0x00094290                sets_f
+                0x00094294                n_written
+                0x00094298                n_unvisited
+                0x0009429c                unvisited
+                0x000942a0                sc_stack
+                0x000942a4                sets_s
+                0x000942a8                vertices
+                0x000942ac                sp
+                0x000942b0                sc_vertices
+ COMMON         0x000942b4       0x10 lib/sort.o
+                                  0x0 (size before relaxing)
+                0x000942b4                x
+                0x000942b8                compare_fn
+                0x000942bc                temp_merge_array
+                0x000942c0                element_size
+                0x000942c4                . =  ALIGN (0x4)
+                0x000942c4                . =  ALIGN (0x4)
+                0x000942c4                _end = .
+                0x000942c4                PROVIDE (end, .)
+OUTPUT(kernel.bin binary)
+
+.note           0x00000000      0x564
+ .note          0x00000000       0x14 main/aamain.o
+ .note          0x00000014       0x14 main/debug.o
+ .note          0x00000028       0x14 main/exec.o
+ .note          0x0000003c       0x14 main/syscall.o
+ .note          0x00000050       0x14 main/var_amb.o
+ .note          0x00000064       0x14 hardware/8259.o
+ .note          0x00000078       0x14 hardware/delay.o
+ .note          0x0000008c       0x14 hardware/dma.o
+ .note          0x000000a0       0x14 hardware/floppy.o
+ .note          0x000000b4       0x14 hardware/irq.o
+ .note          0x000000c8       0x14 hardware/key_traslation.o
+ .note          0x000000dc       0x14 hardware/pit.o
+ .note          0x000000f0       0x14 hardware/rtc.o
+ .note          0x00000104       0x14 hardware/serial.o
+ .note          0x00000118       0x14 hardware/speaker.o
+ .note          0x0000012c       0x14 hardware/tastiera.o
+ .note          0x00000140       0x14 hardware/video.o
+ .note          0x00000154       0x14 cpu/cpu_oper.o
+ .note          0x00000168       0x14 cpu/gdt.o
+ .note          0x0000017c       0x14 cpu/idt.o
+ .note          0x00000190       0x14 cpu/paging.o
+ .note          0x000001a4       0x14 mm/desc_mem.o
+ .note          0x000001b8       0x14 mm/fis_mmu.o
+ .note          0x000001cc       0x14 mm/kmmu.o
+ .note          0x000001e0       0x14 mm/mem.o
+ .note          0x000001f4       0x14 mm/mmu.o
+ .note          0x00000208       0x14 mm/pagine_libere.o
+ .note          0x0000021c       0x14 mm/pagine_virtuali.o
+ .note          0x00000230       0x14 task/hardware_task.o
+ .note          0x00000244       0x14 task/messaggi.o
+ .note          0x00000258       0x14 task/politic.o
+ .note          0x0000026c       0x14 task/sem.o
+ .note          0x00000280       0x14 task/task.o
+ .note          0x00000294       0x14 dispositivi/hmu.o
+ .note          0x000002a8       0x14 fs/fat.o
+ .note          0x000002bc       0x14 fpu_emu/fpu_emu.o
+ .note          0x000002d0       0x14 fpu_emu/fpu_emu_comp.o
+ .note          0x000002e4       0x14 fpu_emu/fpu_emu_control.o
+ .note          0x000002f8       0x14 fpu_emu/fpu_emu_data.o
+ .note          0x0000030c       0x14 fpu_emu/fpu_emu_demo.o
+ .note          0x00000320       0x14 fpu_emu/fpu_emu_exception.o
+ .note          0x00000334       0x14 fpu_emu/fpu_emu_exp.o
+ .note          0x00000348       0x14 fpu_emu/fpu_emu_math.o
+ .note          0x0000035c       0x14 fpu_emu/fpu_emu_mov.o
+ .note          0x00000370       0x14 fpu_emu/fpu_emu_reg.o
+ .note          0x00000384       0x14 fpu_emu/fpu_emu_trig.o
+ .note          0x00000398       0x14 fpu_emu/my_double.o
+ .note          0x000003ac       0x14 libc/ctype.o
+ .note          0x000003c0       0x14 libc/math.o
+ .note          0x000003d4       0x14 libc/sprintf.o
+ .note          0x000003e8       0x14 libc/sscanf.o
+ .note          0x000003fc       0x14 libc/stdio.o
+ .note          0x00000410       0x14 libc/stdlib.o
+ .note          0x00000424       0x14 libc/string.o
+ .note          0x00000438       0x14 libc/time.o
+ .note          0x0000044c       0x14 libc/vsprintf.o
+ .note          0x00000460       0x14 libc/vsscanf.o
+ .note          0x00000474       0x14 lib/avl.o
+ .note          0x00000488       0x14 lib/bheap.o
+ .note          0x0000049c       0x14 lib/bst.o
+ .note          0x000004b0       0x14 lib/dfs_bfs.o
+ .note          0x000004c4       0x14 lib/hashtbl.o
+ .note          0x000004d8       0x14 lib/mst.o
+ .note          0x000004ec       0x14 lib/rand.o
+ .note          0x00000500       0x14 lib/rbtree.o
+ .note          0x00000514       0x14 lib/sc.o
+ .note          0x00000528       0x14 lib/search.o
+ .note          0x0000053c       0x14 lib/sort.o
+ .note          0x00000550       0x14 lib/tree23.o
+
+.comment        0x00000000      0xcf0
+ .comment       0x00000000       0x30 main/aamain.o
+ .comment       0x00000030       0x30 main/debug.o
+ .comment       0x00000060       0x30 main/exec.o
+ .comment       0x00000090       0x30 main/syscall.o
+ .comment       0x000000c0       0x30 main/var_amb.o
+ .comment       0x000000f0       0x30 hardware/8259.o
+ .comment       0x00000120       0x30 hardware/delay.o
+ .comment       0x00000150       0x30 hardware/dma.o
+ .comment       0x00000180       0x30 hardware/floppy.o
+ .comment       0x000001b0       0x30 hardware/irq.o
+ .comment       0x000001e0       0x30 hardware/key_traslation.o
+ .comment       0x00000210       0x30 hardware/pit.o
+ .comment       0x00000240       0x30 hardware/rtc.o
+ .comment       0x00000270       0x30 hardware/serial.o
+ .comment       0x000002a0       0x30 hardware/speaker.o
+ .comment       0x000002d0       0x30 hardware/tastiera.o
+ .comment       0x00000300       0x30 hardware/video.o
+ .comment       0x00000330       0x30 cpu/cpu_oper.o
+ .comment       0x00000360       0x30 cpu/gdt.o
+ .comment       0x00000390       0x30 cpu/idt.o
+ .comment       0x000003c0       0x30 cpu/paging.o
+ .comment       0x000003f0       0x30 mm/desc_mem.o
+ .comment       0x00000420       0x30 mm/fis_mmu.o
+ .comment       0x00000450       0x30 mm/kmmu.o
+ .comment       0x00000480       0x30 mm/mem.o
+ .comment       0x000004b0       0x30 mm/mmu.o
+ .comment       0x000004e0       0x30 mm/pagine_libere.o
+ .comment       0x00000510       0x30 mm/pagine_virtuali.o
+ .comment       0x00000540       0x30 task/hardware_task.o
+ .comment       0x00000570       0x30 task/messaggi.o
+ .comment       0x000005a0       0x30 task/politic.o
+ .comment       0x000005d0       0x30 task/sem.o
+ .comment       0x00000600       0x30 task/task.o
+ .comment       0x00000630       0x30 dispositivi/hmu.o
+ .comment       0x00000660       0x30 fs/fat.o
+ .comment       0x00000690       0x30 fpu_emu/fpu_emu.o
+ .comment       0x000006c0       0x30 fpu_emu/fpu_emu_comp.o
+ .comment       0x000006f0       0x30 fpu_emu/fpu_emu_control.o
+ .comment       0x00000720       0x30 fpu_emu/fpu_emu_data.o
+ .comment       0x00000750       0x30 fpu_emu/fpu_emu_demo.o
+ .comment       0x00000780       0x30 fpu_emu/fpu_emu_exception.o
+ .comment       0x000007b0       0x30 fpu_emu/fpu_emu_exp.o
+ .comment       0x000007e0       0x30 fpu_emu/fpu_emu_math.o
+ .comment       0x00000810       0x30 fpu_emu/fpu_emu_mov.o
+ .comment       0x00000840       0x30 fpu_emu/fpu_emu_reg.o
+ .comment       0x00000870       0x30 fpu_emu/fpu_emu_trig.o
+ .comment       0x000008a0       0x30 fpu_emu/my_double.o
+ .comment       0x000008d0       0x30 libc/ctype.o
+ .comment       0x00000900       0x30 libc/math.o
+ .comment       0x00000930       0x30 libc/sprintf.o
+ .comment       0x00000960       0x30 libc/sscanf.o
+ .comment       0x00000990       0x30 libc/stdio.o
+ .comment       0x000009c0       0x30 libc/stdlib.o
+ .comment       0x000009f0       0x30 libc/string.o
+ .comment       0x00000a20       0x30 libc/time.o
+ .comment       0x00000a50       0x30 libc/vsprintf.o
+ .comment       0x00000a80       0x30 libc/vsscanf.o
+ .comment       0x00000ab0       0x30 lib/avl.o
+ .comment       0x00000ae0       0x30 lib/bheap.o
+ .comment       0x00000b10       0x30 lib/bst.o
+ .comment       0x00000b40       0x30 lib/dfs_bfs.o
+ .comment       0x00000b70       0x30 lib/hashtbl.o
+ .comment       0x00000ba0       0x30 lib/mst.o
+ .comment       0x00000bd0       0x30 lib/rand.o
+ .comment       0x00000c00       0x30 lib/rbtree.o
+ .comment       0x00000c30       0x30 lib/sc.o
+ .comment       0x00000c60       0x30 lib/search.o
+ .comment       0x00000c90       0x30 lib/sort.o
+ .comment       0x00000cc0       0x30 lib/tree23.o

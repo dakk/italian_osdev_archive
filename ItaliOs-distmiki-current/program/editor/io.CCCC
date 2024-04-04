@@ -1,0 +1,98 @@
+/* io.c */
+#include "io.h"
+ fd_set rfds;
+ struct termios termiosp,termiospBAK;
+
+unsigned long prima[10]={0,0,0,0,0,0,0,0,0,0},adesso=0;
+struct timeval tv;
+struct timezone tz;
+extern int sk1;
+
+void delay(int mt,long msec) {
+  adesso=prima[mt];
+  while (adesso<(msec+prima[mt])) {
+     gettimeofday(&tv,&tz);
+     adesso=tv.tv_sec*1000+(tv.tv_usec/1000);
+  }
+  prima[mt]=adesso;
+}
+
+
+
+u_char ogni(int mt,long msec) {
+  gettimeofday(&tv,&tz);
+  adesso=tv.tv_sec*1000+(tv.tv_usec/1000);
+  if (adesso>=(msec+prima[mt])) {
+    prima[mt]=adesso;
+    return 1;
+  }
+  return 0;
+}
+
+
+#ifndef INETT
+
+void disab_ab(int echo1) {
+ memset(&termiosp,0,sizeof(struct termios));
+ tcgetattr(0,&termiosp);
+ if (echo1) {
+     tcgetattr(0,&termiospBAK);
+     termiosp.c_lflag&=!ICANON; 
+     tcsetattr(0,TCSANOW,&termiosp);
+    } else {
+     tcsetattr(0,TCSANOW,&termiospBAK);
+    } 
+}
+
+unsigned char leggichar(unsigned char dl) {
+ char ch;
+ if (dl) {
+  FD_ZERO(&rfds);FD_SET(0,&rfds);
+  tv.tv_sec=0;tv.tv_usec=0;
+  dl=select(1,&rfds,NULL,NULL,&tv);
+ } else dl=1;
+ if (dl) {
+  if ((ch=getchar())==27)
+   if (((ch=getchar())=='O')||(ch=='[')) 
+     {
+      if ((ch=getchar())<64) getchar();
+      if (ch=='[') return (getchar()+143);
+      return (ch+128);
+     } 
+  return ch;
+ } else return '#';
+}
+#else
+
+char buffrx;
+
+char gettchar() {
+  read(sk1,&buffrx,1);
+  return buffrx;
+}
+
+unsigned char leggichar(unsigned char dl) {
+ char ch;
+ FD_ZERO(&rfds);FD_SET(sk1,&rfds);
+ tv.tv_sec=0;tv.tv_usec=0;
+ if (select(sk1+1,&rfds,NULL,NULL,&tv)) {
+  if ((ch=gettchar())==27) {
+   if (((ch=gettchar())=='O')||(ch=='['))
+     switch (ch=gettchar()) {
+      case 'A': return 200;break;
+      case 'B': return 208;break;
+      case 'C': return 205;break;
+      case 'D': return 203;break;
+      case '[': ch=getchar();return (u_char)ch+143; break;
+     }
+   return ch;
+ } else return '#';
+}
+#endif
+void svuota_buff(u_char nnn) {
+ if (nnn) Abilita;
+ while (!ogni(0,100)) leggichar(NON_ASPETTA);
+ while (!ogni(0,1000)) leggichar(NON_ASPETTA);
+ if (nnn) Disabilita;
+}
+

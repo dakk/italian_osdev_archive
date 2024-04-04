@@ -1,0 +1,6 @@
+Per installare il Silvios eseguire le seguenti operazioni:
+-scompattare l'archivio
+-da root e con un floppy inserito(non  necessariamente formattato)
+ fare sh install,(questo automaticamente compila ed installa il SilviOs 
+ sul floppy)
+- ora riavviare e provarlo :-))

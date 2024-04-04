@@ -1,0 +1,7 @@
+#ifndef _DNS_H_
+#define  _DNS_H_
+
+#include <rete.h>
+
+u_int TraduciDNS(u_char *dnsn);
+#endif

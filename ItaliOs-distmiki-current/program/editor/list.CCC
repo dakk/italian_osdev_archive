@@ -1,0 +1,316 @@
+/*  
+    list.c by miki00
+    22/12/2002 : compatibilita' con FreeBSD 4.7
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define _BSD_SOURCE
+#include <dirent.h>
+/* #include <string.h> */
+#include <termios.h>
+#include <sys/ioctl.h>
+#define MAIN
+#ifndef NAME_MAX
+ #define BSD 1
+ #define NAME_MAX 255
+#endif
+#include "io.h"
+
+#define O_LARGEFILE 0100000
+#define O_DIRECTORY 0200000
+
+#define EE(x) ((File[t+nll].tipo&x)==x)
+#define EE1(x) (File[t+nll].tipo&x)
+
+#ifndef LISTCFG
+#define LISTCFG "/usr/sbin/list.cfg"
+#endif
+#ifndef EDITOR
+#define EDITOR "/usr/sbin/editor"
+#endif
+#ifndef MOUNT
+#define MOUNT "/bin/mount"
+#endif
+#ifndef UOUNT
+#define UOUNT "/bin/umount"
+#endif
+
+#define CLRSCR printf("\033[2J\033[1;1H")
+#define C_HOME printf("\033[1;1H")
+
+struct Tfile {
+  mode_t tipo;
+  char z[NAME_MAX+1];
+} File[1000];
+
+
+ char Direct[100],DirectBAK[100];
+ struct winsize Win;
+ int nfile=0;
+ int t1,t2;
+ struct dirent *dire;
+ struct stat statt;
+#ifdef BSD
+ long basep;
+#else
+ off_t basep;
+#endif 
+ ssize_t t;
+ int NLIN,NCOL;
+ u_char ch;
+ int y=0,nll=0,oldnll=-1;
+ char **envp1;
+ char *ER[20];
+ int NER;
+
+
+int strnlen(char *sss,int nnn);		/* strlen con controllo di fine */
+void caricadir(char *Dir);		
+void visual();
+void esegui(char *exee,char **argg);
+char Azione(char act,char *az);
+char menu();
+void naviga();
+char risorse();
+
+void clrscr2(int Tt1) {
+ int Tt2;
+ for (Tt2=1;Tt2<NLIN;Tt2++) printf("\033[%i;%iH\033[K",Tt2,Tt1);
+ C_HOME;
+}
+
+int strnlen(char *sss,int nnn) {
+  int nnn1;
+  nnn1=0;
+  for (;(sss[nnn1]&&(nnn1<=nnn));nnn1++) ;
+  return nnn1;
+}
+
+void caricadir(char *Dir) {
+  int f1;
+  char *s;
+  y=0;nll=0;
+  t1=0x100;
+  s=(char *)malloc(t1);
+  f1=open(Dir,O_RDONLY|O_NONBLOCK|O_LARGEFILE|O_DIRECTORY);
+  fcntl(f1,F_SETFD,FD_CLOEXEC);
+  for (t=0;t<t1;t++) s[t]=0;
+  memset(&statt,0,sizeof(struct stat));
+  memset(&File,0,sizeof(struct Tfile)*100);
+  t=getdirentries(f1,s,t1,&basep);
+  dire=(struct dirent *)s;
+  nfile=0;
+  while (t) {
+   while (dire->d_name[0]) {
+        memset(&statt,0,sizeof(struct stat));
+        lstat(dire->d_name,&statt);
+/*        if (EE(0040000)) printf("d"); else printf(".");
+        if (EE1(00111)) printf("e"); else printf(".");*/
+        File[nfile].tipo=statt.st_mode;
+        strncpy(File[nfile++].z,dire->d_name,100);
+        dire=(struct dirent *)((char *)dire+dire->d_reclen);
+   }
+   for (t=0;t<t1;t++) s[t]=0;
+   t=getdirentries(f1,s,t1,&basep);
+   dire=(struct dirent *)s;
+  }
+  close(f1);
+  free(s);
+}
+
+void visual() {
+    clrscr2(16);
+    printf("\033[44;38mDir=%s\033[K\033[m\n",Direct);
+    for (t=0;t<NLIN-2;t++) {
+     if (t==y) printf("\t\t>>");else printf("\t\t  ");
+     if (EE1(00111)) printf("\033[1;32m");/*exe*/
+     if (EE(0040000)) printf("\033[1;34m");/*dir*/
+     if ((t+nll)<nfile) printf("%s\n",File[t+nll].z);
+     printf("\033[m");
+    }
+}
+#define YY (y+nll)
+
+void esegui(char *exee,char **argg) {
+  Disabilita;
+  if (!fork()) {
+       if (execve(exee,argg,envp1)==-1) printf("Errore execve\n");
+       exit(0);
+      } else wait(NULL);
+  Abilita;
+}
+#define azione(x) Azione(x,NULL)
+char Azione(char act,char *az) {
+ char *argg[5];
+ memset(argg,0,sizeof(char *));
+ if (!act) {
+   if (File[YY].tipo&0040000) {
+    chdir(File[YY].z);getcwd(Direct,100);
+    caricadir(Direct);
+   } else
+   if (File[YY].tipo&00111) {
+    esegui(File[YY].z,NULL);
+   }
+ }
+ switch (act) {
+ case 'e':argg[2]=NULL;argg[1]=File[YY].z; esegui(argg[0]=EDITOR,argg);break;
+ case 'm':argg[2]=NULL;argg[1]=File[YY].z; esegui(argg[0]=MOUNT,argg);break;
+ case 'u':argg[2]=NULL;argg[1]=File[YY].z; esegui(argg[0]=UOUNT,argg);break;
+ case 'p':argg[2]=NULL;argg[1]="-aux";
+          esegui(argg[0]="/bin/ps",argg); ch=getchar();return 0;break;
+ case 'i':while (ch!=PF1) {
+           argg[2]=NULL;argg[1]="/proc/net/snmp"; esegui(argg[0]="/bin/cat",argg);
+           argg[1]=NULL; esegui(argg[0]="/sbin/ifconfig",argg);
+           ch=leggichar(ASPETTA);
+           CLRSCR;fflush(stdout);
+          } ch=0;break; 
+         
+ case 'E':argg[1]=NULL;esegui(argg[0]=az+strnlen(az,50)+1,argg);
+          ch=leggichar(ASPETTA);break; 
+ }
+ visual();
+ return 0;
+}
+
+#define NMENU 6
+char menu() {
+  char *cmenu[]={"Esegui ","Edita  ","Monta  ","Smonta ","Apri con","Annulla"};
+    int yv,xy;
+  
+  if (!strncmp(File[YY].z,"..",2)) { azione(0); return 0; }
+  yv=(NLIN-2)-NMENU;
+  if (y<yv) yv=y+2;
+  ch=0;xy=0;
+  while (ch!=10) {
+    switch(ch) {
+      case SU : xy-=(xy>0);break;
+      case GIU : xy+=(xy<NMENU-1);break;
+    }
+  
+    printf("\033[%i;30H\033[44;33mMenu:\033[m",yv);
+    for (t=0;t<NMENU;t++) {
+      if (t==xy) printf("\033[44;38m");
+      printf("\033[%i;30H%s",yv+t+1,cmenu[t]);
+      if (t==xy) printf("\033[m");
+    }
+    ch=leggichar(ASPETTA);
+  }
+  switch (xy) {
+   case 0: azione(0);break;
+   case 1: azione('e');break;
+   case 2: azione('m');break;
+   case 3: azione('u');break;
+/*   case 4: s=(char *)malloc(30);memset(s,0,30);
+           fgets(s+1,29,stdin);Azione('E',s);free(s);break;*/
+  }
+  printf("\033[m");
+  visual();
+  return 0;
+}
+
+void naviga() {
+ ch=' ';
+ nll=0;
+ ioctl(1,TIOCGWINSZ,(char *)&Win);
+ NLIN=Win.ws_row;NCOL=Win.ws_col;
+ visual();
+ while (ch!=PF1) { 
+  ch=leggichar(ASPETTA);
+  oldnll=nll;
+  printf("\033[%i;1H\t\t  ",y+2);
+  switch(ch) {
+    case SU : if (y==0) { y=0; nll-=(nll>0); } else y--;break;
+    case GIU : if (y>=(NLIN-2)) { y=(NLIN-2); nll++; } else y++;break;
+    case 10 : menu();break; /* azione((char)0); */
+    case 'e' : azione('e');break;
+
+  }
+  if ((y+nll)>nfile) y=nfile-nll;
+  printf("\033[%i;1H\t\t>>",y+2);
+  
+  if (oldnll!=nll) visual();
+ }
+}
+
+char risorse() {
+#define NRISO 4
+  char *Crisorse[]={"root    ","inforete","processi","esci    "};
+  char s[50];
+  int yv,xy;
+  FILE *f1;
+  
+  ch=0;xy=0;yv=0;NER=0;
+  memset(s,0,50);
+  memset(ER,0,40);
+/* carica le risorse esterne dal file list.cfg */
+  f1=fopen(LISTCFG,"r");
+  while (fgets(s,49,f1)!=NULL) {
+    if (!strncmp(s,"#menu",5)) 
+      { ER[NER]=(char *)malloc(50);
+        strncpy(ER[NER],s+6,50);
+        ER[NER][strnlen(ER[NER],50)]=0;
+        for (t=0;t<50;t++) 
+          if (ER[NER][t]<31) ER[NER][t]=0;
+        for (t=0;t<50;t++) 
+         if (ER[NER][t]==' ') 
+            { ER[NER++][t]=0;
+              if (t>48) NER--;
+              t=50; }
+      }  
+  }
+  fclose(f1);
+
+  CLRSCR;
+  while (ch!=PF1) {
+   while ((ch!=10)&&(ch!=PF1)) {
+    switch(ch) {
+      case SU : xy-=(xy>0);break;
+      case GIU : xy+=(xy<(NRISO+NER-1));break;
+    }
+  
+    printf("\033[1;1H\033[43;30mRisorse:\033[m\n");
+    for (t=0;t<(NRISO+NER);t++) {
+      if (t==NRISO) puts("");
+      if (t==xy) printf("\033[44;38m");
+      if (t<NRISO) printf("%s\n",Crisorse[t]); else
+                   printf("%s\n",ER[t-NRISO]);
+      if (t==xy) printf("\033[m");
+    }
+    ch=leggichar(ASPETTA);
+   }
+   if (ch==10)
+    switch (xy) {
+     case 0:naviga();ch=0;CLRSCR;break;
+     case 1:azione('i');ch=0;CLRSCR;break;
+     case 2:azione('p');ch=0;CLRSCR;break;
+     case 3:ch=PF1;break;
+     default:
+      if ((xy>=NRISO)&&(xy<(NER+NRISO))) 
+             Azione('E',ER[xy-NRISO]);
+       ch=0;break;
+     }
+   printf("\033[m");
+  }
+  for (t=0;t<NER;t++) free(ER[t]);
+  return 0;
+}
+
+int main(int argc,char **argv,char **envp) {
+ envp1=envp;
+ memset(Direct,0,100);
+ memset(DirectBAK,0,100);
+ getcwd(Direct,100); 
+ memset(DirectBAK,0,100);
+ caricadir(Direct);
+ Abilita;
+  risorse();
+ Disabilita;
+ return 0;
+ chdir(DirectBAK);
+ CLRSCR;
+}

@@ -1,0 +1,19 @@
+/8259.h/1.1/Mon Dec 30 01:35:51 2002//
+/device.h/1.1/Mon Dec 30 01:35:51 2002//
+/dma.h/1.1/Mon Dec 30 01:35:51 2002//
+/fdc.h/1.1/Mon Dec 30 01:35:51 2002//
+/hdd.h/1.1/Mon Dec 30 01:35:51 2002//
+/include.h/1.1/Mon Dec 30 01:35:51 2002//
+/io.h/1.1/Mon Dec 30 01:35:51 2002//
+/keyboard.h/1.1/Mon Dec 30 01:35:51 2002//
+/map.h/1.1/Mon Dec 30 01:35:51 2002//
+/mytypes.h/1.1/Mon Dec 30 01:35:51 2002//
+/parallel.h/1.1/Mon Dec 30 01:35:51 2002//
+/printer.h/1.1/Mon Dec 30 01:35:51 2002//
+/register.h/1.1/Sat Jan 18 21:14:36 2003//
+/rtc.h/1.2/Thu Feb  6 21:25:50 2003//
+/serial.h/1.4/Mon Feb  3 15:50:02 2003//
+/speaker.h/1.1/Mon Dec 30 01:35:51 2002//
+/video.h/1.1/Mon Dec 30 01:35:51 2002//
+/vga.h/1.5/Sun Feb  9 19:42:36 2003//
+D

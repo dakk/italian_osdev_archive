@@ -1,0 +1,50 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+/*****************************************************************************/
+/*                                                                           */
+/*                              TEAM MEMBERS                                 */
+/*                                                                           */
+/*****************************************************************************/
+/* $Id: SPIPPOLERS,v 1.4 2000/12/04 13:44:05 marcopex Exp $  */
+/* $Log: SPIPPOLERS,v $
+/* Revision 1.4  2000/12/04 13:44:05  marcopex
+/* *** empty log message ***
+/*
+/* Revision 1.3  2000/10/16 18:23:17  iurlano
+/* Added prototype of rtl8139 network card driver
+/*
+/* Revision 1.2  2000/08/04 17:47:58  iurlano
+/* Translation in progress
+/*
+/* Revision 1.1.1.1  2000/05/30 08:10:56  iurlano
+/* OSSO : First Public Release
+/*
+/*****************************************************************************/
+
+1) Alessandro Iurlano: Project leader and main programmer
+   iurlano@users.sourceforge.net
+
+2) Marco Peccianti: memory management, events support.
+   marcopex@users.sourceforge.net
+
+3) Stefano Rosellini: Init parsing
+   steros@users.sourceforge.net

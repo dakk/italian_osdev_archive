@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#Script per la scrittura su floppy di MatrixOS
+
+echo "		+---------------------------------------+"
+echo "		|	  	MatrixOS Make		|"
+echo "		+---------------------------------------+"
+echo "		|	->Build	& Install & Test	|"
+echo "		+---------------------------------------+"
+echo ""
+echo ""
+
+# Elimino i file bin
+rm rm -f bin/*.bin
+# Elimino i file img
+rm rm -f bin/*.img
+# Elimino i file oggetto
+rm -f src/kernel/*.o #TODO: Da modificare
+rm -f src/kernel/*~ #TODO: Da modificare
+
+#Compilo MatrixOS
+./build
+
+#Commentare questo codice se si vuole disabilitare l'azzeramento del floppy
+echo "Cancello il Floppy Disk"
+cp -f /dev/full /dev/fd0
+echo ""
+
+echo "Scrivo l'immagine nel Floppy Disk"
+dd if=bin/Floppy.img of=/dev/fd0
+echo ""
+
+#Decomentare questo codice se si vuole abilitare il riavvio automatico
+#echo "Riavvio il computer"
+#sleep 5
+#reboot

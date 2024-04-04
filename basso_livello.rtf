@@ -1,0 +1,1024 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1040\deflangfe1040{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+\viewkind4\uc1\pard\nowidctlpar\qc\f0\fs20 ================[Basso livello e programmazione in Assembler X86]================\par
+\par
+\lang2057 Written By: Ulisse_PixXxA: http:// www.pollohacker.tk    pollo_hacker@libero.it\par
+\par
+\pard\nowidctlpar\lang1040 Questo articolo pu\'f2 essere redistribuito e pubblicato purch\'e8 non sia alterato o modificato e riportando l'autore di questo articolo.\par
+x fottimenti vari di cose ho gi\'e0 sviluppato un software che permette solo la lettura e non la copia del testo.... ma x il momento non voglio usarlo.... anche se esprimo tutto il mio disprezzo x chi si impadronisce delle guide con un semplice ctrl+C ctrl+V o sotto dos con ctrl+ins e shift+ins....\par
+\par
+Consumo: molto, la guida \'e8 lunga, Grana Padano (R), diverse bottiglie di Acqua, 1 Bontalatte al cacao\par
+\par
+Tempo: molto, come ho gi\'e0 detto la guida \'e8 lunga.... ah, fuori piove e sn appena tornato che sn andato a cercare funghi e ne ho trovati molti....\par
+\par
+Software necessari: Kwrite o un editor di testo x i linuxiani, type.exe x i dossiani, notepad, o meglio wordpad x i windowsiani\par
+\par
+Orientato: il testo \'e8 oriwentato allo scopo didattico, sde finir\'f2 la guida scriver\'f2 unt esto + avanzato, orientato al sistema operativo e al controllo a livello macchina di microprocessori x applicazioni robotiche.... cmq, l'assembler che ho scelto \'e8 il solito x86 x processori intel 8086 o compatibili (il mio \'e8 un P4), e gira sotto ambiente DOS.... x compilare il tutto occorre il compilatore turbo assembler, di cui ho creato una GUI x semplificarne l'uso....\par
+la GUI \'e8 disponibile su www.pollohacker.tk (ovviamente freeware)\par
+\par
+--------[INDICE]--------\par
+1) Introduzione al PC, come funziona, quali componenti lo formano, sistemi di numerazione.\line 2) Memorie (RAM, ROM, CMOS, cache, memorie di massa....), Processore(architettura x86),  \par
+    BUS e colloquio con le periferiche.\par
+3) Brevi cenni di programmazione (il tutorial alla programmazione \'e8 disponibile nella sezione \par
+    programmazione di pollohacker).\par
+4) Introduzione al linguaggio macchina.\par
+5) Assembler: ambiente di sviluppo e compilatore.\line 6) Assembler: struttura di un programma.\line 7) Assembler: interruzioni, assegnazione, variabili, registri, input ed output.\par
+8) Assembler: selezione, salti, cicli.\par
+9) Assembler: Array e Stringhe di testo\par
+a) Assembler: Funzioni e Stack [pronto tra qlc giorno]\par
+b) Assembler: scrivere un linguaggio di programmazione + sbrigativo\par
+c) Assembler: Files, Gestione Unit\'e0 di memorizzazione [pronto x ottobbre 2005]\par
+d) Assembler: Virus e fottimento dell'MBR [pronto x ottobbre 2005]\par
+e) Assembler: Creazione di un boot loader e di un sistema operativo [pronto x ottobbre 2005]\par
+\par
+=====================================================================\par
+# 1), 2)     tutto assieme, sono argomenti molto colelgati                                                      #\par
+=====================================================================\par
+\par
+allora, iniziamo.... scrivendo nel formato TXT che non consente imamgini, ma almeno nn \'e8 proprietario di MS, e pu\'f2 essere visualizzato in shell....\par
+\par
+allora, il PC \'e8 un idiota digitale che distingue una tensione alta da una tensione bassa (alta=1 bassa=0= e prorpio x questo \'e8 nato il binario....\par
+\par
+il binario \'e8 un sistema numerico formato da 2 cifre (0, 1) a differnza del decimale che \'e8 formato da 10 cifre (0,1,2 .. 9).... l'hexadecimale invece ha 15 cifre 0,1,2 .. 9, a, b, c,d ,e ,f)\par
+ma approfondiremo questo discorso  avanti....\par
+\par
+dicevo dell'idiota digitale.... \par
+beh, tale idiota digitale viene utilizzato dall'uomo x fargli svolgere dei compiti, ma come fa l'uomo a dirgli cosa fare?? x fasre questo sono nati i linguaggi di programmazione che consentono di comunicare con il PC....\par
+\par
+ovviamente non potr\'e0 mai capire un istruzione del tipo ("ciao, scrivi sullo schermo "pippo") ma tale istruzione dovr\'e0 essere tradotta in un linguaggio a lui comprensibile, il linguaggio macchina....(0101 0101 0101 0100 1100 1010 1010 0000)<-- \'e8 1 esempio, nn ho voglia di scrivere in binario....\par
+\par
+esistono xo dei livelli intermedi, che sono i linguiaggi di programmazione; tali linguaggi (Pascal, C/C++, fortran, e tutti gli alri) permettono di scrivere le istruzioni in un linguaggio comprensibile all'uomo, e tramite un programma (compilatore) di tradurlo in linguaggio macchina.... con + il linguaggio \'e8 vicino all'uomo e distante dal linguaggio amcchina(detto anche binario) con + il linguaggio \'e8 di alto livello, con + \'e8 vicino al binario, con + \'e8 di basso livello.... non non scriveremo in binario, ne in hexadecimale, ma in assembler, che \'e8 un pelo + alto del binario, ma almeno comprensibile all'uomo.... x questo xo ci occorre un compilatore che traduca tutto in linguaggio macchina....\par
+\par
+siccome siamo prorpio vicini al binario, il compilatore non fa molta fatica a farlo e x questo \'e8 freeware e pesa anche pochi KB, come ho detto sopra si trova sul sito disponibile x il download....\par
+\par
+l\'ec'idiota digitale si compone di 3 parti fondamentali:\par
+\par
+ 1\'b0 il PROCESSORE (8086, i286, i386, i486, pentium (I, II, MMX, Celeron, III, IV), AMD, o tutti gli altri) che ha il compito di eseguire le istruzioni ed elaborare i dati\par
+\par
+ 2\'b0 la memoria RAM, cache e interna che consente di memorizzare i dati sui quali si sta lavorando\par
+\par
+3\'b0 le periferiche di input/output (schermo, HardDisk, tastiera, etc etc)\par
+\par
+il processore si compone a sua volta di diverse parti:\par
+\par
+1) l'ALU che si occpua delle operazioni aritmetico/logiche\par
+\par
+2) i Registri, cio\'e8 delle piccole memorie di 32bit interne al processore che possono contenere momentaneamente i dati\par
+\par
+3) i Flag, cio\'e8 come delle spiette che si accendono quando si verifica un particolare evento (ad esem\'e8pio FZ (il flag zero) si accende (cio\'e8 vale 1) quando il risultato di una operazione \'e8 0....\par
+\par
+4) IP, PC, Cache (non \'e8 l'IP della rete ma Instruction Pointer) che si occupano di prendere le istruzioni e farle elaborare dalla ALU....\par
+\par
+ma prendere da dove?? bene arrivaimo all'argomento fondamentale.... le istruzioni si trovano nella memoria, e devono arrivare al processore....\par
+\par
+le istruzioni sono formate da una serie di 0/1 (linguaggio amcchina) e sono memorizzate nella memoria, la memoria RAM \'e8 divisa in CELLE.... ogni cella pu\'f2 memorizzare un certo numero di cifre decimali (bit) e il contenuto di ogni cella pu\'f2 essere raggiunto x modificarlo o x leggerlo attraverso un proprio INDIRIZZO; ogni cella infatti \'e8 numerata.... ad esempio una memoria RAM da 1Kb (1024Byte) che in ogni cella pu\'f2 memorizzare 8 cifre binarie (8 bit = 1 Byte) sar\'e0 costituita da 1024 celle da 8bit = 1 Byte l'una....\par
+\par
+la prima cella sar\'e0 la numero 0, l'ultima la 1023....\par
+\par
+il processore attraverso un dispositivo che gestisce la memoria sa dove andare a prendere le istruzioni, e in quale cella si trovano, e a seconda del processore si pu\'f2 avere una quantit\'e0 massima di memoria.... ad esempio sui vecchi 8086 era impensabile di avere 512Mb di memoria, il processore non sarebbe mai riuscito ad andare a trovare le istruzioni, in quanto troppo enorme.... con un P4 invece si pu\'f2....\par
+\par
+beh, ma una volta che il processore sa dove prendere l'istruzione come fa ad essere trasefrita al processore??\par
+ [NOTA X IL LETTORE: accellero la battitura con un incremento sicuro di errori di digitazione]\par
+allora, x fare questo i vari dispositivi hanno bisogno di comunicare tra di loro e x farlo utilizzano il sistema BUS....\par
+\par
+(si, cosa fanno, prendono il biglietto e si vanno a trovare??) no, il BUS \'e8 un particolare tipo di connettore che ha diverse linee fdiversi cavetti) a seconda del numero di cavetti che ha pu\'f2 tyrasemttere un certo N di cifre binarei e q uindi un certo numero di bit....\par
+\par
+ad esempio un bus di 8 linee pu\'f2 trasmettere un dato di 8 cifre (es. 01010100) mentre un bus a 4 line potr\'e0 trasmettere solo dati di 4 cifre (es. 0100)\par
+\par
+ovviamente si pu\'f2 capire quanto \'e8 + conveniente usare BUS + larghi possibili....\par
+\par
+esistono 3 BUS con diverse linee nel Pc, il BUS DATI che trasmette i dati, il BUS di CONTROLLO che trasmette segnali vari di controllo, e il BUS INDIRIZZI sul quale circolano gli indirizzi x ragiungere le locazioni di memoria ....\par
+\par
+esempio: \par
+i bus sono da 8 linee\par
+la memoria ha celle da 1 byte (8 bit)\par
+\par
+al processore serve il dato contenuto nella cella di memoria 00000001 (tutti gli 0 d'avanti sono stati messi xk\'e8 il bus indirizzi ha 8 bit.... in goni modo  gli 0 nn influenzano il contenuto: 01 = 1 = 0000001 = 0000000000000000000000001)\par
+\par
+allora, il processore scriver\'e0 sul bus degli indirizzi il valore 00000001 e sul bus dati otterr\'e0 il contenuto di tale cella....\par
+\par
+A SECONDA DELLA LARGHEZZA DEL BUS INDIRIZZI IL PROCESSORE PU\'f2 GESTIRE UNC ERTO NUMERO DI CELLE E QUINDI UNA CERTA QUANTIT\'e0 MASSIMA DI MEMORIA!!!! L'8086 HA UN BUS DI 20 LINEE ER QUEINDI UN BUS A 20 BIT;\par
+CON 20 CIFRE BINARIE SI RIESCE A RAPPRESENTARE UN NUMERO DI CELLE CHE VA DA 0 A 2^20 PARI A 1.048.576\par
+SE OGNI CELLA \'e8 DI 16 BIT (negli esempi usavo 8 bit o numeri a caso x comodit\'e0 e x fare capire meglio) SONO 2.057.152 BYTE, PARI A 2MB al massimo di memoria!!\par
+\par
+il tutto nn \'e8 cos\'ec semplice x 2 motivi\par
+\par
+1) la memoria pu\'f2 avere accesso sia in lettura che in scrittura.... x fare questo il processore invia un segnale alla memoria che indica se deve leggere o scrivere.... ad esempio se invia uno 0 la memoria sar\'e0 aperta in lettura, mentre se invier\'e0 un 1 sar\'e0 aperta in scrittura....\par
+\par
+se la memoria \'e8 aperta in lettura allora avviene come \'e8 stato detto nell'esempio precedente, altrimenti se \'e8 stata aprta in scrittura, sul bus dati il processore deve avere gi\'e0 messo il dato da scrivere, e sul bus indirizzo, il numero della cella nel quale scrivere....\par
+\par
+entrambi i processi di lettura e scrittura avengono tramite un alro segnale: il segnale di OK, quando il processore invia quel segnale allora verr\'e0 letto o scritto il dato. tale segnale in termine elettronico si chiama ENABLE e il processore lo invia ad un determinato piadeino della RAM. mentre in termini elettronici il segnale di selezione se lettura o scrittura \'e8 chimato R/W e anche ad esso corrisponde un determinato piedino.....\par
+\par
+2) l'altro problema \'e8 che non solo il processore utilizza i BUS, ma tutti i dispositivi collegati, ad esempio la scheda video.... anche la scheda video ha una memoria interna con i suoi indirizzi e le sue celle, e magari il procesore deve scrivere in quella memoria e non nella ram.... come fa la ram a sapere che i dati che circolano nei bus non sono affari suoi (tra poco ricomincia affari tuoi) ma che sono della scheda video??\par
+\par
+x evitare che i dispositivi leggano dati non destinati a loro \'e8 stato introdotto il BUFFER 3-STATE....\par
+\par
+un buffer 3 state \'e8 un dispositivo formato da 3 piedini: 1 l'entrata, 2 l'uscita e 3 l'enable )un altro enable, nn c'entra quello detto prima), in pratica, quando l'enable vale 1 allora il segnale in entrata viene lasciato passare all'uscita, mentre quando l'enable vale 0 il segnale non viene lasciato passare.... con 8 buffer 3 state, colelgati a ciascuna linea del bus e al dispositivo da controllare, si pu\'f2 fare arrivare o no il dato presente sulle linee del bus, al dispositivo, a seconda del valore dell'enable.\par
+a dire il vero quello x la lettura viene chiamato LATCH, ma x semplificare la spiegazione ho preferito parlarne come se fosse un buffer 3 state.... tanto \'e8 la stessa precisa identica cosa....\par
+\par
+il buffer 3 state vero e prorpio invece, viene utilizzato x la scrittura.... abbiamo detto che il bus \'e8 unico (unico nel senso che sono 3, ma sono utilizzati da tutti i dispositivi), e quindi se 2 dispositivi stanno trasferendosi i dati fra di loro, nn pu\'f2 essere usato da altri dispositivi.... se 2 dispositivi nn possono scrivere assieme sullo stesso bus.... se uno scrivesse0101 e l'altro 1100 scoppierebe tutto (scoppierebbe nel senso che non funzionerebbe)....\par
+\par
+allora il buffer 3 state con il suo enable collegato tra il dispositivo scrivente e il bus permette di abilitare o meno la scrittura sul bus.... quando un dispositivo scrive, chiude la bocca a tutti gli altri.... penso che questa frase riporti bene quello che succede....\par
+\par
+dett questo possiamo continuare a vedere come fa il processore a fare un istruzione....\par
+\par
+beh, x prima cosa le istruzioni vengono lette, poi ogni istruzione viene interpretata (cio\'e8 il processore capisce cosa deve fare) e poi fa quello che deve fare....\par
+\par
+siccome questi 3 compiti lettura/interpretazione o decodifica/esecuzione vera e propria vengono svolti da 3 dispositivi interni al processore differenti, si pu\'f2 fare in modo che mentre viene interpretata l'istruzione n\'b01 il dispositivo che si occupa della lettura inizi a leggere l'istruzione successiva, e lo stesso x l'esecuzione.... mentre viene eseguita l'istruzione N\'b01 viene interpretata la n\'b02 precedentemente letta dal dispositivo di lettura, e intanto il dispositivo di lettura pu\'f2 gi\'e0 leggere la 3\'b0.... in questo modo si velocizzano molto i tempi!! ma i dati letti e interpretati devono pur essere messi da qualche parte.... e allora ecco che nasce la memoria cache, collegata attraverso un BUS privato a tali dispositivi, che mettono dentro ci\'f2 che hanno letto/interpretato.... questo sistema di velocizzazione \'e8 chiamato PIPELINE.... PIPELINE!!!!\par
+\par
+tale memoria \'e8 velocissima ma \'e8 molto costosa....\par
+\par
+[BREVE PAUSA DI INTERRUZIONE ALLE 15.31 DEL 09/09/2005]\par
+\par
+\par
+[RIPRESO ALLE 15.32 DEL 09/09/2005]\par
+\par
+fino a qu\'e0 ci siamo, abbiamo visto come fanno i dati(e anche le istruzioni chein un certo senso sono dati pure quelli) ad essere letti e scritti, come fanno i dispositivi a comunicare, e come \'e8 fatta la memoria.... ah, e anche come fa un istruzione ad essere eseguita....\par
+\par
+vediamo adesso + da vicino il processore, poi cosa se ne fa il processore di un istruzione (che ora abbiamo visto solo come una serie di 0/1)\par
+\par
+allora,\par
+il processore 8086 ha un bus dati di 16 bit (le celle di memoria sono di 16 bit) e gestisce 1.024.576 celle di memoria.... \par
+il processore \'e8 inoltre costituito da diverse parti.... abbiamo gi\'e0 citato sopra i registri, i flag, l'ALU, e ha dentro anche i dispositivi che controllano la scrittura e la lettura sui diversi BUS....\par
+\par
+diciamo 2 parole sui registri, che ne vale la pena, introducendo cos\'ec le istruzioni....\par
+\par
+allora, i registri sono dei piccoli contenitori di dati, sui quali operano le istruzioni.... ad esempio l'istruzione che fa la somma, pu\'f2 sommare il contenuto di un registro a quello di un altro.... non \'e8 possibile farlo direttamente nella memoria RAM xk\'e8 sarebeb troppo lenta l'esecuzione (tutti i segnali di enable e cose varie dette prima sui bus rallentano molto il sistema), i registri infatti nn hanno bisogno di bus e segnali di controllo, sono interni al processore e solo il processore pu\'f2 usarli....\par
+\par
+beh, ovviamente xo se abbiamo gli addendi nella memoria RAM come facciamo a sommarli?? x fare questo diciamo al processore di andare a prendere i dati contenuti in 2 certe celle di memorie, e di metterli in 2 registri, poi gli diciamo di sommare il contenuto di tali 2 registri.... e magari, xk\'e8 no, di mettere tale contenuto in un altra cella di memoria, destinata a contenere il risultato....\par
+\par
+vediamo che 1) il processore acede in lettura a 1 cella di memoria, quindi metter\'e0 sul bus indirizzo l'indirizzo della cella, e poi ricever\'e0 sul bus dati il dato.... che verr\'e0 letto e messo nel registro, poi lo stesso x l'altro addendo, in un altro registro, poi esegue la somma e mette il risultato nella memoria riaccedendo al bus in modalit\'e0 scrittura....\par
+\par
+allora, il processor enn ha infiniti registri, ma abbastanza x permettere di alvorare con comodit\'e0....\par
+\par
+tali registri sono di 32bit nel processore i386 o superiori, mentre nel 8086 sono di 16 bit....\par
+noi programmeremo in modalit\'e0 compatibile con l'8086 e quindi assumeremo che tali registri sono di 16 bit....\par
+\par
+hanno un nome, che corrisponder\'e0 poi al loro indirizzo di memoria.... il compilatore tradurr\'e0 tale nome nel loro indirizzo, xma x un programmatore assembler basta sapere il nome, tali registri si chiamano AX, BX, CX, DX (quelli x uso generale come x mettere iaddendi, o risultati) SS, DS, ES, CS (che contengono i puntatori alle zone di memoria cin cui sono messi i dati, i comandi e ste cose qu\'e0.... cio\'e8, hanno dentro l'indirizzo di dove si trovano i dati, le istruzioni, e altre cose che evdremo + avanti), SI e DI che sono utilizzati come indici, un indice \'e8 un coso che serve ad esempio x accedere ad una certa posizione di qualcosa.... ad esempio x accedere alla lettera 3 della frase "pippo" bisogner\'e0 utilizzare un indice con il valore 3....\par
+\par
+tali egistri vengono anche usati x mettere dentro gli indirizzi di alcune variabili complesse.... come ad es le stringhe.... x sapere cos'\'e8 una variabile vai alla sezione programamzione/corso di programmazione base sul mio sito http://www.pollohacker.tk\par
+\par
+cmq vediamo + avanti in questo tutorial ste cose....\par
+\par
+dimenticavo di dire che i registri AX, BX, CX, DX sono divisi in 2 parti: la parte bassa e la parte alta, che anche loro hanno 2 nomi.... e possono essere usate singolarmente come se fossero 2 registri staccati ma di 8 bit anzich\'e8 di 16 bit....\par
+\par
+tali parti sono AH, AL x il registro AX, BH, BL x il registro BX e cos\'ec via....\par
+\par
+fine delle 2 parole che sono state un po' + di 2 sui registri....\par
+\par
+=====================================================================\par
+# 4) introduzione al linguaggio macchina, e alcune istruzioni assembler                                 #\par
+=====================================================================\par
+[CONSIGLIO DI LEGGERE SENZA STACCARE QUESTA PARTE E LA PARTE PRECEDENTE]\par
+\par
+Istruzioni: \par
+\par
+abbiamo visto come il processore prende i dati dalla memoria, come scrive, e che dispone dei registri.... un isruzione \'e8 un codice che fa fare al processore una certa cosa \par
+ogni istruzione (somma, spostamanto da un dato in memoria in un registro e viceversa etc etc) si compone di 2 parti: il codice operativo e gli operandi.... cio\'e8 il nome dell'istruzione che identifica quello che fa e gli operandi qulla quale opera ad esempio la somma ha il nome somma e gli operandi sono gli addendi....\par
+\par
+ogni processore dispone di un SET DI ISTRUZIONI, il nostro 8086 dispone di 70 istruzioni utilizzabili dalm programmatore.... \par
+\par
+ogni istruzione ha un determinato valore numerico e quindi un determinato valore binario.... questi valori li stabilisce il produttore del processore, e x colui che programma in binario sono da imparare a memoria.... ma a noi nn ce ne frega.... nn ce ne frega xk\'e8 l'assembler ha associato dei nomi comprensibili a tali istruzioni, e il compilatore traduce poi tale nome nel codice corripondente....\par
+\par
+ecco le istruzioni che noi useremo:\par
+\par
+MOV dove, cosa <-- permette di copiare il contenuto di una cosa in un altra parte.... ad esempio MOV AX, BX copia il contenuto di BX in AX....\par
+\par
+oppure MOV AL, 8 <-- mette il numero 8 in AL\par
+\par
+ATTENZIONE, NON SI PU\'f2 METERE AD ESEMPIO BX IN AL XK\'e8 BX \'e8 DI 16 BIT ED \'e8 TROPPO GRANDE X STARCI IN UN REGISTRO DI 8 BIT.... QUINDI QUELLI CON X VANNO SOLO CON QUELLI CON X, mentre h e l possono scambiarsi i contenuti benissimo, senza problemi.... ah, x la cultura, questo tipo i errore \'e8 tetto tipe missmatch.... quindi attanti al tipe missmatch!!\par
+\par
+ADD addendo1, addendo2 <-- aggiunge il contenuto di addendo2(se \'e8 un egistro o una cella di memoria) o il valore di addendo2(se \'e8 un numero) ad addendo1(che deve essere x ofrza 1 registro, x il motivo che dicevo prima, e cio\'e8 che se scrivesse in memoria RAM dovrebbe impiegare troppo tempo)....\par
+\par
+esempi:\par
+\par
+ADD AH, 8 <-- aggiunge 8 ad AH\par
+\par
+ADD AL, BH <-- aggiunge il contenuto di BH al contenuto di AL\par
+\par
+ATTENZIONE ANCHE QU\'ec AI TIPE MISSMATCH... CON 8 BIT \'e8 POSSIBILE SCRIVERE UN NUMRO DI 8 CIFRE BINARIE, CHE CONVERTITO IN DECIMALE CORRISPONDE AD UN NUMERO CHE VA DA 1 A 255....  (SI, XK\'e8 OGNI NUMERO BINARIO PU\'f2 ESSERE CONVERTITO IN DECIMALE, E ANCHE IL DECIMALE PU\'f2 ESSERE CONVERTITO IN BINARIO....) L'ASSEMBLER ACCETTA I NUMERI DECIMALI, INFATTI PRIMA HO SCRITTO 8 E NON 1000 (IL CORRISPONDENTEIN BINARIO)\par
+\par
+CMQ , IL TIPE MISSMATCH.... SE BH CONTENESSE 200 E AL 250, 200+250=450 E NON CI STAREBBE IN QUANTO \'e8 TROPPO GGRANDE....\par
+\par
+SUB minuendo, sottraendo (come add ma sottrae)\par
+\par
+CMP cosa1, cosa2\par
+ad esempio\par
+\par
+CMP AH, AL\par
+\par
+ecco il compare (CMP) che confronta 2 cose (2 registri, 1 registro e 1 numero, 1 registro e una cella di memoria) \par
+\par
+il risultato imposta i famosi flag inizali....\par
+\par
+infatti x confrontarli lui nn fa altro che sottrarre al primo il secondo.... se sono uguali il risultato sar\'e0 0m e quindi accender\'e0 i flag 0, se \'e8 minore il numero sra\'e0 negativo e quindi accender\'e0 il relativo flag....\par
+\par
+tale istruzione xo nn modifica i dati presenti, mentere la sottrazione si....\par
+cmq, continuiamo.... il risultato di tale operazione pu\'f2 essere utilizzato con i SALTI.... prima di parlare dei salti devi dire cos'\'e8 un etichetta.... un etichetta (o label) \'e8 un punto definito di un programma, \'e8 semplice, un eticheta si crea con nome_etichetta:, ma x capirla serve un esempio....\par
+\par
+istruzione\par
+istruzione\par
+istruzione\par
+salto\par
+istruzione\par
+istruzione \par
+istruzione\par
+\par
+etichetta1:\par
+istruzione\par
+istruzione\par
+istruzione\par
+\par
+allora, le istruzioni vengono eseguite in sequenza.... il processore esegue la prima\par
+esegue la seconda, esegue la terza e poi fa un salto\par
+\par
+il salto permette di saltare l'esecuzione delle istruzioni successive e proseguire dall'etichetta da cui salta....\par
+\par
+ad esempio "salta ad etichetta1" non esegue le istruzioni successive, ma riprende da etichetta1....\par
+\par
+tali salti sono di 2 tipi\par
+1) quelli incondizionati.... il programatore gli dice di salare, sempre, in ogni caso....\par
+2) quelli condizionati, cio\'e8 che dipendono dal valore dei flag\par
+\par
+il primo si scrive con l'istruzione JMP etichetta (senza i :)\par
+il secondo si scrive con l'istruzione J[x] etichetta (senza i :)\par
+\par
+dove [x] pu\'f2 essere \par
+E --> salta se il risultato del CMP ha acceso il flag di 0 e quindi i valori confrontati sono uguali\par
+\par
+L --> se il primo \'e8 minore del secondo\par
+\par
+G --> se il primo \'e8 maggiore del secondo\par
+\par
+LE --> minore o uguale\par
+\par
+GE --> magiore o uguale\par
+\par
+[riprendo domani]\par
+\par
+Esistono poi molte altre istruzioni che spiegher\'f2 + avanti\'85. Anche xk\'e8 vi chiederete, ok, ma cime facciamo a dare queste istruzioni al PC??\par
+\par
+ed ecco allora che introduco il punto seguente:\par
+\par
+=====================================================================\par
+# 5) Assembler: ambiente di sviluppo e compilatore                                                              #\par
+=====================================================================\par
+allora, le nostre istruzioni, e il codice in assembler andr\'e0 scritto in un file di testo, salvato con l'estensione.asm....\par
+\par
+x farlo basta aprire il notepad, scrivere il codice poi fare salva con nome, dalla combo box salva come: scegliere tutti i files (*.*) e salvarlo col nome quello_che_si_vuole.asm\par
+\par
+consiglio x evitare problemi di metetre nomi di massimo 8 lettere....\par
+\par
+una volta scritto il codice (che impareremo a scrivere continuando a leggere questo tutorial che mi sa che molte persone lo utilizzeranno x pulirsi le chiappe, o x accendere il camino....) possiamo aprire il compilatore che convertir\'e0 il nostro codice nel famoso linguaggio macchina....\par
+\par
+x compilare occorre il pacchetto turboassembler della borland\par
+estratto in system32, o se nn siete root, da qulahce parte\par
+, bisogna aprire il prompt dei comandi, (che presuppongo sappiate usare, se no sezione dos di http://www.pollohackert.tk) \par
+dal prompt dei comandi bisogna spostarsi nella cartella ontenente il file con CD percorso\par
+\par
+poi digitare se avete copiato il pacchetto turboassembler in system 32\par
+\lang2057 tasm ./nomefile.asm\par
+\par
+poi tlink ./nomefile.obj\par
+\par
+\lang1040 poi ./nomefile.exe x eseguire il programma.... in caso di errore nel codice compariranno i messaggi di errore del compilatore....\par
+\par
+se nopn \'e8 in system32 allora basta digitare percorso\\tasm e percorso\\tlink al posto di tasm e tlink....\par
+\par
+in ogni caso ho creato una GUI x compilare il tutto senza usare il prompt.... che risulta scomodo stare tutte le volte a usare il prompt....\par
+\par
+l'interfaccia \'e8 disponibile nella sezione Ph's Softwares e comprende tutto il necessario x compilare....\par
+\par
+=====================================================================\par
+# 6) Assembler: struttura di un programma.                                                                         #\par
+# 7) Assembler: interruzioni, assegnazione, variabili, registri, input ed output.                        #\par
+# 8) Assembler: selezione, salti, cicli.                                                                                 #\par
+=====================================================================\par
+\par
+allora, apriamo il notepad, e salviamo unfnile vuoto.asm come detto prima....\par
+\par
+nel nostro programma dovremo dare delle direttive al compialtore cio\'e8 dirgli che nomi assegnare alle celle di memoria che usiamo, che tipo di programma \'e8, quanta memoria massima richiede e tutte queste cose....\par
+\par
+allora, sulla prima riga in genere \'e8 buona cosa mettere \par
+\par
+; nome del programma\par
+\par
+il ; s usa x mettere nel codice dei comenti, cio\'e8 delle frasi che poi saranno tolte dal compilaotre e che xo servono al programamtore x ricordarsi certe cose.... o x scrivere degli appunti nel codice....\par
+\par
+mettiamo ; nome dle programma x ricordarci quello che fa ad esempio....\par
+\par
+; primo programma di prova in assembler....\par
+\par
+iniziamo invece adesso il programma vero e proprio....\par
+il pro9gramma \'e8 diviso in SEGMENTI\par
+\par
+esiste il segmento dati nel quale verranno scritte le dichiarazioni relative ai dati, cio\'e8 alle celle di memoria utilizzate, che nome dargli e che numero massimo possono contenere, definendo cos\'ec delle variabili (se nn sai cos'\'e8 una variabile vai nella sezione programmazione/tutorial alal programmazione di base su http://www.pollohacker.tk)\par
+lo STACK SEGMENT nel quale andfranno fatte le dichiarazioni relative allo stack, cio\'e8 una parte di memoria che adesso non utilizzeremo, ma tra un po' si, nella uqle un dato pu\'f2 essere salvato temporaneamente.... x poi essere ripreso quando serve.... e il segmento del codice in cui ci sono le istruzioni vere e proprie....\line\line proviamo a vedere adesso un programam che non usa ne lo stack ne bvariabili, ma che \'e8 formato solo da istruzioni....\par
+\par
+code segment\par
+    assume CS:code\par
+pippo:\par
+    istruzione 1\par
+    istruzione 2\par
+    ....\par
+    istruzioneN\par
+code ends\par
+    end pippo\par
+\par
+\par
+allora vediamo che abbiamo scritto solo il segmento codice chiamato code, ma potevamo chiamarlo anche in un altro nome qualsiasi.... con la direttiva ASSUME diciamo al compilatore di mettere nel registro CS citato sopra l'indirizzo di memoria dove inizia il codice del programma....\par
+\par
+vediamo poi un etichetta, la prima etichetta \'e8 obbligatoria, e a differnza delle altre vediamo che viene chiusa con end pippo..... tale etichetta raggruppa tutte le istruzioni del programma e anche le altre etichette....\par
+\par
+prima di questo chiudiamo il codice con codice ends....\par
+\par
+SE NON CI AVETE CAPITO UN CAZZO, ALLORA LEGGETE DA QU\'ec IN POI, CHE HANNO SEMPLIFICATO LA VITA....\par
+\par
+il compilatore x fortuna accetta anche un altro modo x dargli le direttive....\par
+\par
+\lang2057 .model TINY/SMALL/MEDIUM/COMPACT/LARGE/FLAT\par
+\par
+\lang1040 model \'e8 una direttiva che indica al compilatore quanta memoria ha buisogno il programma x funzionare.... in genere si usa .model SMALL che dice al compilatore che si usano 64KB di memoria x il segmento codice e 64KB di memoria x il segmento dati....\par
+\par
+e noi useremo quello....\par
+\par
+altre 3 direttive servono, e sono da mettere ognuna su una nuova riga....\par
+\par
+e sono:\par
+\par
+.stack che indica la grandezza dello stack (lo stack \'e8 una zona di memoria che serve x mettere dentro temporaneamente dei dati che nn si sa dove mettere) se nn si scrive niente viene impostato a 1KByte\par
+\par
+.data che serve a dire quali variabili si utilizzano (le variabili sono il nome delle zone di memoria utilizzate.... e possono essere di diversi tipi: DB x contenere numeri fino a 8 bit, DW x numeri fino a 16 bit, DD x numeri fino a 32bit DQ x numeri fino a 64 bit)\par
+\par
+le variabili si definiscono cos\'ec\par
+\par
+.data\par
+variabile1 DB 0\par
+variabile2 DB 0\par
+\par
+quindi variabile, tipo, valore iniziale.... il compilatore permette di impostare anche il valore iniziale....\par
+\par
+arriva poi il codice.... e glie lo si dice alc ompilaotre con .code\par
+\par
+.code \par
+etichetta_iniziale:\par
+\tab istruzioni varie\par
+end etichetta_iniziale\par
+\par
+vediamo adesso il tutto assieme\par
+\par
+;struttura di un programma assembler vuoto\par
+.model small ; modello small con 64KB massimi di dati e &$KB massimi di codice\par
+.stack ; non scrivo niente, mi va bene quello che mette di default\par
+.data ; dichiarazione delle variabili utilizzate\par
+variabile1 DB 0 ; variabile di nome variabile1 di 8 bit inizializzata a 0\par
+variabile2 DB 0 ; variabile di nome variabile2di 8 bit inizializzata a 0\par
+\par
+.code\par
+inizio:\par
+    istruzioni\par
+    istruzioni\par
+    istruzioni\par
+    istruzioni\par
+end inizio\par
+\par
+\par
+\par
+fine del programma base....\par
+\par
+allora, manca un ultima cosa difficile, poi il resto \'e8 + facile AVETE CAPITO?? DOPO \'e8 + FACILE\par
+\par
+nn ho parlato motlo dei registri CS, DS, ES e SS.... sono dei registri che contengono l'idirizzo della prima cella di memoria dove \'e8 contenuto\par
+il codice (x CS)\par
+i dati (x DS)\par
+lo stack (x SS)\par
+una cosa extra se si ha bisogno di altra memoria (x ES)\par
+\par
+allora, manca questa cosa.... in DS dobbiamo mettere l'indirizzo della prima cella di memoria con i dati.... lo si fa con il MOV detto prima.... l'indirizzo lo ottiene automaticamente il compilatore scrivendo @DATA\par
+\par
+allora @DATA contiene l'indirizzo da mettere in DS\par
+\par
+potremmo fare\par
+MOV DS,@DATa che come detto sopra fa propruio quello che ci serve....\par
+ma siccome l'assembler ha le sue noie e non consente di metetre un valore cos\'ec facilemnte nei registri di segmento, dobbiamo prima passare x un registro generale\par
+\par
+mettiamo @data ad esempio prima in AX e poi AX in DS\par
+\par
+\lang2057 MOV AX, @DATA\par
+MOV DS, AX\par
+\par
+\lang1040 ecco qu\'e0 le prime 2 ricgehe di codice..... da qu\'ec possiamo scrivere il VERO PROGRAMAM CHE \'e8 MOLTO MA MOLTO MA MOLTO MA MOLTO + CAPIBILE E FACILE, XK\'e8 SIAMO NOI A DECIDERE COSA E COME SCRIVERLO\par
+\par
+[pausa]\par
+\par
+[ripreso alle 17.11n del 10/09/2005]\par
+\par
+come ho detto da ora in poi possiamo scrivere le istruzioni che vogliamo....\par
+\par
+ad esempio possiamo mettere il numero 200 nel registro AX e poi metterlo in una variabile, e quindi uin una zona di memoria....\par
+\par
+.model small\par
+.stack\par
+.data\par
+variabile DB 0\par
+.code\par
+inizio:\par
+mov AX, @data\par
+mov DS, AX\par
+\par
+mov AX, 200 ; cuore del programma\par
+mov variabile, AX ; cuore del programma\par
+\par
+mov ah, 4ch ; li vediamo subito\par
+int 21h ; li vediamo subito\par
+\par
+end inizio\par
+\par
+allora, il codice era semplice e spero che l'avete capito, se no rileggetevi il tutorial\par
+\par
+vediamo adesos le ultime 2 righe\par
+\par
+mov ah, 4Ch\par
+int 21h\par
+\par
+allora partiamo dall'ultima\par
+\par
+int 21h \'e8 un INTERRUZIONE\par
+\par
+un interruzzione \'e8 una particolare cosa che arresta l'esecuzione del programma per dare il controllo al BIOS o al SISTEMA OPEATIVO\par
+\par
+un interruzione \'e8 di 2 tipi: Hardware o Software....\par
+\par
+GHardware quando proviene da una periferica, ad esempio la stampante che finisce i fogli, software quando la insrisce il programmatore nel codice\par
+\par
+ogni interruzione ha un codice espresso in hexadecimale (in questo caso 21h)\par
+\par
+l'interruzione 21h (int 21h) \'e8 un interuzione resa disponibile dal DOS e a seconda del valore contenuto in AH quando viene richiamata l'interruzione fa diverse cose....\par
+\par
+ad esempio se in AH c'\'e8 4Ch (76 in decimale) quando viene richiamata l' INT 21h il programma si chiude e ripassa il controllo al sistema operativo\par
+\par
+mentre se viene eseguita l'INT 21h e in AH c'\'e8 01 viene l\'f2etto un carattere da tastiera e il suo codice ASCII viene messo in AL\par
+\par
+mentre se c'\'e8 02 scrive il carattere contenuto in DL sullo schermo\par
+\par
+mentre se c'\'e8 09h scrive sullo schermo una stringa di testo\par
+\par
+se c'\'e8 0Ah=10(decimale) legge una stringa di testo\par
+\par
+ne esistono moltissime altre, e tutte sono state riassunte dal mago dell'assembler chiamato ENNIUS cercando ENNIUS interrupt si trova l'elenco completo di queste interruzioni utilissime.... che adesso useremo assieme ai comandi gi\'e0 visti....\par
+\par
+allora, adesso che sappiamo come leggere un numero (di una sola cifra x il momento) possiamo fare il proigramma che fa la somma, facendo inserire i numeri all'utente....\par
+\par
+allora:\par
+\par
+.model small \par
+.stack\par
+.data ; usiamo kle variabili numero 1 e numero 2 x metterci dentro gli addenti\par
+numero1 db 0 ; i 2 numeri\par
+numero2 db 0\par
+somma db 0 ; e la variabile che conterr\'e0 il risultato della somma\par
+.code\par
+inizio: ;ricordate?? l'etichetta che dicevo\par
+mov ax, @data\par
+mov ds, ax ; ricordate?? le istruzioni x DS\par
+\par
+\par
+vediamo un attimo come deve essere fatto il programma\par
+1) legegre il primo numero\par
+2) metetrlo nella variabile numero1\par
+3) leggere il secondo numero\par
+4) metterlo nella variabile numero2\par
+5) mettere i 2 numeri in 2 registri x poi sommarli\par
+6) metetre il contenuto del registro dove l'istruzione ADD mette il risultato, nella variabile somma\par
+\par
+continuando il codice di prima....\par
+\par
+mov ah, 01h ; valore che ci deve essere quando viene chiamata l'int 21h x leggere 1 numero\par
+int 21h ; ecco, il sistema operativo ora rimarr\'e0 in attesa della digitazione di un numero\par
+; adesso in AL c'\'e8 il numero letto, MA ATTENZIONE: C'\'e8 IL CODICE ASCII DEL NUMERO LETTO E NON IL VALORE.... I CODICI ASCII SONO DEI CODICI ATTRIBUITI AD OGNI TASTO DELLA TASTIERA.... LO 0 CORRISPONDE AL 48, L'1 AL 49 E COS\'ec VIA FINO AL 9.... X OTTENERE IL RELATIVO VALORE BASTA QUINDI SOTTRARRE 48 AL NUMERO LETTO:\par
+ad esempio se il numero letto \'e8 2, in AL verr\'e0 messo 50\par
+sottraendo 48 si ottiene il numero voluto!!\par
+quindi ricordiamoci prima di mettere nella variabile numero1 il numero di togliergli 48\par
+\par
+sub AL, 48 ; adesso finalmente abbiamo il numero giusto\par
+mov numero1, AL ; mettiamo il numero letto, nella variabile numero 1\par
+\par
+;lo stesso vale x numero 2\par
+\par
+mov ah, 01h\par
+int 21h\par
+SUb AL, 48\par
+mov numero2, AL\par
+\par
+;bene, adesso in numero1 e in numero2 abbiamo i 2 numeri da sommare\par
+\par
+li mettiamo in 2 registri x fare la somma\par
+\par
+ATTENZIONE le variabili DB sono di 8 bit, qindi non possono essere messe nei registri AX, BX, CX o DX (che sono da 16 bit) ma solo nelle loro divisioni  (AH, AL, BH, BL ....)\par
+\par
+mettiamo ad esempio numero1 in AH e numero2 in AL, e poi facciamo la somma di questi 2 registri\par
+\par
+MOV AH, numero1 ; mettiamo i numeri nei 2 registri\par
+MOV AL, numero2\par
+\par
+ADD AH, AL ; l'istruzione ADD come gi\'e0 detto in precedenza somma al contenuto del primo registro il contenuto del secondo\par
+\par
+ora AH contiene il risultato della somma, e possiamo metterlo nella sua variabile somma con un semplice MOV\par
+\par
+MOV somma, AH ; metet il contenuto di AH (che contiene il risultato) nella variabile somma\par
+\par
+FINE DEL PROGRAMMA\par
+\par
+MOV ah, 4ch\par
+int 21h\par
+\par
+end inizio\par
+\par
+RISCRIVO IL CODICE COMPLETO:\par
+\par
+\tab .model small \par
+\tab .stack\par
+\tab .data ; usiamo le variabili numero 1 e numero 2 x metterci dentro gli addendi\par
+\tab\tab numero1 db 0 ; i 2 numeri\par
+\tab\tab numero2 db 0\par
+\tab\tab somma db 0 ; e la variabile che conterr\'e0 il risultato della somma\par
+\tab .code\par
+\tab inizio:\par
+\par
+\tab\tab mov ax, @data\par
+\tab\tab mov ds, ax\par
+\tab\par
+\tab\tab mov ah, 01h \par
+\tab\tab int 21h \par
+\tab\tab sub AL, 48 \par
+\tab\tab mov numero1, AL \par
+\tab\tab\par
+\tab\tab mov ah, 01h\par
+\tab\tab int 21h\par
+\tab\tab SUb AL, 48\par
+\tab\tab mov numero2, AL\par
+\tab\tab\par
+\tab\tab MOV AH, numero1\par
+\tab\tab MOV AL, numero2\par
+\tab\tab\par
+\tab\tab ADD AH, AL\par
+\tab\tab\par
+\tab\tab MOV somma, AH\par
+\tab\tab\tab\par
+\tab\tab MOV AH, 4Ch\par
+\tab\tab int 21h\par
+\tab\tab\par
+\tab\tab end inizio\par
+\par
+bene, sappiamo gi\'e0 qualcosa in +....\par
+adesso vediamo le figure fondamentali dell'informatica, x poi vedere come leggere i numeri di + cifre e come stamparli sullo schermo....\par
+[breve parentesi]\par
+tutto questo si pu\'f2 fare in 2 righe con gli altri linguaggi di programmazione.... e vi chiederete, xk\'e8 scrivere 1 pagina di codice qnd lo posos fare in 2 righe?? beh, con un linguaggio di programmazione ti serveun compilatore, fatto da qualcun altro e se lo usi dipendi da quella persona.... mentre qu\'ec, si, c'\'e8 un compilatore ma siamo un passo sopra il livello macchina e potremmo convertire manualmente i programmi in binario.... basta avere la tabella dei simboli e delle istruzioni del microprocessore sotto mano.... e siccome sappiamo cosa fa il compilatore turbo assembler, lo possiamo usare..., mentre nn sarebeb giusto usare il compilatore PASCAL o C se nn sappiamo che traduce quello che noi scriviamo in 2 righe in 1 pagina di codice assembler....\par
+[fine parentesi]\par
+\par
+allora, prima citavo il compare (CMP op1, op2)\par
+\par
+bene, confrontando 2 numeri si possono avere vari risultati: maggiore, minore, uguale, maggiore O uguale, minore E uguale, diverso....\par
+\par
+e abbiamo visto come usarli con i SALTI (jg, jl, je, jge, gle, jne) =(jump great, jumpl ess, jump equal....jump not equal)\par
+\par
+allora, abbiamo gi\'e0 fisto una figura fondamentale della programmazione: l'assegnazione, cio\'f2 che facciamo con il MOV cio\'e8 mettere un valore in una zona di memoria (registro o variabile) e adesso vediamo la seconda: LA SELEZIONE\par
+\par
+====================LA SELEZIONE====================\par
+\par
+la selezione \'e8 una particolare figura che permette di esegure delel operazioni, o delle altre a seconda di una condizione logica\par
+cio\'e8, SE una condizione \'e8 VERA allora fai questo, altrimenti fai quell'altro\par
+\par
+esempio se il contenuto di AX \'e8 maggiore del contenuto di BX allora scrivi sullo schermo1, altrimenti se \'e8 minore scrivi sullo schermo 2, altrimenti se sono uguali scrivi sullo schermo 0....\par
+\par
+questo lo possiamo fare in assembler grazie al CMP\par
+\par
+vediamo un esempio(solo il codice che sevre, senza tutto il .model small e balle varie)\par
+\par
+CMP AX, BX\par
+JG maggiore ; se \'e8 amggiore va all'etichetta maggiore\par
+JL minore ; se \'e8 minore va all'etichetta minore\par
+JE uguale ; se \'e8 uguiale va all'etichetta uguale\par
+\par
+maggiore:\par
+scrivi sullo schermo 1\par
+jmp dopo ; lo vediamo subito\par
+\par
+minore:\par
+scrivi sullo schermo 2\par
+jmp dopo\par
+\par
+uguale:\par
+scrivi sullo schermo 0\par
+\par
+dopo:\par
+mov ah, 4ch\par
+int 21h\par
+\par
+l'esempio \'e8 chiaro, tranne quel JMP dopo\par
+allora, abbiamo detto che le istruzioni vengono eseguite in sequenza, vero??\par
+bene, prendiamo x esempio che Ax \'e8 maggiore di BX\par
+\par
+il programma va all'etichetta maggiore, scrive sullo schermo 1\par
+se nn ci fosse quel jmp dopo\par
+continuerebbe l'esecuzione dei comandi successivi.... arriverebbe all'etichetta minore, eseguirebeb i comandi di minore, arriverebb all'etichetta uguale ed eseguirebbe i comandi di usuale.... ma noi nn vogliamo che faccia ci\'f2.... lui deve solo scrivere 0 sullo schermo, e nn anche gli altri valori\par
+\par
+allora, con l'etichetta dopo: messa dove sia che sia minore o uguale o maggiore il programma deve ritornare, e il salto, si evita di eseguire tutto il resto\par
+\par
+il programam scritto, bel caso in cui Ax sia maggiore di BX va all'etichetta maggiore, scrive 1 e poi va all'etichetta dopo, lo stesso vale x gli altri casi.... tutti i casi alla fine saltano a quell'etichetta dove il programma ri\'e8prende il suo flusso normale e vengono eseguite le operazoni successive, in questo caso la chiusura del programma....\par
+\par
+provate voi a scirver eil codice che confronta 2 numeri scritti dall'utente\par
+\par
+si, ma come si fa a scirvere sullo schermo 1 numero??\par
+\par
+bene , serve l'int21h con il codice 02 in AH e il numero da scrivere deve essere messo in DX\par
+l'int21h con i codici 01 e 02 lavora su numeri in formato ASCII quindi bisogner\'e0 sommargli, prima della stampa, quel 48  che avevamo tolto nell'esempio precedente, x gli stessi motivi di prima, solo che qu\'e0 lo si somma, xk\'e8 l'istruzione usa i numeri in formato ASCII\par
+\par
+esempio, x scrivere 1 sullo schermo bisogna fare\par
+\par
+mov ah, 02h\par
+mov dx, 1\par
+add dx, 48 ; in questo modo dx contiene 49 che \'e8 il codice ASCII di "1" \par
+int 21h\par
+\par
+se volessimoscrivere "A" o "B" o un altro carattere sarebbe bastato metetre il corrispondente codice ASCII (in questo xcaaso \'e8 gi\'e0 il codice giusto e nn sevre sommare 48) nel registro DX prima di chiamatre l'int 21h....\par
+\par
+i codici ASCII di ogni carattere si trovano nella tabella dei codici ASCII che si pu\'f2 trovare benissimo in rete....\par
+\par
+ad esempio la "A" corrisponde al 65\par
+\par
+scrivendo\par
+\par
+mov ah, 02h\par
+mov dx, 65\par
+int 21h\par
+\par
+viene stampato il carattere "A" sullo schermo....\par
+\par
+tranquilli, non bisogna impararsi tutti i codici ASCII a memoria, xk\'e8 l'asembler ci viene incontro\par
+infatti possiamo usare i caratteri mettendoli tra " " e lui automaticamente quando compila, li sostituisce con i codici ASCII\par
+ad esempio \par
+MOV AH, "X" \par
+mette il carattere, e quindi il codice ASCII di X in AH\par
+\par
+attenzione xo: 1 carattere scritto in questo modo \'e8 di 8 bit, e nn pu\'f2 essere messo nelle variabili, o nei registri di 16 bit come DX, ma solo in quelle/quelli di 8 bit come DL\par
+\par
+ma vi chiederete, come facciamo allora a metterlo in DX??\par
+allora: DX si compone di 2 parti giosto?? entrambe a 8 bit: DL e DH\par
+\par
+un numero a 16 bit \'e8 formato da 16 cifre binarie, se DX si compone di 2 parti da 8 le prime 8 saranno in un a di quelle parti e le altre 8 nell'altra parte....\par
+\par
+bene, quando noi scriviamo MOV DX, 1\par
+\par
+in DX viene messo il numero binario 00000000 00000001\par
+\par
+le prima 8 cifre andranno a finire nella PARTE ALTA DI DX cio\'e8 DH, le ultime 8 in DL\par
+\par
+-------------DX-----------\par
+00000000 00000001\par
+----DH------------DL----\par
+\par
+all'inizio avevamo inotre dettoche tutti gli 0 anteriori al numero nn contano.... bene, se il nostro numero \'e8 da 8 bit ("A" abb detto che \'e8 da 8 bit, corrisponde a 65 che in binario diventa 01000001) allora pu\'f2 essere trasformato in uno da 16 bit, anteponendo gli 8 0 necessari x formare un numero da 16 cifre\par
+\par
+0000000001000001 = 01000001....\par
+\par
+uhm, e allora??\par
+e allora possiamo mettere in DL il carattere da 8 bit e riempire DH con una sfilza di 0\par
+\par
+cos\'ec DX conterr\'e0 il numero ad 8 bit, trasformato in uno da16 bit....\par
+eheheheheh trukketto #1\par
+\par
+quindi \par
+\par
+mov ah, 02h\par
+mov DL, "X"\par
+mov DH, 0\par
+int 21h\par
+\par
+[fine x questa sera.... sono le 19.00 del 10/09/2005]\par
+\par
+[ripreso alle 20.36 del 10/09/2005]\par
+\par
+abiamo visto come fare a mettere un numero da 8 bit in un registro da 16 bit e come stamparlo sullo schermo.... ovviamente nn \'e8 possibile fare stare un numero da 16 bit dentro un registro da 8 bit....\par
+\par
+adesso vediamo l'altra figura fondamentale dell'informatica: L'ITERAZIONE (in gergo comune CICLO)\par
+\par
+================ L' ITERAZIONE (I CICLI) ================\par
+\par
+allora, se nn sapete cosa sia un ciclo consiglio di leggere il tutorial alla programamzione di base disponibile nella sezione download/articoli e nella sezione programmazione di www.pollohacker.tk\par
+\par
+l'iterazione permette di RIPETERE UNA SERIE DI ISTUZIONI FINO A CHE NN SI VERIFICA UNA PARTICOLARE CONDIZIONE\par
+\par
+ad esempio "continua a sommare 1 al registro CX fino a che CX \'e8 = a 100)" quando arriva a 100 finisce il ciclo....\par
+\par
+oppure ("continua a ripwetere la lettura di un numero fino a che l'utente inserisce 0")\par
+\par
+esistono 2 tipi di iterazione: l'iterazione precondizioonata e l'iterazione postcondizionata\par
+\par
+l'iterazione precondizionata ha una condizione posta all'inizio.... e si traduce in gergo comune cos\'ec:\par
+\par
+finche\'e8 la condizone (condizione) \'e8 vera continua a svolgere le istruzioni di seguito, appena la condizione diventa falsa prosegui con il programma....\par
+\par
+un po' come la lavatrice.... continua a lavare i pani mentre il TIMER \'e8 diverso da 0.... appena il TIMER vale 0 allora finisce il lavaggio....\line\line l' iterazione POST condizionata invece ha la condizione alla fine\par
+\par
+e si traduce con\par
+\par
+finch\'e8 non si verifica una certa condizioone continua a ripetere queste istruzioni.... se si \'e8 verificata smetti di ripeterle\par
+esempio: fino a che il timer non vale 0 continua a lavare\par
+\par
+sonopmmolto simili, ma la prima ruipete mentre una condizione \'e8 vera, e smette quando diventa falsa\par
+\par
+l'altra continua a ripetere mentre la condizione \'e8 falsa, fino a che diventa vera....\par
+\par
+altro esempio con la postcondiziojnata\par
+\par
+continua a leggere l'ora fino a che l'ora \'e8 = 24.00\par
+quando l'ora \'e8 = alle 24.00 scrivi sullo schermo "\'e8 mezzanotte"\par
+\par
+qst programam che scrive sullo schermo qnd \'e8 mezzanotte pu\'f2 essere fatto al contrario con l'iterazione post condizionata....\par
+\par
+una differenza tra le 2: l'iterazione precondizionata verifica in partenza se la condizione \'e8 vera.... se \'e8 gi\'e0 falsa nn esegue nemmeno una volta le istruzioni di seguito, mentre la postcondizionata ha la condizione alla fine ed esegue sempre, almeno una volta le istruzioni\par
+\par
+altra cosa: se la condizione rimane sempre falsa allora la postcondizionata continuer\'e0 a ripetere le istruzioni all'infinito (loop infinito) mentre se \'e8 sempre vera la precondizionata ripeter\'e0 anche lei le istruzioni all'infinito (loop infinito)\par
+\par
+x fare questo utilizzeremo una serie di jump e di CMP....\par
+\par
+un esempio in assembler che scrive i numeri da 1 a 9 sullo schermo....\par
+possiamo mettere in DX il codice ASCII dello "0" (48) \par
+\par
+e fare un iterazione che \par
+1) stampa sullo schermo il carattere ascii contenuto in DX\par
+2) somma 1 al contenuto di DX \par
+e continua a fare queste operazioni fino a che DX contiene 57 che \'e8 il codice ASCII del "9"\par
+(questo \'e8 possibile xk\'e8 sommando 1 ogni volta a DX la prima volta verr\'e0 stampato il carattere ASCII 48 che corrisponde a "0", poi il 49 che corrisponde a "1" e cos\'ec via FINO AL 57che corrisponde al "9")\par
+\par
+.model small\par
+.stack\par
+.data\par
+.code\par
+inizio:\par
+\tab mov ax, @data\par
+\tab mov ds, ax\par
+\tab\par
+\tab mov DX, 48 ; metto il codice ASCII dello "0"\par
+\par
+\tab ciclo:\par
+\tab\tab MOV AH, 02\par
+\tab\tab int 21h ; stampa sullo schermo il carattere, il cui codice \'e8 contenuto in DX\par
+\tab\tab\par
+\tab\tab ADD DX, 1 ; somma 1 a DX mettendo cos\'ec il codice ASCII del carattere suiccessivo\par
+\tab\tab\par
+\tab\tab CMP DX, 58 ; cofronta il contenuto con 58\par
+\tab JE fine_ciclo ; se il codice \'e8 58 (e quindi l'ultimo scritto era il 57 e quindi "9") allora \par
+\tab\tab        ; finisce(e nn torna all'inizio ma prosegue dall'etichetta fine_ciclo)\par
+\tab JL ciclo ; invece se \'e8 ancora minore ritorna all'etichetta ciclo, e continua a ciclare \par
+\tab\tab ; fino a che \'e8 uguale a 58\par
+\par
+\tab fine_ciclo:\par
+\tab mov ah, 4ch\par
+\tab int 21h\par
+end inizio\par
+\par
+bisogna sicuramente notare quanto \'e8 + conveniente scrivere questo programma che manualmente 9 volte\par
+\par
+mov ah, 02\par
+mov dx, 48\par
+int 21h\par
+\par
+mov ah, 02\par
+mov dx, 49\par
+int 21h\par
+\par
+mov ah, 02\par
+mov dx, 50\par
+int 21h\par
+\tab\tab\par
+mov ah, 02\par
+mov dx, 51\par
+int 21h\par
+\par
+mov ah, 02\par
+mov dx, 52\par
+int 21h\par
+\par
+mov ah, 02\par
+mov dx, 53\par
+int 21h\par
+\par
+mov ah, 02\par
+mov dx, 54\par
+int 21h\par
+\par
+etc etc etc etc....\par
+basta pensare alle letere x capire quanto possa essere conveniente un algoritmo di quel tipo\par
+\par
+esiste anche uin altra iterazione: l'iterazione a conteggio: il FOR\par
+il for \'e8 un iterazione che esegue un certo numero di volte prestabilito le istruzioni\par
+\par
+per N volte esegui queste istruzioni\par
+\par
+in assembler bisogna mettere il numero N (il numero di volte che si vuole, in CX)\par
+\par
+creare un etichetta dopo aver messo il numero di volte in CX\par
+\par
+scrivere le istruzioni da ripetere\par
+\par
+e alla fine delle istruzioni da ripetere\par
+scrivere LOOP etichetta\par
+dove etichetta indica l'etichetta scritta ij precedenza\par
+\par
+MOV CX, 9\par
+\par
+pippo:\par
+\tab mov ah, 02h\par
+\tab mov DX, CX\par
+\tab add DX, 48\par
+\tab int 21h\par
+LOOP pippo\par
+\par
+questo frammento di codice fa le stesse cose di prima, al contrario.... 9 volte, la prima volta in CX ci sar\'e0 9, poi l'istruzione LOOP lo decrementer\'e0 ogni volta di 1, fino a che arriva a 0\par
+mettendo CX in DX e sommandogli 48 si ottengono i codici ASCCI, stavolta verranno scriti al contrario\par
+\par
+introduco ora una rgomento importante: GLI INDICI\par
+\par
+================ GLI INDICI ================\par
+\par
+un REGISTRO INDICE (SI, DI) viene spesso usato nei cicli FOR o nei cicli ITERAZIONE x contenere il numero di volte che vengono fatte le operazioni, o x fare qualcos'altro\par
+\par
+ad esempio\par
+\par
+MOV CX, 9\par
+MOV SI, 0 ; metto 0 in SI\par
+\par
+pippo:\par
+\tab mov ah, 02h\par
+\tab mov DX, SI\par
+\tab add DX, 48\par
+\tab int 21h\par
+\tab ADD SI, 1\par
+LOOP pippo\par
+\par
+questo frammento scrive i numeri in fila crescente, come il primo di questi ultimi 3 programmi....\par
+\par
+questo \'e8 possibile xk\'e8 ad ogni ripetizione viene incrementato di 1 l'indice SI\par
+basta rifletterci un po' che \'e8 semplice....\par
+\par
+il ciclo looppa decrementando CX fino a che vale 0\par
+\par
+ad ogni ripetizione incrementa di 1 SI\par
+e coem priam lo stampa....\par
+decrementa DX e incrementa SI\par
+\par
+introduco adesso il penultimo argomento x poi lasciare ferma questa guioda fino a che avr\'f2 di nuovo del tempo libero....\par
+\par
+================ ARRAY E STRINGHE ================\par
+\par
+allora, appena parlato degli indici, e se ben ricordate all'inizio di questa guida avevamo parlato della memoria RAM, e degli indirizzi di memoria....\par
+\par
+avevamo detto che la memoria era formata da tante celle a cui era associato un indirizzo....\par
+\par
+bene, con un indice possiamo accedere a tali celle di memoria, incrementando l'indice in un ciclo FOR e accedendo alla cella di memoria PUNTATA dall'indice\par
+\par
+cosa significa PUNTATA, allora, un coso che PUNTA \'e8 un coco che contiene l'indirizzo di qualcosa.... in questo caso della cella di memoria....\par
+\par
+esistono delle variabili + complesse delel semplici DB o DW e le altre citate in precedenza, queste sono le stringhe di testo e gli array\par
+\par
+una stringa di testo \'e8 un insieme di caratteri, prima avevamo detto che un carattere \'e8 di 8 bit, e che quindi pu\'f2 essere messo in una variabile, o in un registro di 8 bit, quindi o AH, AL BH, BL etc etc, oppure in una variabile DB (forse questo nn l'avevo scritto, ma essendo un numero di 8 bit lo davo x scontato)\par
+\par
+bene, una stringa di testo nn \'e8 altro che una sequenza di caratteri, quindi una sequenza di variabili DB, quindi una sequenza di celle di memoria!!!!\par
+\par
+ad esempio la sringa "PIPPO"\par
+\par
+ha 5 lettere e occuper\'e0 5 celel di memoria da 8 bit contenenti la pirima P, la seconda I, la terza P la quarta P e la quinda O\par
+\par
+una stringa si dichiara in assemble cos\'ec:\par
+stringa DB "pippo $"\par
+esiste anche un altro modo, ma nn lo vediamo xk\'e8 nn \'e8 indispensabile\par
+il compilatore interpreta questa scritta in modo tale che crea la variabile stringa e gli mette dentro tutti i caratterei tra "" fino a che incontra il carattere $ che indica la fine della stringa\par
+\par
+queste celle di memoria sono tutte in fila, ma nn partono dalla cella 0 (che pu\'f2 essere banissimo gi\'e0 utilizzata da altre variabili, o da altri programmi), ma da dove le mette il sistema operativo che cerca uno spazio continuo libero nella memoria x posizionare questa stringa....\par
+\par
+tale indirizzo si ottiene con l'istruzione LEA\par
+\par
+ad esempio LEA AX, stringa\par
+\par
+mette in AX l'indirizzo della PRIMA cella di memoria occupata dalal variabile stringa\par
+\par
+la prima cella di memoria contiene la LUNGHEZZA dfella stringa, la seconda il primo carattere, la terza il secondo carattere etc etc.... fino a che finisce la frase....\par
+\par
+possiamo stampare una frase sullo schermo\par
+\par
+con il ciclo di prima (quello che stampava i numeri)\par
+mettendo inizialmente in CX la lunghezza della stringa\par
+e in SI l'indirizzo della seconda cella di memoria\par
+che corrisponder\'e0 all'indirizzo della prima cella(ottenibile con LEA) + 1\par
+\par
+esempio che scrive "questo \'e8 uin programma palloso" sullo shcermo\par
+\par
+.model small\par
+.stack\par
+.data\par
+messaggio DB "questo \'e8 un programma palloso $" ; come avevo detto prima\par
+.code\par
+inizio:\par
+\tab mov ax, @data\par
+\tab mov ds, ax\par
+\par
+\tab LEA SI, messaggio ;ora SI contiene l'inditrizzo della prima cella, quindi la lunghezza\par
+\tab ; attenzione: l'indirizzo, non il messaggio\par
+\tab ; ci\'f2 che corrisponder\'e0 all'indirizzo del messaggio \'e8 il carattere puntato\par
+\tab ; e si ottiene scrivendo [SI] al posto di SI\par
+\tab ; il carattere puintato xo \'e8 di 8 bit, non di 16, quindi dovr\'e0 essere messo in CX\par
+\tab ; ma in CL, e come x DX nell'esempio precedente, in CH andr\'e0 0\par
+\par
+\tab mov CL, [SI] ; metto il contenuto della cella puntata da SI (la prima) = alla lungheza\par
+\tab add SI, 1 ; dobbiamo andare all'indirizzo successivo, alal seconda cella\par
+\tab\par
+\tab pippo:  l'etichetta x il loop\par
+\tab\tab mov ah, 02h\par
+\tab\tab mov DL, [SI] ; mettiamo il contenuto della cella puntata da SI in DL\par
+\tab\tab mov DH, 0 ; 0 nella parte alta di DX x formare il numero a 16 bit\par
+\tab\tab int 21h\par
+\tab ADD SI, 1\par
+LOOP pippo ; qsrt decrementa CX fino a che CX = 0....\par
+\tab\par
+mov ah, 4ch\par
+int 21h\par
+\par
+end inizio\par
+\par
+bene, fine del programma....\par
+\par
+questa istruzione \'e8 stat riassunta dall'interrupt reso disponibile dal DOS int 21h, mettendo in AH, 09\par
+\par
+e in DX l'indirizzo della prima cella.....\par
+\par
+quello che abbiamo scritto sopra \'e8 possibile farlo in 3 righe:\par
+\par
+LEA DX, messaggio\par
+MOV ah, 09\par
+INT 21h\par
+\par
+vi chiederete xk\'e8 nn l'ho detto subito, nn l'ho detto xk\'e8 quando usate un interuzione voglio che sappiate come fa d preciso!!!!\par
+\par
+bene, l'ultima cosa x oggi, poi tra qlc giorno scrivo lo STACK e le FUNZIONI\par
+\par
+allora, gli array mancano\par
+\par
+gli aray (in italiano vettori) sono come delle stringhe, ma contengono numeri....\par
+\par
+sono delel celle riempite con dei numeri\par
+\par
+a differenza delel stringhe l'accesso alle loro celel \'e8 + semplice\par
+\par
+si dichiarano quasi come le stringhe\par
+\par
+vettore1 DB 4,8, 20, 82, 100, 10, 20, 100\par
+\par
+basta mettere i numeri con cui lo si vuole riempire inizialmente seguiti da una ,\par
+\par
+se xo un vettore \'e8 riempito tutto con 0 ed \'e8 di 50 celle, possiamo evitare di scrivere 50 volte 0\par
+\par
+ma esiste la funzione DUP\par
+\par
+vettore2 DB 50 DUP(0)\par
+\par
+50 DUP(0)\par
+riempie 50 volte con 0\par
+\par
+bene....\par
+\par
+detto questo occorre sapere he x accedere alle celel occorre un registro indice, come SI, ma nn deve contenere l'indirizzo di memoria, ma il numero della cella....\par
+\par
+si acede alle celel, con il registro indice in questo modo: vettore1[SI]\par
+\par
+he significa cella del vettore 1 di posizione [SI]\par
+\par
+MOV AH, vettore1[SI]\par
+\par
+se SI contiene 0 in ah verr\'e0 messo il numero 4 \par
+(ricorda che vettore1 DB 4,8, 20, 82, 100, 10, 20, 100)\par
+se contiene 1 verr\'e0 messo 8 e cos\'ec via....\par
+\par
+il famoso ciclo FOR di prima che stampa una sequenza di numeri ci consente di scrivere una sequenza di numeri ad esempio....\par
+\par
+riempire un vettore con una sequenza di numeri letti da tastiera....\par
+\par
+MOV CX, QUANTI NUMERI SI VUOLE\par
+mov si, 0\tab\par
+\tab pippo:  l'etichetta x il loop\par
+\tab\tab mov ah, 01h\par
+\tab\tab int 21h\par
+\tab\tab mov vettore[SI], AL\par
+\tab\tab ADD SI, 1\par
+\tab LOOP pippo \par
+\par
+fine di qst tutoruial x qlc giorno!!!!\par
+\par
+con gli array sono possibili moltissime applicazioni che vedremo nella prossima parte\par
+\par
+\par
+\par
+\par
+\par
+}
+ 

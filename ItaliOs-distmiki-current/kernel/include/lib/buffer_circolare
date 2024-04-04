@@ -1,0 +1,65 @@
+#ifndef __CIRCULARBUFFER_H
+#define __CIRCULARBUFFER_H
+
+#include <new>
+#include <cstddef>
+
+
+template<typename TYPE> 
+class buffer_circolare{
+	public:
+		//buffer_circolare(size_t size=100);
+	//TODO: da aggiungere il distruttore
+		void init(size_t size=100);
+		bool scrivi(TYPE elem);
+		bool leggi(TYPE* elem);
+		bool vedi(TYPE* elem);
+	private:
+		TYPE* _buffer;
+		size_t _read, _write;
+		size_t _size;				
+};
+
+template<typename TYPE>  void buffer_circolare<TYPE>::init(size_t size){
+	_buffer = new TYPE[size];
+	_write = 0;
+	_read = size-1;
+	_size = size;	
+}
+
+/*
+template<typename TYPE>  buffer_circolare<TYPE>::buffer_circolare(size_t size){
+	init(size);
+}*/
+
+
+template<typename TYPE>  bool buffer_circolare<TYPE>::scrivi(TYPE elem){
+	//controllo se il buffer è pieno
+	if(_read == _write) return false;
+	//lo scrivo
+	_buffer[_write] = elem;
+	//reimposto l'indice
+	_write = (_write+1) % _size;	
+	return true;
+}
+
+
+template<typename TYPE>  bool buffer_circolare<TYPE>::leggi(TYPE* elem){
+	//controllo se il buffer è pieno
+	if(((_read+1)%_size )== _write) return false;
+	//imposto il nuovo indice
+	_read = (_read+1) % _size;
+	//lo leggo
+	*elem = _buffer[_read];
+	return true;
+}
+
+template<typename TYPE>  bool buffer_circolare<TYPE>::vedi(TYPE* elem){
+	//controllo se il buffer è vuoto
+	if(_read == (_size-1)) return false;
+	//lo leggo
+	*elem = _buffer[(_read+1) % _size];
+	return true;
+}
+
+#endif

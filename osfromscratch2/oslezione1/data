@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "#ifndef _VERSION_H_ " >include/sys/versions.h
+echo "#define _VERSION_H_"  >>include/sys/versions.h
+echo "#define __ItaliOs_VERSION__ " \" `date '+%Y_%m_%d'-%H_%M_%S` \"  >>include/sys/versions.h
+echo "#endif"  >>include/sys/versions.h
+
+

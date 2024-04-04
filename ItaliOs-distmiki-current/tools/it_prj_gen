@@ -1,0 +1,1 @@
+cp ../../tools/makefile.template $(pwd)/Makefile

@@ -1,0 +1,1 @@
+Per provare MatrixOS basta eseguire ./BIT (Build & Install & Test).

@@ -1,0 +1,17 @@
+#ifndef _PPP_H_
+#define  _PPP_H_
+
+#include <rete.h>
+
+#define A_OPEN_PPP stato=0x0400
+u_char  inizializzaPPP();
+u_char  chiudiPPP();
+u_char  mandaPPP(u_char *bufin,u_short lungh);
+u_short riceviPPP();
+/* le uniche funzioni che possono servire */
+u_int IPlocale,IPremoto;/* si commentano da sole */
+u_int IPDNS1,IPDNS2;/* anche queste */
+u_int stato;/* stato della connessione PPP */
+u_int indirizzoPPP();
+
+#endif

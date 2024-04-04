@@ -1,0 +1,27 @@
+1 read_block
+2 write_block
+3 int setta_disk() { 					1
+4 int intfat12(int nn) { 				1
+5 int setfat12(int nn,u_short nnk) { 			1 2
+6 void format_S(char *nome1,char *nome2) {
+7 void format_L(char *nome1,char *nome2) {
+8 int leggifile(int curpos,FILE *filee) { 		3 1 6
+9 int path_to_num(char *pp1) {				8
+10 int num_to_path(int nn,char *pp1) {			8
+11 void mkdosfs() {					2
+12 void format() {					2
+13 int creaentry(int curpos,char *nomedir,u_char attr) {3 1 7 2
+14 int cancfile(int curpos,char *nomedir) {		3 8 1 2 4 5
+15 FILE *Fopen(char *nomefile,char *modo) {		9 8 13 14
+16 char *Fgets(char *ss,int size,FILE *file1) {		4 1
+17 int Feof(FILE *file1) {				
+18 int Fread(char *ss,int size,int nmemb,FILE *file1) {	4 1
+19 int cercaclust(int nn) {				4
+20 int Fwrite(char *ss,int size,int nmemb,FILE *file1) {19 5 4 2 1
+21 int Fseek(FILE *file1,int posiz,u_char origine) {	4
+22 int Ftell(FILE *file1) {				
+23 int Fclose(FILE *file2) {				3 8 1 2
+24 int mkdir(int curpos,char *nomedir) {		3 9 5 1 2 
+25 int df() {						4 
+26 int cercafile(char *pathcompleto,char *dir,char *nome) { 9 8 10
+

@@ -1,0 +1,38 @@
+/*
+ * OSSO - A Micro Kernel OS
+ * Copyright (c) 2000 Alessandro Iurlano.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+
+/* Questo file contiene le limitazioni a cui per ora e' soggetto OSSO che
+   per il momento si e' deciso di ignorare */
+
+Memoria:
+	Supporta solo fino a 128 Mb di RAM
+	Mancanza di SWAP
+
+Avvio:
+	I file di sistema di OSSO devono essere NECESSARIAMENTE contenuti
+	entro le prime 16 entrate nella root dir: in pratica il disco di 
+	sistema va creato con la copia dei file di OSSO.
+	Il caricamento dei moduli di avvio e' limitato al 64K di moduli in
+	totale (qualcosa meno a causa dei nomi)
+	
+Dispositivi a caratteri:
+	Per ora ce ne sono SOLO 10  e non possono essere aggiunte se non
+	riscrivendo un po' di roba...

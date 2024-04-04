@@ -1,0 +1,14 @@
+#File di configurazione di OSSO
+#definizione delle sezioni
+#
+#Sintassi :
+#<File-di-configurazion>,<nome>,<Titolo>,<File di configurazione da generare>
+#
+#Nota: Le linee vuote generano warnings
+#
+OSSO-Make-section,make,Make,Makefile.config
+OSSO-global-section,global,Global,Config_Global.h
+OSSO-boot-section,boot,Boot,Config_Boot.h
+OSSO-kernel-section,kernel,Kernel,Config_Kernel.h
+OSSO-driver-section,drivers,Drivers,drivers/Makefile.config
+OSSO-test-section,test,Test,test/Makefile.config

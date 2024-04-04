@@ -1,0 +1,75 @@
+         Titolo: Drivers.
+             By: steros
+Ultima modifica: 01/05/2001
+
+
+ COME SI SCRIVONO
+------------------
+
+
+Questa e' la struttura di un driver generico (per ora):
+
+--------------------------------- CUT HERE --------------------------------
+
+#include <protocols/drv2mps.h>
+
+
+void main(void) {
+  MpsRetVal ret;
+  char *params;
+
+  /* Start initialization. */
+  if ((ret=DriverInit(&params))!=0) {
+    printf("[driver] ***** Error in initialization phase: %s!!!\n",
+      MpsStrerror(ret));
+    exit();
+  }
+
+  /* Parameters processing. */
+  while (*params) {
+    // <--- Here params contains the name of parameter ...
+    while (*params++) ;
+    // <--- Here params contains the value of parameter. It can be 0 ...
+    while (*params++) ;
+  }
+
+  /* This ends initialization phase. */
+  if ((ret=DriverStart("category","driver name",version,release,
+    "driver description"))!=0)
+  {
+    printf("[driver] ***** ERROR: MPS don't allow me to register: %s!!!\n",
+      MpsStrerror(ret));
+    exit();
+  }
+
+  // <--- Here must be placed the driver body ...
+
+}
+
+--------------------------------- CUT HERE --------------------------------
+
+Se a DriverInit viene passato 0 i parametri non vengono considerati.
+
+
+
+ COME SI USANO
+------------------
+
+Per avere il pid di un driver, basta includere <protocols/prg2mps.h>
+ed utilizzare:
+
+  GetDriverPid("category","name",&pid,tipo_attesa);
+
+in cui tipo attesa puo' essere
+  MPS_NOWAIT    (risponde subito)
+  MPS_WAITRUN   (se il driver e' in caricamento attende che sia
+                 pronto e poi risponde)
+  MPS_WAITLOAD  (se il driver non e' caricato, lo carica, attende
+                 che sia registrato e poi risponde).
+
+NB: Utilizzare solo i primi 2 tipi per ora!
+
+Questa fuzione restituisce un MpsRetVal come la DriverStart (vedi
+sopra) che se diverso da 0 indica uno stato di errore e puo' essere
+utilizzato come argomento della MpsStrerror() per visualizzare
+l'errore verificatosi.
