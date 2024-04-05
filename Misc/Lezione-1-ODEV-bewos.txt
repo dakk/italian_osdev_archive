@@ -1,0 +1,183 @@
+Titolo: Lezione 1 di OSDEV - BeWos Project
+
+• Introduzione: 
+
+- Perchè fare delle lezioni su OsDev ?
+Insegnando imparerai ed imparando insegnerai 
+
+
+- Cosa è l' OsDev
+OsDev = OsDevelopment è lo studio, la programmazione e dunque lo sviluppo di Sistemi Operativi
+La materia è molto vasta e le informazioni da memorizzare ma soprattuto da apprendere sono numerose. L' OsDev non è soltanto una materia teorica, ma è soprattutto pratica ed è il motivo per il quale stiamo programmando BeWos.
+
+
+- Cosa intendiamo fare in questa lezione:
+|- Parlare degli aspetti generali dello sviluppo dei sistemi operativi
+|-- Parlare quindi delle diverse funzioni di un sistema operativo
+|--- Tutte le informazioni riguarderanno i processori x86 e compatibili
+
+
+
+- Cosa è un sistema operativo
+Il s.o. è  un insieme di programmi che operano direttamente al di sopra della macchina fisica, mascherandone le caratteristiche e fornendo agli utenti un insieme di funzionalità di alto livello. 
+Fornisce all'utente un'interfaccia, una macchina astratta, virtuale, semplice da utilizzare.
+
+
+
+
+
+• Bootloader
+
+All’avvio di un personal computer nessun sistema operativo è ancora
+presente nella RAM poiché essa si azzera non appena l’alimentazione viene a
+mancare.
+Chi gestisce le primissime fasi di un computer appena avviato è il BIOS
+(Basic Input-Output System), memorizzato in una memoria di tipo ROM. Le
+prime funzioni che vengono effettuate sono una serie di test per controllare
+quali device sono presenti. Questa fase è di solito chiamata POST (Power-On Self-Test). Tutti i dispositivi riconosciuti vengono inizializzati, per non creare
+conflitti hardware, assegnando loro porte I/O e linee IRQ. 
+
+Una volta compiute tutte queste operazioni il bios carica il primo settore del primo cilindro del dispositivo selezionato e inizia ad eseguire le istruzioni assembler presenti dall'indirizzo 0000:0x7C00.
+
+
+[ORG 0x7C00]    ;L'indirizzo di partenza. l' indirizzo 0x7c00 infatti indica proprio l' indirizzo del bootsector ovvero il primo settore che il bios carica
+
+
+
+Le caratteristiche obbligatorie del bootloader sono:
+
+   1. non essere + grande di 512 byte
+   2. terminare con 0xAA55
+   3. iniziare usando la modalità reale quindi niente registri a 32 bit e istruzioni del pmode. 
+
+0xAA55 è una firma speciale che indica al BIOS la validità del programma di boot.
+
+
+
+Per quello che ci riguarda lo scopo del bootloader è:
+
+   1. caricare il kernel in memoria
+   2. inizializzare la modalità protetta
+   3. lanciare il kernel 
+
+
+
+
+• La modalità protetta 
+
+e' una particolare modalità di "lavoro" dei processori x86 e compatibili. esso utilizza indirizzamenti a 32bit al contrario della modalità reale(quella base) che utilizza indirizzamenti a 16bit. La modalità protetta fornisce particolari "funzioni" adatte per la gestione della memoria, del multitasking hardware e molto altro. L' unica pecca e' che quando si è in modalità protetta non è possibile utilizzare gli interrupt bios che generalmente facilitano il lavoro ad un osdever. Non è possibile utilizzarli perchè essi lavorano in modalità reale a 16 bit!!!
+
+
+Non mi voglio dilungare di piu sul bootloader, del resto nel codice sorgente di BeWos c' e' un bootloader ben commentato. Mi bastava chiarire come teoricamente funzionasse. 
+
+
+
+• Cosa dovrebbe avere/essere un sistema operativo
+
+- Funzioni per la stampa a video
+- Funzioni per la gestione degli interrupt
+- Funzioni per la gestione dei task(scheduler e funzione per la creazione di task)
+- Funzioni per la comunicazione interprocesso
+- Funzioni per la gestione della memoria(fisica e virtuale)
+- Funzioni per gestire la mutua esclusione(semafori, monitor ...)
+- Chiamate di sistema(system calls)
+- File System
+- Shell
+- Altro...
+
+Quando si programma un sistema operativo(supporremo in linguaggio C e Asm) non si possono utilizzare le librerie che tali linguaggi mettono a disposizioni. Queste librerie si basano sul sistema operativo (ad esempio linux, windows ecc..) ma io ricordo che noi Stiamo scrivendo un sistema operativo e dunque non ci troviamo su nessun sistema operativo!! Ed e' questo il motivo per il quale bisogna riscrivere tutte le librerie che il linguaggio C ci mette a disposizione. Spetta al\ai programmatore\i decidere se scrivere queste librerie secondo gli standard(Posix).
+
+
+
+- Funzioni per la stampa a video
+
+Quel che inizialmente e' bene fare, e' una funzione che "simula" le caratteristiche della printf del linguaggio C. La funzioni che il programmatore dovra' scrivere puo chiamarsi in qualsiasi modo e non per forza printf. In BeWos ad esempio si chiama printk();
+
+Per stampare un messaggio a video basta mettere nella locazione 0xb8000(che detto banalmente e' la memoria a cui fa riferimento la scheda video) un carattere e successivamente il colore del carattere. Ad esempio in questo modo:
+
+char *addr_videomem = (char *)0xb8000;
+
+char carattere = 'b';
+int colore=0xF0;   //colore: nero su bianco
+
+
+*videomem++ = carattere;	/*imposto il carattere*/
+*videomem++ = colore;           /*imposto gli attributi del carattere*/
+
+
+Le istruzioni precedenti non fanno altro che mettere un carattere e il colore a partire dalla locazione 0xb8000 
+
+
+Facendo una ricerca  a google e' possibile trovare la tabella di tutti i colori(dopo vi daro' dei siti di riferimento)
+
+
+- Funzioni per la gestione degli interrupt
+|
+|- Cosa e' un interrupt ?
+
+Un Interrupt come dice il nome stesso e' un interruzione che arriva dal processore. Quando si verifica un interrupt le operazioni da eseguire sono:
+
+1) Sospendere l' esecuzione corrente(ad esempio di un programma)
+2) Chiamare la funzione che gestisce l' interrupt arrivato
+3) Ripristinare lo stato come era prima dell' arrivo dell' interrupt(ad esempio continuare l' esecuzione del programma da dove lo si era sospeso)
+
+Un esempio di interruzione si verifica quando si preme un tasto della tasiera. 
+
+Quando si preme un tasto bisogna:
+
+1) sospendere l' esecuzione corrente
+2) chiamare la funzione che gestisce la keyboard stampando il carattere digitato a video
+3) ripristinare lo stato precedente all' interrupt
+
+
+
+- Funzioni per la gestione dei task(scheduler e funzione per la creazione di task)
+
+Un task e' un programma caricato in memoria
+Un sistema operativo multasking deve saper decidere quale task mandare in esecuzione e qui entra in gioco lo scheduler che attraverso diversi algoritmi decide quale task eseguire.
+
+In generale lo stato di un processo e':
+
+READY se e' pronto per l' esecuzione
+RUNNING se e' in esecuzione
+BLOCKED se e' bloccato 
+
+Il piu' semplice algoritmo e' chiamato "Round Robin". Questo algoritmo, trascorsi un tot di tempo, mette in stato di RUNNING il primo task READY che trova nella tabella dei processi e lo manda dunque in esecuzione.
+
+
+
+- Funzioni per la comunicazione interprocesso
+
+Le funzioni per la comunicazione interprocesso sono appunto funzioni che permettono la comunicazione tra i processi. In linux c'e' la "Pipe"; Comando '|' . 
+esempio: ps aux | grep adsl
+
+
+- Funzioni per la gestione della memoria(fisica e virtuale)
+
+Forse questa e' la parte piu difficile da gestire in un sistema operativo. 
+
+La funzioni che permettono di gestire la memoria fisica devono tener conto, dopo aver calcolato la quantita' di memoria RAM disponibile, delle locazioni occupate e dunque riservate.
+
+E possibile immaginare la memoria ram come un array di n elementi e pensare che ogni singolo bit di ogni singolo elemento sia una locazione di memoria. Se una locazione di memoria e occupata\riservata allora bisogna porre il bit corrispondente ad uno. Una volta resa libera questa locazione di memoria riportare il bit a 0. L' array viene chiamato BITMAP. Per gestire la memoria ram esistono numerosi altri approcci. La bitmap e' quello piu semplice.
+
+
+
+I processori x86 permettono indirizzamenti a 32 bit(in protect mode) quindi teoricamente possono indirizzare 4GB di memoria. Ma la dimensione della Ram puo essere molto di meno. Sarebbe uno spreco avere la possibilita' di far riferimento a 4GB di memoria ma averne molto di meno. 
+Quindi entra in gioco la memoria virtuale e in particolare la paginazione.
+
+
+Una volta attivata la paginazione tutti gli indirizzi vengono considerati come 
+PDOFF | PTOFF | OFF e la memoria viene "divisa" in blocchi da 4kb(la dimensione dei blocchi e' decisa dal programmatore)
+
+PDOFF, PTOFF E OFF sono degli offset di degli array(PageDir, PageTable) che indicizzeranno una pagina e piu in generale un indirizzo fisico.
+
+Se la pagina non viene trovata viene generata una eccezione. L' eccezione(numero 14) prende il nome di PAGE FAULT. Probabilmente e' l' eccezione che odiano tutti gli osdever, me compreso.
+
+Ma e' proprio l' eccezione 14 la vera potenza della paginazione!! Infatti quando avviene un PageFault viene chiamata la funzione di gestione di questo "interrupt". La funzione fa in modo che all' indirizzo virtuale(che ha scatenato l' eccezione) sia associato un indirizzo fisico, sostituendo, attraverso vari algoritmi, delle pagine.. con altre pagine. Questo approccio viene chiamato Demand Paging ovvero paginazione su richiesta.
+
+Per gestire la memoria ci sono altri svariati modi, ma questi sono quelli piu diffusi.
+
+
+
+
+
