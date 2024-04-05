@@ -1,9 +1,0 @@
-	+----------------------------------------+
-	|		MatrixOS		 |
-	+----------------------------------------+
-
-Licenza: MatrixOS è distribuito secondo la GNU General Public License
-
-Per contribuire allo sviluppo di MatrixOS puoi joinare il canale irc o scrivere un e-mail.
-
-IRC : irc.azzurra.org #matrixos
