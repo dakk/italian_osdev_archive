@@ -11,4 +11,7 @@ all:
 
 install: all
 	cat bin/bootloader bin/kernel.bin > boot_image.img
+	dd if="boot_image.img" of="/dev/fd0"
 
+clean:
+	rm -f src/*.o app/*.o boot_image.img kernel.map

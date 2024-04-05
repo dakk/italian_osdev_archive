@@ -1,5 +1,0 @@
-//#include"functions/printk.c"
-void printk(char *stringa);
-
-
-
