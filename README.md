@@ -6,7 +6,12 @@ Lista Sistemi operativi italiani conosciuti e recuperati:
 * Dream Os: [https://github.com/dreamos82/Dreamos](https://github.com/dreamos82/Dreamos)
 * Minirighi
 * Bewos
-* To be continued
+
+Cartelle presenti:
+* Screenshots -> Contiene le varie screenshots recuperate
+* Misc -> Contiene altro materiale recuperato
+
+To be continued
 
 
 
