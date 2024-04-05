@@ -1,321 +1,196 @@
-; SilviOS Operating System
-;
-; This program is free software; you can redistribute it and/or
-; modify it under the terms of the GNU General Public License
-; as published by the Free Software Foundation; either version 2
-; of the License, or (at your option) any later version.
-;
-; This program is distributed in the hope that it will be useful,
-; but WITHOUT ANY WARRANTY; without even the implied warranty of
-; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-; GNU General Public License for more details.
-;
-; You should have received a copy of the GNU General Public License
-; along with this program; if not, write to the Free Software
-; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+;ItaLo italiOs Loader
+;funziona solo con processori a 32 bit
+; il kernel dal terzo settore ed è lungo KRNL_SIZE settori
+;si va poi in modalità protetta e si fa un jump al codice del kernel
+; che è un normale binario
+%include "kernel_len.inc"
+
+%define DIM_STACK  0x5C2DF
+
+SECTION .bss
+  kernel_stack:         resb DIM_STACK
+  stack_kernel:
 
 
-%include "gdtnasm.inc"
-; SilviOS bootsector
 
-[ORG 0x7c00]
-jmp start
-nop
+SECTION .text
 
-;START BOOTSECTOR HEADER
+	org	0x7C00  ;deve essere caricato in ram a partire da questo indirizzo
 
-id		db	'SilFS'   ; Filing System ID
-version		dd	1h 	  ; Filing System Version
-fs_start	dd	52	  ; LBA address for start of root dir
-krnl_size	dd	51	  ; Kernel size in sectors, starts at sector 1
+main:
+	xor	ax,ax
+	mov	ds,ax
+	mov	ss,ax
+	mov	sp,0xFFFE
 
-BytesPerSector	dw	512
-SectorsPerTrack	dw	18
-TotalHeads	dw	2
-TotalSectors	dd	2880	 ; 1474560/512 for a 1.44meg disk
 
-;END BOOTSECTOR HEADER
+;INT 13 - DISK - READ SECTOR(S) INTO MEMORY
+;	AH = 02h
+;	AL = number of sectors to read (must be nonzero)
+;	CH = low eight bits of cylinder number
+;	CL = sector number 1-63 (bits 0-5)
+;	     high two bits of cylinder (bits 6-7, hard disk only)
+;	DH = head number
+;	DL = drive number (bit 7 set for hard disk)
+;	ES:BX -> data buffer
+;       Return: CF set on error
+;      if AH = 11h (corrected ECC error), AL = burst length
+;	CF clear if successful
+;	AH = status (see #00234)
+;	AL = number of sectors transferred (only valid if CF set for some
+;	      BIOSes)
 
-;BOOTSECTOR DATA
-file_entry_nextdata	equ	273	; Offset in file_entry structure to the nextdata LBA pointer
-data_entry_data		equ	9	; Offset in data_entry structure to the data
-bootdrv		db	0
 
-;END BOOTSECTOR DATA
+	mov	si,KRNL_SIZE
+;	mov	si,200
+	mov	bx,ax
+	mov	ax,0x1000
+	mov	es,ax
+	mov	cx,3
+	xor	dx,dx
 
-start:
-xor ax, ax
-mov ds, ax
-mov [bootdrv], dl
+.readAgain:
+	mov	ax,0x0201
+	int	0x13
+	jc	short .error
 
-; First get into protected mode
-cli				;{0}
-n5:	in	al, 0x64		;Enable A20 {4A} {5}
-	test	al, 2
-	jnz	n5
-	mov	al, 0xD1
-	out	0x64, al
-n6:	in	al, 0x64
-	test	al, 2
-	jnz	n6
-	mov	al, 0xDF
-	out	0x60, al
-        lgdt    [gdtinfo]               ;Load GDT
-	mov	ecx, CR0		;Switch to protected mode
+	mov	ax,es
+	add	ax,32
+	mov	es,ax
+
+	dec	si
+	jz	short .readOk
+
 	inc	cx
-	mov	CR0, ecx
+	cmp	cl,18
+	jbe	short .readAgain
+	mov	cl,1
+	inc	dh
+	cmp	dh,2
+	jne	short .readAgain
+	mov	dh,0
+	inc	ch
+	jmp	short .readAgain
 
-	mov	ax, flat_data-gdt_table	; Selector for 4Gb data seg
-	mov	ds, ax			; {2} Extend limit for ds
-	mov	es, ax			; Extend limit for es
-	mov	fs, ax			; fs and...
-	mov 	gs, ax			; gs
-	dec cx				; switch back to real mode
-	mov CR0, ecx
 
-	sti
+.error:
+;error handler
+	mov	ax,0x0E00+'e'   ; se ci sono problemi di letturastampo una e a video e aspetto la pressione di un tasto
+	mov	bx,7
+	int	0x10
+	xor	ax,ax
+	int	0x16
+	int	0x19
 
-	xor ax, ax
-	mov ds, ax
+.readOk:
 
-	mov dl, [bootdrv]	; Store the boot drive
-
-	mov bx, 0x60
-	mov es, bx
-	mov eax, 1
-	mov ecx, [krnl_size]
-	mov di, 1
-
-load_loop:
-	call read_sectors
-	inc eax
-	mov bx, es
-	add bx, 32
-	mov es, bx
-
-	loop load_loop
-
-	; Turn off the floppy motor, its annoying leaving it on !
+	; spengo il motore del floppy
         mov edx,0x3f2
         mov al,0x0c
         out dx,al
 
-
-;lets convert the ELF file to a linear binary so we can execute it
-        cmp dword [0x600],464c457fh  ; The ELF signature is \07fELF
-        jne ldr_ELF_err            ; Ugh... not an ELF file !!!
-        cmp word [0x600+4],101h    ; It should be statically linked etc.
-        jne ldr_ELF_err
-	cmp byte [0x600+6],1
-        jne ldr_ELF_err
-
-jmp short skip_err_handler
-	ldr_ELF_err:
-	
-	mov ax, 'E'+0x0E00
-        mov bx, 7
-        int 10h
-	mov al, 'L'
-	int 10h
-	mov al, 'F'
-	int 10h
-
 	cli
-	hlt
-	skip_err_handler:
+.wait1:
+	in	al, 0x64
+	test	al, 2
+	jnz	.wait1
+	mov	al, 0xD1
+	out	0x64, al
 
-	mov eax, [0x600+18h]
-	mov [krnl_entry], eax
+.wait2:
+	in	al, 0x64
+	and	ax, byte 2
+	jnz	.wait2
+	mov	al, 0xDF
+	out	0x60, al
 
-        xor ecx,ecx                     ; Get the number of sections in cx
-        mov cx,[0x600+2ch]
+	lgdt	[gdtinfo]  ;carico la gdt
 
-sectionloop:
-        dec cx                          ; Next section
-        push cx                         ; Save cx on the stack while we load
-                                        ; the section into memory
+	mov	eax,cr0   ;  metto in eat cr0
+	or	al,1      ;imposto il bit per la modalità protetta
+	mov	cr0,eax   ;siiiiiiiii, vado in modalità protetta
 
-        mov eax,[0x600+2ah]        ; Get the program header entry size
-        mul cx                          ; Calculate the offset from the start
-                                        ; of the program header table
-        mov ebx,[0x600+1ch]        ; Get the PHT offset in ebx
-        add ebx,eax                     ; Add it to our PHT entry offset
-        add ebx,0x600              ; Calculate the address of the entry
+	mov	ax, flat_data-gdt_table	; Selector for 4Gb data seg
+	mov	ax,0x10
+	mov	ds, ax			; {2} Extend limit for ds
+	mov	es, ax			; Extend limit for es
+	mov	fs, ax			; fs and...
+	mov 	gs, ax			; gs
 
-        cmp dword [bx],1                ; Does this section have to be
-                                        ; loaded into memory ?
-        jne nextsect                    ; No, next section
+	mov	ax, flat_stack-gdt_table
+	mov	ax,0x18
+	mov	ss,ax
+;	mov	esp,0xFFFF
+	mov	esp,  0x9FFFC
+	
+	jmp dword (flat_code-gdt_table):pmode1; tutto è pronto, e quindi eseguo il kernel
 
-        mov dword ecx,[bx+4h]           ; Get the offset of the segment in
-                                        ; the ELF file
-
-        mov dword ebp,[bx+10h]          ; Get the size of the segment in the
-                                        ; ELF file
-
-        mov dword edi,[bx+8h]           ; Get the memory address of the sect.
-        mov dword eax,[bx+14h]          ; Get the size of the section in
-        mov ebx,eax                     ; the memory into ebx
-
-; ds:dx  = Address of ASCIIZ filename
-; es:edi = Where in memory to put it
-; ecx    = Offset in file to start reading (bytes)
-; ebp    = Length of segment to read (bytes)
-;
-; Returns:
-; eax    = Length of file that was loaded
-; eax    = 0 if an error occured
-
-
-	push ebp
-	pusha
-	mov esi, 0x600
-	add esi, ecx
-	mov ecx, ebp
-	call memcopy
-	popa
-	pop eax
-
-        sub ebx,eax                     ; This amount needs to be zeroed
-        jz nextsect                     ; It's ok, next section
-
-        add edi,eax                     ; Zero the memory from this address
-        xor ax,ax                       ; edi is an absolute address
-        mov ecx,ebx
-        call zero_memblock              ; Zero the rest of the section
-
-nextsect:
-        pop cx                          ; Restore our section count
-        or cx,cx                        ; Was this the last one ?
-	jnz sectionloop
-
-
-; Re-enter protected mode ! A20 is already enabled
-	cli		; No interrupts please at all
-	lgdt [gdtinfo]
-	mov ecx, cr0
-	inc cx
-	mov cr0, ecx
-	mov ax, flat_data-gdt_table
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-
-	jmp dword (flat_code-gdt_table):pmode1
-
-	pmode1:
+pmode1:
 [BITS 32]
 
 	push dword 2
 	popfd
 
-	mov eax, [krnl_entry]
+	mov eax, 0x10000
 
 	call eax
 
 	cli
 	hlt
 
-;Hang the system..
-hang:	jmp hang
 
-[BITS 16]
-	read_sectors:
-; Input:
-;	EAX = LBN
-;	DI  = sector count
-;	ES = segment
-; Output:
-;	BL = low byte of ES
-;	EBX high half cleared
-;	DL = 0x80
-;	EDX high half cleared
-;	ESI = 0
+;----------------------- GDT -------------------------------------
 
-	pusha
-
-	cdq			;edx = 0
-	movzx	ebx, byte [SectorsPerTrack]
-	div	ebx		;EAX=track ;EDX=sector-1
-	mov	cx, dx		;CL=sector-1 ;CH=0
-	inc	cx		;CL=Sector number
-	xor	dx, dx
-	mov	bl, [TotalHeads]
-	div	ebx
-
-	mov	dh, dl		;Head
-	mov	dl, [bootdrv]	;Drive 0
-	xchg	ch, al		;CH=Low 8 bits of cylinder number; AL=0
-	shr	ax, 2		;AL[6:7]=High two bits of cylinder; AH=0
-	or	cl, al		;CX = Cylinder and sector
-	mov	ax, di		;AX = Maximum sectors to xfer
-retry:	mov	ah, 2		;Read
-	xor	bx, bx
-	int	13h
-	jc retry
-
-	popa
-
-	ret
-
-; zero_memblock:  Fills the specified memory block with zeros (0x0)
-;
-; Takes parameters:
-; ax    = segment/selector of memory to be cleared
-; edi   = offset of memory to be cleared
-; ecx   = number of bytes to clear
-;
-; Returns:
-; nothing
-
-zero_memblock:
-        push eax                ; Save the registers
-        push edi
-        push ecx
-        push es
-        mov es,ax
-        xor eax,eax             ; Fill the memory with zeros (0x0)
-        cld                     ; Clear the direction flag; rep increments di
-        a32 rep stosb           ; Fill the memory (one byte at a time)
-        pop es                  ; Restore the registers
-        pop ecx
-        pop edi
-        pop eax
-        ret                     ; Return to the main program
-
-; Parameters
-; DS:ESI = Source
-; DS:EDI = Destination
-; CX = length
-memcopy:
-	pusha
-memcopy_loop:
-	mov al, [esi]
-	mov [edi], al
-	inc edi
-	inc esi
-	loop memcopy_loop
-	popa
-	ret
-	
 gdtinfo:
 
 dw	gdtlength
 dd	gdt_table
 
-;********* GDT TABLE
+
 gdt_table:
 
-null_desc	desc	0,0,0
+null_desc	dd	0
+		dd	0
 
-flat_code	desc	0, 0xFFFFF, D_CODE + D_READ + D_BIG + D_BIG_LIM
+flat_code	dw	0xFFFF	;
+		dw	0x0000	; Base == 0x00000000
+		db	0x00	; Limit == 0xFFFFF
+		db	0x9A	; Flag1 == 0x4 == b0100 (G, D/B, reserved, AVL)
+		db	0xCF	; Flag2 == 0x9A == b10011010 (P, DPL, S, Type)
+		db	0x00	;
 
-flat_data	desc	0, 0xFFFFF, D_DATA + D_WRITE + D_BIG + D_BIG_LIM
+flat_data	dw	0xFFFF	;
+		dw	0x0000	; Base == 0x00000000
+		db	0x00	; Limit == 0xFFFFF
+		db	0x92	; Flag1 == 0x4 == b0100 (G, D/B, reserved, AVL)
+		db	0xCF	; Flag2 == 0x92 == b10010010 (P, DPL, S, Type)
+		db	0x00	;
 
-gdtlength equ $ - gdt_table - 1
-;********* END GDT TABLE
-krnl_entry	dd	0
+flat_stack	dw	0xFFFF	;
+		dw	0x0000	; Base == 0x00000000
+		db	0x00	; Limit == 0xFFFFF
+		db	0x92	; Flag1 == 0x4 == b0100 (G, D/B, reserved, AVL)
+		db	0xCF	; Flag2 == 0x92 == b10010010 (P, DPL, S, Type)
+		db	0x00	;
+
+
+gdtlength equ $ - gdt_table
+
+;START BOOTSECTOR HEADER
+BYTES_PER_SECTOR equ	512
+SECTORS_PER_TRACK equ	18
+TOTAL_HEADS	equ	2
+TOTAL_SECTORS	equ	2880	 ; 1474560/512 for a 1.44meg disk
+
+
+;END BOOTSECTOR HEADER
+
+bootdrv		db	0
 
 times 510-($-$$) db 0
 dw 0xAA55
- 
+
+
+
+;----------------------------------------------------------------
+

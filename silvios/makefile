@@ -1,44 +1,94 @@
-# Programma per cancellare i file oggetto e gli eseguibili
-REMOVE = rm -f
+CFLAG=-fomit-frame-pointer -O $(ALIB)  -Wall
 
-#le librerie
-LIB = include/
+KERNEL=kernel.bin
 
 #dispositivo dove installare
 FLOPPY=/dev/fd0
 
-# compilatore in C
-CC = gcc-2.95.3
-CFLAG = -fomit-frame-pointer -O -I$(LIB) -Wall 
-
-# il linker
-LD  = ld -s
-
-# Gli oggetti da compilare per creare il kernel
-OBJS = idt.o kernel.o io.o video.o 8259.o keyboard.o string.o time.o stdio.o ushell.o mem.o pit.o delay.o speaker.o
-
-
-# nomne dei file
-KERNELFN = kernel.elf
 KERNELIMG=boot_image.img
 BOOTIMAG=boot/bootsec
-BOOTDIR=boot/
+FSIMG=fs/fs.disk
 
-all: $(KERNELFN)
+	export CC=gcc
+	export LIB=../include
+	export ALIB=-I$(LIB)/libc -I$(LIB)/utils -I$(LIB)/hardware  -I$(LIB)/app -I$(LIB)/audio -I$(LIB)/fs -I$(LIB)/mem -I$(LIB)/an -I$(LIB)/task
+	export CFLAG=-fomit-frame-pointer -O $(ALIB)  -Wall -mcpu=i386 -D_ITALIOS_ -march=i386 -m386
 
-$(KERNELFN) : $(OBJS)
-	$(LD)  -o $@ $(OBJS)  -Ttext 0x100000
-	cd $(BOOTDIR) && make
-	cat $(BOOTIMAG) $(KERNELFN) > $(KERNELIMG)
+	export INDENT=indent -br   -sc -ce -cdw -npcs -nbc  -brs -nbap -nbfda -nbad -nip -npsl -i8
+        export INDENTLUCA =indent -bl -sc -ce -cdw -npcs -nbc -bls -nbap -nbfda -nbad -nip -npsl -i8
+	export AR=ar
+	export ARFLAGS=rv
 
-# Compilo gli altri
-.c.o:
-	$(CC)  $(CFLAG) -c -o $@ $<
+
+# Programma per cancellare i file oggetto e gli eseguibili
+	export REMOVE=rm -f
+
+
+all:
+
+	#entro in ogni cartella ed eseguo i makefile interni
+	cd hardware && $(MAKE)
+	cd kernel && $(MAKE)
+	cd libc && $(MAKE)
+	cd mem && $(MAKE)
+	cd fs && $(MAKE)
+	cd app && $(MAKE)
+	cd task && $(MAKE)
+	#linko tutti i file oggetti
+	$(LD)  -Bstatic --oformat binary -o$(KERNEL) -L./app -L./task -L./kernel -L./hardware -L./fs  -L./libc  -L./mem --whole-archive -t -lkernel -lhardware -lfs -llibc -lmem -lapp -ltask -Ttext 0x10000 -Map kernel.map
+	./lunghezza
+	cd boot && $(MAKE)
+
+
 
 install: all
+	./formatta
+	cat $(BOOTIMAG) $(FSIMG) $(KERNEL) > $(KERNELIMG)
 	dd if=$(KERNELIMG) of=$(FLOPPY)
+
+xinstall: all
+	echo "const char* exepath = \" $PWD/fs/format\";" > install/xinstall/path.h
+	cd install/xinstall && make
+	cd install/xinstall && xinstall
+	cat $(BOOTIMAG) $(FSIMG) $(KERNEL) > $(KERNELIMG)
+	dd if=$(KERNELIMG) of=$(FLOPPY)
+
 
 # cancella
 clean:
-	$(REMOVE) $(OBJS) $(KERNELFN) $(KERNELIMG)
-	cd $(BOOTDIR) && make clean
+	$(REMOVE) $(KERNELIMG) $(KERNEL) kernel.map
+	cd boot && $(MAKE) clean
+	cd hardware && $(MAKE) clean
+	cd kernel && $(MAKE) clean
+	cd libc && $(MAKE) clean
+	cd mem && $(MAKE) clean
+	cd fs && $(MAKE) clean
+	cd app && $(MAKE) clean
+	cd task && $(MAKE) clean
+	#cd install/xinstall && make clean
+
+tar:
+	$(MAKE) clean
+	$(MAKE) indent
+
+	./comprimi
+
+indent:
+	cd hardware && $(MAKE) indent
+	cd kernel && $(MAKE) indent
+	cd libc && $(MAKE) indent
+	cd mem && $(MAKE) indent
+	cd fs && $(MAKE) indent
+	cd app && $(MAKE) indent
+	cd task && $(MAKE) indent
+
+indentluca:
+	cd hardware && $(MAKE) indentluca
+	cd kernel && $(MAKE) indentluca
+	cd libc && $(MAKE) indentluca
+	cd mem && $(MAKE) indentluca
+	cd fs && $(MAKE) indentluca
+	cd app && $(MAKE) indentluca
+	cd task && $(MAKE) indentluca
+
+	
