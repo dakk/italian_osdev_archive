@@ -5,6 +5,7 @@ Lista Sistemi operativi italiani conosciuti e recuperati:
 * Spiderpig Os: [https://github.com/dakk/spiderpig-os](https://github.com/dakk/spiderpig-os)
 * Dream Os: [https://github.com/dreamos82/Dreamos](https://github.com/dreamos82/Dreamos)
 * Minirighi: [/minirighi32-0.11.00/](/minirighi32-0.11.00/)
+* BeWos: [https://sourceforge.net/p/bewos/svncode/HEAD/tree/trunk/bewos_src/](https://sourceforge.net/p/bewos/svncode/HEAD/tree/trunk/bewos_src/)
 * BeWos: [/bewos/](/bewos/)
 * cheapOS: [/cheapos](/cheapos/)
 * aleos: [/aleos/](/aleos/)
