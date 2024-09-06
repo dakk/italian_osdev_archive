@@ -1,0 +1,450 @@
+/*
+ * DreamOS Shell
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+
+ * Autrice: Lisa
+ * Febbraio 2006
+ * Routine di servizio dei comandi della shell
+ */
+
+#include <commands.h>
+#include <gdt.h>
+
+/* stampa alcune informazioni su DreamOS e l'hardware */
+void info()
+{
+  if(argc!=2) {
+    printf( "**USAGE**\n"
+	    "dreamos v - show OS version\n"
+	    "dreamos g - DreamOS says hello\n"
+	    "dreamos d - show date and time\n"
+	    "dreamos c - show infos about your CPU\n"
+	    "dreamos a - OS authors\n");
+    return;
+  }
+
+  switch(*argv[1]) {
+  case 'v':
+    _kputs(OSVERSIONE);
+    _kputs("\n");
+    break;
+  
+  case 'g':
+    printf("Hello user, i'm DreamOS, nice to meet you :)\n");
+    break;
+
+  case 'd':
+    readrtc();
+    break;
+
+  case 'c':
+    _kcpuid_show();
+    break;
+
+  case 'a':
+    _kputs( "Master: ^Inuyasha^ ... Ivan\n"
+	    "Developer ... Lisa\n"
+	    "Help from: Lethalman, sgurtz\n"
+	    "Thanks to Silvio Abruzzo\n");
+    break;
+
+  default:
+    _kputs( "Unknown argument\n");
+    break;
+  }
+}
+
+/* stampa tutti gli argomenti successivi ad argv[0] come stringhe */
+void echo()
+{
+  int i;
+
+  if (argc<2) {
+    _kputs("You must write a string after command name\n");
+    return;
+  }
+
+  for (i=1; i<argc; i++)
+    printf("%s ", argv[i]);
+
+  _kputs("\n");
+}
+
+/* gestisce il motore del floppy */
+void floppy()
+{
+  if(argc<2) {
+    _kputs("**USAGE**\n"
+	   "floppy start  - start the floppy motor\n"
+	   "floppy stop   - stop the floppy motor\n"
+	   "floppy detect - show infos about floppy controllers\n");
+    return;
+  }
+
+  if (_kstrncmp(argv[1], "start", 5) == 0) {
+    _kputs ("Starting floppy motor...");
+    start_motor();
+    _kputs("DONE\n");
+  }
+
+  else if (_kstrncmp(argv[1], "stop", 4) == 0) {
+    _kputs ("Stopping floppy motor...");
+    stop_motor();
+    _kputs("DONE\n");
+  }
+
+  else if (_kstrncmp(argv[1], "detect", 6) == 0)
+    detect_floppy();
+
+  else
+    _kputs( "Unknown argument\n" );
+}
+
+/* un ciclo che ha solo il compito di far passare pochi secondi */
+void littledelay()
+{
+  int i;
+  for(i=0; i<DELAY_NUM; i++);
+}
+/* un ciclo che ha solo il compito di far passare pochi secondi */
+void littledelay1()
+{
+  int i;
+  for(i=0; i<DELAY_NUM1; i++);
+}
+
+/* spegne o riavvia a seconda dell'argomento passato */
+void shutdown()
+{
+  if (argc!=2) {
+    _kputs("**USAGE**\n"
+	   "shutdown h - halt the system\n"
+	   "shutdown r - reboot the system\n" );
+    return;
+  }
+    
+  else if (*argv[1] == 'h') {
+    _kcolor(COL_GREEN);
+    _kputs("The system is going for shutdown...");
+    littledelay();
+    
+    asm( "movl %0, %%eax\n"
+	 "int $0xff\n"
+         : : "g"(SC_SHUTDOWN)  // chiama la syscall per spegnere
+      );
+  }
+
+  else if (*argv[1] == 'r') {
+    _kcolor(COL_GREEN);
+    _kputs("The system is going for reboot...");
+    littledelay();
+    asm(
+	"movl %0, %%eax\n"
+	"int $0xff\n"
+	: : "g"(SC_REBOOT) // chiama la syscall per riavviare
+	);
+  }
+  _kputs("Unknown argument\n");
+}
+
+/* invia un segnale ad un processo */
+void signal()
+{
+  int res, pid, sig;
+  _kputs("I'm trying SC_SIGNAL\n");
+  _kputs("PID: ");
+  pid = getchar()-48;
+  printf("%d\nSignal (1 for KILL, 2 for SLEEP, 3 for WAKEUP): ", pid);
+  sig = getchar()-48;
+  printf("%d\n", sig);
+  asm(
+      "movl %3, %%ecx\n"
+      "movl %2, %%ebx\n"
+      "movl %1, %%eax\n"
+      "int $0xff\n"
+      "movl %%eax, %0"
+      : "=r"(res) : "g"(SC_SIGNAL), "g"(pid), "g"(sig)
+      );
+  if (res) printf("Signal sent to task %d\n", pid);
+  else printf("No such task %d\n", pid);
+}
+
+/* alcune operazioni matematiche di base */
+void math()
+{
+  int var1, var2, res;
+
+  if (argc!=2) {
+    _kputs("**Usage**\n"
+	   "math add - add\n"
+	   "math sub - subtract\n"
+	   "math mul - multiple\n"
+	   "math div - divide\n" );
+    return;
+  }
+
+  printf("Give me the first value: ");
+  var1 = getchar()-48;
+  printf("%d\n", var1);
+  printf("Give me the second value: ");
+  var2 = getchar() -48;
+  printf("%d\n", var2);
+
+  if (_kstrncmp(argv[1], "add", 3) == 0)
+    res=var1+var2;
+  else if (_kstrncmp(argv[1], "sub", 3) == 0)
+    res=var1-var2;
+  else if (_kstrncmp(argv[1], "mul", 3) == 0)
+    res=var1*var2;
+  else if (_kstrncmp(argv[1], "div", 3) == 0) {
+    if (!var2) {
+      _kputs("Could not divide by zero\n");
+      return;
+    }
+    res=var1/var2;
+  }
+  else {
+    _kputs( "Unknown argument\n");
+    return;
+  }
+
+  printf("Result is: %d\n", res);
+}
+
+/* stampa la lista dei processi */
+void tlist()
+{
+  int i;
+  _kputs("Task list:\n\n"
+	 "PID  Name\n");
+  for (i=0; i<next_pid; i++)
+    if(array_task[i].name!=NULL) {
+      printf( "%2d   %s\n", array_task[i].PID, array_task[i].name);
+    }
+}
+
+/* lista dei comandi per la modalità normal o debug */
+void help()
+{
+  if(mode==NORMAL)
+    _kputs("***Command list in normal mode***\n"
+	   "clear    = clear the screen\n"
+	   "dreamos  = show generic infos\n"
+	   "echo     = print argument string\n"
+	   "floppy   = floppy controller manager\n"
+	   "shutdown = shutdown or reboot\n"
+	   "signal   = send a signal to a task\n"
+	   "math     = perform basic operations\n"
+	   "tlist    = show task list\n"
+	   "help     = print this help\n"
+	   "debug    = enter debug mode\n" );
+  else
+    _kputs("***Command list in debug mode***\n"
+	   "exit     = return in normal mode\n"
+	   "help     = print this help\n"
+	   "paging   = operations about paging\n"
+	   "pingpong = try printf\n"
+	   "sem      = try semaphores\n"
+	   "syscall  = try syscalls\n"
+	   "testchar = ctype functions\n" );
+}
+
+/* passa alla modalità debug */
+void debug()
+{
+  if (mode==NORMAL) {
+    mode = DEBUG;
+    _kputs("Entering in debug mode...DONE\n");
+    prompt="debugsh# ";
+  }
+}
+
+/* paginazione */
+void paging()
+{
+  if(argc!=2) {
+    _kputs("**USAGE**\n"
+	   "paging cr0  = read cr0 register\n"
+	   "paging map  = some test with paging\n"
+	   "paging on   = enable paging\n"
+	   "paging off  = disable paging\n"
+	   "paging try  = check if some pages are allocated\n");
+    return;
+  }
+
+  if (_kstrncmp(argv[1], "cr0", 3) == 0)
+    printcr0();
+  else if (_kstrncmp(argv[1], "map", 3) == 0)
+    mappage(0xabcd0000, 0x00c5a5a8, PAGE_READWRITE | PAGE_PRESENT | PAGE_SUPERVISOR);
+  else if (_kstrncmp(argv[1], "on", 2) == 0)
+    init_paging();
+  else if (_kstrncmp(argv[1], "off", 3) == 0)
+    disable_paging();
+  else if (_kstrncmp(argv[1], "try", 3) == 0)
+    is_presenttry();
+  else
+    _kputs("Unknown argument\n");
+}
+
+void ping(){int i; i=0; while(i<100) {i++; printf("ping\n");}}
+void pong(){int i; i=0; while(i<100) {i++; printf("pong\n");}}
+
+void pingpong()
+{
+  asm("cli");
+  new_task(ping, "ping");
+  new_task(pong, "pong");
+  asm("sti");
+}
+
+void proc1() {
+  asm("cli");
+  printf("[PROC1] Tento di prendere il sem\n");
+  asm("sti");
+  sem_down(sem);
+  asm("cli");
+  printf("[PROC1] Semaforo preso\n");
+  asm("sti");
+  littledelay();
+  asm("cli");
+  printf("[PROC1] Rilascio il sem\n");
+  asm("sti");
+  sem_up(sem);
+  asm("cli");
+  printf("[PROC1] Semaforo rilasciato\n");
+  asm("sti");
+}
+
+void proc2() {
+  littledelay1();
+  asm("cli");
+  printf("[PROC2] Tento di prendere il sem\n");
+  asm("sti");
+  sem_down(sem);
+  asm("cli");
+  printf("[PROC2] Semaforo preso\n");
+  asm("sti");
+  littledelay();
+  asm("cli");
+  printf("[PROC2] Rilascio il sem\n");
+  asm("sti");
+  sem_up(sem);
+  asm("cli");
+  printf("[PROC2] Semaforo rilasciato\n");
+  asm("sti");
+}
+
+/* prova dei semafori */
+void semaphore()
+{
+  sem = sem_create();
+  asm("cli");
+  new_task(proc1, "Proc1");
+  new_task(proc2, "Proc2");
+  asm("sti");
+}
+
+/* torna alla modalità normal dalla debug */
+void exit_debug()
+{
+  if (mode==DEBUG) {
+    _kputs("Exit debug mode...DONE\n");
+    mode=NORMAL;
+    prompt="dsh# ";
+  }
+}
+
+/* prova sulle chiamate di sistema */
+void syscall(void)
+{
+    _kputs("- Provo SC_PUTCH\n");
+  int i;
+  for(i='A';i<='Z';i++) {
+    asm(
+	"movl %0, %%ebx\n"
+	"movl %1, %%eax\n"
+	"int $0xff\n"
+	: : "g"(i), "g"(SC_PUTCH)
+	);
+  }
+  _kputs("\n- Provo SC_GETCH: ");
+  asm(
+      "movl %1, %%eax\n"
+      "int $0xff\n"
+      "movl %%eax, %0"
+      : "=r"(i) : "g"(SC_GETCH)
+      );
+  printf("%c\n", i);
+}
+
+/* funzioni della ctype.h */
+void testchar(void)
+{
+    int c, rec;
+
+  _kputs( "Enter a char for isdigit(): ");
+  c = getchar();
+  if (isdigit(c))
+    printf( "It's a digit\n" );
+  else printf( "It's not a digit\n" );
+
+  _kputs( "Enter a char for isalpha(): ");
+  c = getchar();
+  if (isalpha(c))
+    printf( "It's a letter\n" );
+  else printf( "It's not a letter\n" );
+
+  _kputs( "Enter a char for isalnum(): ");
+  c = getchar();
+  if( isalnum(c))
+    printf( "It's a number or letter\n" );
+  else printf( "It's not a number or letter\n" );
+ _kputs( "Enter a char for isxdigit(): ");
+  c = getchar();
+  if( isxdigit(c))
+    printf( "It's an hex digit\n");
+  else printf( "It's not an hex digit\n" );
+
+  _kputs( "Enter a char for isupper(): ");
+  c = getchar();
+  if (isupper(c))
+    printf( "It's an uppercase char\n" );
+  else printf( "It's not an uppercase char\n" );
+
+  _kputs( "Enter a char for islower(): ");
+  c = getchar();
+  if (islower(c))
+    printf( "It's a lowercase char\n" );
+  else printf( "It's not a lowercase char\n" );
+
+  _kputs( "Enter a char to convert in uppercase: " );
+  c = getchar();
+  rec = toupper(c);
+  if( rec != c )
+    printf( "Converted: %c\n", c);
+  else printf( "Invalid input\n" );
+
+  _kputs( "Enter a char to convert in lowercase: ");
+  c = getchar();
+  rec = tolower(c);
+  if( rec != c )
+    printf( "Converted: %c\n", c );
+  else printf( "Invalid input\n" );
+}
+
+void gdttest(){
+    init_GDT();
+}

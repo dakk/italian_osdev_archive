@@ -1,0 +1,85 @@
+/*
+ * DreamOS
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+
+ * Autrice: Lisa
+ * Febbraio 2006
+ * Prototipi di funzione e variabili globali per la shell
+ */
+
+#ifndef __COMMANDS_H
+#define __COMMANDS_H
+
+#include <clock.h>
+#include <cpuid.h>
+#include <ctype.h>
+#include <fismem.h>
+#include <floppy.h>
+#include <keyboard.h>
+#include <misc.h>
+#include <paging.h>
+#include <scheduler.h>
+#include <semaphore.h>
+#include <signal.h>
+#include <stdio.h>
+#include <string.h>
+#include <syscall.h>
+#include <video.h>
+
+/* Versioni */
+#define SHELLVERSION "DreamShell v0.0 - Test 5"
+#define OSVERSIONE "DreamOS v0.0 - PreTest 15"
+
+/* Modalità della shell */
+#define NORMAL 0
+#define DEBUG 1
+
+/* Altre costanti */
+#define MAX_ARGS 10
+#define DELAY_NUM 1000000
+#define DELAY_NUM1 500000
+
+/* Variabili globali */
+int argc;
+char *argv[MAX_ARGS];
+char *prompt;
+short int mode;
+sem_t *sem;
+
+/* Prototipi di funzione */
+void info();
+void echo();
+void floppy();
+void littledelay();
+void littledelay1();
+void shutdown();
+void signal();
+void math();
+void tlist();
+void help();
+void debug();
+void paging();
+void ping();
+void pong();
+void pingpong();
+void proc1();
+void proc2();
+void semaphore();
+void exit_debug();
+void syscall();
+void testchar();
+
+#endif

@@ -1,0 +1,13 @@
+nasm -f bin boot/dreamcatcherdef.asm  -o bl.img
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o kernel.o kernel.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o video.o video.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o processore/idt.o processore/idt.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o io/io.o io/io.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o libc/bitops.o libc/bitops.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o hw/8259.o hw/8259.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o hw/keyboard.o hw/keyboard.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o processore/irq.o processore/irq.c
+gcc -nostdlib -fomit-frame-pointer -Wall -march=i386 -I./header -I./header/libc -c -o mem/fismem.o mem/fismem.c
+ld -Bstatic --oformat binary -okernel.bin kernel.o processore/irq.o processore/idt.o hw/8259.o hw/keyboard.o io/io.o libc/bitops.o mem/fismem.o video.o -Ttext 0x10000 -Map kernel.map
+cat bl.img kernel.bin > dreamos.img
+dd if=dreamos.img of=/dev/fd0

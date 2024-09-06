@@ -1,0 +1,58 @@
+#!/bin/bash
+# DreamOS - Build script
+# by sgurtz
+
+OUTNAME="dreamos.img"
+COPYTO="/mnt/evan/Documents and Settings/l0st/Documenti/My Virtual Machines/DreamOS/kernel/"
+COMPILE="gcc -fomit-frame-pointer -fno-builtin -fno-exceptions -fno-rtti -O2 -Wall -nostdlib -nostdinc -c "
+LINK="ld -Bstatic --oformat binary -Ttext 0x10000 "
+
+echo -n "Compilo... "
+$COMPILE -o src/kernel.o src/kernel.c &> build_out
+
+if [ $? -ne 0 ]; then
+   echo "ERRORE"
+   echo "=log============================================================="
+   cat build_out
+   rm build_out
+   exit
+else
+   echo "OK"
+   rm build_out
+fi
+
+echo -n "Link...... "
+$LINK -okernel.bin src/kernel.o -Map src/kernel.map &> link_out
+
+if [ $? -ne 0 ]; then
+   echo "ERRORE"
+   echo "=log============================================================="
+   cat link_out
+   rm link_out
+   exit
+else
+   echo "OK"
+   rm link_out
+fi
+
+if [ -e "$OUTNAME" ]; then
+   rm "$OUTNAME"
+fi
+
+cat boot.bin kernel.bin > $OUTNAME
+echo "DreamOS kernel ready ($OUTNAME)"
+
+echo "Removing build files..."
+rm kernel.bin
+rm src/kernel.o
+rm src/kernel.map
+
+if [ $# -eq 1 ]; then
+   if [ $1 = "floppy" ]; then
+      echo "Writing '$OUTNAME' to floppy..."
+      dd if=$OUTNAME of=/dev/fd0
+   elif [ $1 = "copy" ]; then
+      echo "Copying '$OUTNAME' ..."
+      cp "$OUTNAME" "$COPYTO"
+   fi
+fi

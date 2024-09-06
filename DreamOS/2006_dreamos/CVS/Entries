@@ -1,0 +1,22 @@
+/CHANGELOG/1.5/Thu Feb 23 14:34:33 2006//
+/INSTALL/1.2/Thu Dec 22 12:10:04 2005//
+/bl.img/1.1.1.1/Tue Sep 13 16:58:20 2005//
+/build/1.1.1.1/Tue Sep 13 16:58:20 2005//
+/compila/1.1.1.1/Tue Sep 13 16:58:20 2005//
+/dreamos.img/1.4/Mon Feb 20 20:54:24 2006//
+/dreamos.txt/1.1.1.1/Tue Sep 13 16:58:23 2005//
+/kernel.bin/1.2/Sun Jan  8 23:17:34 2006//
+/kernel.c/1.4/Wed Feb  1 10:09:12 2006//
+/kernel.map/1.2/Sun Jan  8 23:17:08 2006//
+/misc.c/1.1.1.1/Tue Sep 13 16:58:21 2005//
+/video.c/1.1.1.1/Tue Sep 13 16:58:21 2005//
+D/boot////
+D/header////
+D/hw////
+D/io////
+D/libc////
+D/mem////
+D/processore////
+D/system////
+D/task////
+/Makefile/1.4/Mon Feb 27 21:02:13 2006//

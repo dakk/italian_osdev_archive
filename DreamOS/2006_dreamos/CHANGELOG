@@ -1,0 +1,273 @@
+-------------------------------------------------------
+               DREAM O.S.
+               Changelog
+
+File contenente tutte le modifiche per ogni versione
+del sistema operativo --  kernel 0.0 --
+-------------------------------------------------------/
+20/02/2006 - [Inside]
+- Aggiornamento della shell, ora accetta comandi
+- Separazione comandi della shell dal file shell.c sono stati riversati in command.c
+
+25/09/2005 - Inuyasha
+- Completata prima versione mappage
+
+15/09/2005 - Inuyasha
+- Inserita fis_alloc
+- Inserita fis_free
+- Inserita create_pagedir
+- Aggiunto comando malloctry
+- Modificata mappage
+
+13/09/2005 - Inuyasha
+- Inserito controllo is_present() in mappage
+10/09/2005 - Inuyasha
+- Inserita funzione is_present()
+- Inserito comando temporaneo ispresenttry che chiama funzione is_presenttry()
+
+31/08/2005 - Inuyasha
+- Iniziata funzione edit_pde
+- Iniziata funzione edit_pte
+- Iniziata funzione get_pt_virtual_address
+- Iniziata funzione get_pd_virtual_address
+
+25/08/2005 - Inuyasha
+- Aggiunta funzione enable_paging
+- Aggiunta funzione disable_paging
+
+07/01/2005 - Inuyasha
+- Fixata dimensione kernel per permettere a dreamos di ripartire :)
+- Aggiunto settaggio 1024mo elemento pagedir del kernel in modo da farlo puntare a se stesso.
+
+01/01/2005 - Lethalman
+- Aggiunta funzione memset
+
+29/12/2004 - Lethalman
+- Organizzazione CPUID 1 (signature e features)
+- Inseriti nomi CPU per l'AMD, Cyrix, UMC, NexGen, Rise, SiS, Transmeta, Centaur e National Semiconductor
+- _kcpuid() ora serve solo a registrare le informazioni in CPU, per visualizzare le info usare _kcpuid_show()
+- Visualizzazione della CPUID all'avvio del kernel eliminata, non si vedeva, quindi si e' aggiunto il comando cpuid in shell come "stabile"
+- Aumentati i bytes di lettura del kernel a 70 per dreamcatcher
+- Visualizzazione features della CPU
+- Fix in kernel.c
+
+
+28/12/2004 - Lethalman
+- Scrolling disabilitato temporaneamente
+- Fix/Pulizia CPUID e implementazione della CPUID 1 (signature del processore)
+
+14/12/2004 - ^Inuyasha^
+- Completata una prima versione di init_paging, ora abilita la paginazione sui primi 4mb di ram.
+
+12/12/2004 - ^Inuyasha^
+- Scritta funzione init_paging() che prepare la page_dir e la page_table del kernel.
+
+04/12/2004 - ^Inuyasha^
+- Scritta funzione printcr0(), stampa a video il valore del registro cr0 e dice se la paginazione e' abilitata o meno.
+
+03/12/2004 - ^Inuyasha^
+- Azzerato file del paging, si e' deciso di ricominciare a scriverlo da 0.
+
+18/11/2004 - ^Inuyasha^
+- Bugfixes in task.c, aggiunti dei controlli sulle malloc se vanno a buon fine.
+
+20/11/2004 - Lethalman
+- Settaggio dello stato del cursore
+- Scrolling del video
+
+15/11/2004 - Lethalman
+- Pulitura schermo in dreamcatcher
+
+14/11/2004 - Lethalman
+- Fix per cpuid.c
+- Aggiunto chk_eflags per controllare se una flag e' settata
+- Aggiunta lista eflags
+
+13/11/2004 - Lethalman
+- Aggiunto creboot a dsh per customizzare il reboot
+- Aggiunto file misc.c (e misc.h) per funzioni d'utilizzo comune
+- _ksyscall_signal -> _kipc_signal per una questione i coerenza
+
+11/11/2004 - ^Inuyasha^
+- Reinserita _ksyscall_signal che era inspiegabilmente sparita.
+- Inserito membro pdir alla struttura dati del processo, servira' per contenere la pagedir, dello spazio di indirizzamento virtuale
+- La new_task in fase di creazione di processo chiamera' create_pagedir per preparare la page dire (funzione ancora incompleta)
+
+11/11/2004 - Lethalman
+- Settori per il caricamento del kernel nel bootloader aumentati a 60 (51 settori correnti)
+- Aggiunto enum per i colori
+- Aggiunte funzioni _kerror e _kwarning per stampare un errore o un warning interno al kernel
+- Miglioramento gestione dell'APM
+- Aggiunta syscall SC_SHUTDOWN
+- Chiusura del sistema (Shutdown)
+
+10/11/2004 - Lethalman
+- Aggiunto memcpy nelle libc
+
+09/11/2004 - Lethalman
+- Aggiunta la syscall per il reboot
+- Implementazione dell'APM (Advanced Power Management) per il reboot
+
+08/11/2004 - Lethalman
+- Aggiunto fork() come funzione e come interrupt
+- Se nessun comando e' stato specificato in shell, non viene stampato nessun messaggio d'errore
+- Risolto un bug in sumprg
+- Eliminate alcune tabulazioni
+
+07/11/2004
+- Aggiunto comando signal alla DSH per inviare segnali ai task utilizzando la syscall signal
+- Aggiunte le syscall: header/syscall.h, system/syscall.c e aggiunti test alla DSH
+- Aperto cvs serve per lavorare piu comodi
+
+13/09/2004
+-Scritta funzione di prova readcr0(), aggiunto relativo comando alla shell
+
+30/082004
+- Aggiunti file va_list.h e stdarg.h (tnx to mius)
+
+04/08/2004 - ^Inuyasha^
+- Scritta funzione che inizializza il lettore floppy e identifica la versione del controller
+
+24/07/2004 - ^inuyasha^
+- iniziato driver del floppy
+
+15/07/2004 - ^Inuyasha^
+- Aggiunta funzione init_dma
+
+06/07/2004 - ^Inuyasha^
+- Iniziato a scrivere driver per dma
+- Scritte funzioni enable_dma e disable_dma
+
+2/05/2004
+- Scritte funzione per la stampa dell'ora
+- Aggiunte funzioni per gestione caps-lock e shift per la tastiera
+
+28/04/04 - ^Inuyasha^ - PreTEST 12
+- Scritte funzioni per la gestione dei semafori da debuggare
+
+26/04/04 - Snapshot #1 // sgurtz
+- Aggiunta routine movimento cursore
+- Sistemata la shell, aggiunto il comando clear
+
+21/04/04 - Versione PreTest12
+- Aggiunta routine gestione tastiera
+- Aggiunta una shell provvisoria
+
+20/04/04 - Versione Testt11
+- Scritta funzione kill
+- Scritta funzione suicide
+
+18/04/04 - Versione Test11
+- Riscritto lo scheduler
+- Cambiata la coda dei task
+
+xx/04/04 - Versione Test11
+- Pesanti modifiche alla creazione del task
+- Riscritta printlist(), per il vettore.
+
+06/04/04 - Versione PreTest11-2
+- Aggiunta la struttura dati che conterra' lo stato dei singoli registri
+
+26/03/04 - Versione PreTest11-2 - Inuyasha
+- modificata la preparazione dello stack in new_task()
+- modificato il caricamento dello stack in load_task()
+
+21/03/04 - Versione PreTest11-1 - Inuyasha
+- Completata la new:task()
+
+15/03/04 - Versione PreTEST11-1  - Inuyasha
+- scritta funzione load_task(task_t*); da terminare
+
+10/03/04 - Versione PreTEST11 -  Inuyasha
+- Spostata inizializzazione in initOS, il main ora viene lanciato come processo 0 (quindi il kernel e' un processo)
+- Aggiunto indirizzo sito pagina schermata del titolo.
+05/03/04 - Versione PreTEST11 - Joey147 e Inuyasha
+- Diviso cpuid.h in cpuid.c e cpuid.h
+- Scritta la funzione request_pid()
+
+04/03/04 - Versione PreTEST11 - Inuyasha
+- Iniziati a scrivere scheduler.h scheduler.c
+- Scritta init_scheduler()
+
+03/03/04 - Versione PreTEST11 - Inuyasha e Joey147
+- Creata string.h e string.c con 2 funzioni (Joey147)
+- Aggiunta printf presa da www.monio.org (trovata da Joey147)
+- Aggiornato il makefile
+
+01/03/2004 - Versione PreTEST11 - Inuyasha
+- Scritta struttura dati per gestione dei task
+- Scritta funzione new_task(), da completare;
+- Provato a lanciare un task
+
+17/01/2004 - Versione PreTEST10-1 - Inuyasha
+ - La initPIT sembra funzionare, abilitato l'irq del timer0 del PIT.
+
+16/01/2004 - Versione PreTEST10 - Inuyasha
+ - Aggiunta una prima versione di InitPIT
+
+15/01/2004 - Versione PreTEST10
+ - Dichiarate tutte le variabili nel file fismem.h come extern
+ - Iniziati a scrivere file 8253.h e 8253.c
+
+10/01/2004 - Versione PreTEST10
+ - Aggiunte le funzioni malloc(...) e free(...)
+
+18/12/2003 - Versione PreTEST10
+ - Aggiunta funzione print_mem_list() - Utile per il debug
+
+17/12/2003 - Versione PreTEST10
+ - Aggiunta funzione richiedi_pagine(....) per la allocazione delle pagine in memoria.
+ - Aggiunta funzione add_mem_list(...)
+
+29/11/2003 - Versione PreTEST10
+ - Aggiunto calcolo del numero di pagine disponibili.
+ - Inizializzazioe strutture di controllo per le pagine
+ - Implementata una versione grezza dell'allocatore. (richiedi pagine)
+
+23/11/2003 Versione: TEST9
+ - Sistemato il makefile
+ - Aggiunto conteggio della ram
+ - Aggiunto spegnimento motore floppy
+
+18/11/2003
+ - Aggiunto MakeFile
+
+17/11/2003
+ - Modificati tutti i files header, e aggiunta la direttiva #ifndef
+ - Implementata la funzione _kshiftall
+
+15/11/2003
+ - Risolto bug dell'8259
+ - Aggiunta sequenza di escape ktab() in versione provvisoria
+ - Aggiunti files keyboard.h e keyboard.c per la gestione della tastiera
+ - Iniziata funzione initKeyboard per inizializzare la tastiera (da completare)
+ - Aggiunta istruzione _kprintDone() che stampa [OK]
+ - Aggiunte funzioni find_first_bit e print_bin per lavorare con i binari
+ - Aggiornato script di installazione
+
+12/11/2003
+ - Aggiunta disable_irq(da testare)
+ - Implementato gestore globale degli interrupt PIC
+
+11/11/2003
+ - PIC inizializzato
+ - Abilitato Interrupt della tastiera
+
+8/11/2003
+ - Aggiunte funzioni inportb e outportb
+ - Aggiunte le define dei comandi ICW per il pic 8259
+
+7/11/2003
+ - IDT Funzionante
+ - Aggiunto avviso di inizializzazione IDT
+
+4/11/2003 Kernel0.0-TEST5
+ - Implementata una prima versione della IDT
+
+27/10/2003 Kernel0.0-TEST4
+ - Corretti alcuni bug della cpuid.
+ - Aggiornato script di installazione.
+
+26/10/2003 Kernel0.0-TEST3
+ - Aggiunto bootloader DreamCatcher.
+ - Sistemati alcuni bug della cpuid.

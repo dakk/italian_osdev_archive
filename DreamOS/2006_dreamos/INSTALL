@@ -1,0 +1,52 @@
+--------------------------------------------------
+            DREAM OS 0.0TEST10
+
+            Readme sull'installazione
+            e avvio del sistema operativo        
+
+            Ultimo Aggiornamento: 14/12/2004
+--------------------------------------------------
+
+Per poter utilizzare e provare DreamO.S. avete 3 possibilita:
+1 - Installarlo su floppy e riavviare il pc
+2 - Installarlo su floppy e farlo partire con emulatori tipo bochs
+3 - Far partire da un emulatore l'immagine.
+
+INSTALLAZIONE IN LINUX
+Per prima cosa occorre compilare il sistema operativo lanciando il comando
+
+      make
+che crea i files immagine.
+oppure lanciando il comando
+      
+      make install
+che oltre a creare i files immagine li copia anche su floppy.
+Se vogliamo rimuovere tutti i files compilati ci basta fare:
+      
+      make clean
+
+Ora possiamo riavviare il pc con il floppy all'interno, assicurandoci che
+il bios sia configurato per per bootare prima da floppy che da hd.
+Altrimenti possiamo usare bochs o vmware per far partire il floppy.
+Ultima opzione e' usare il file dreamos.img sempre con bochs o vmware.
+A questo punto non ci resta che augurarvi: buon divertimento
+
+INSTALLAZIONE IN FREEBSD
+
+Per prima cosa occorre compilare il sistema operativo lanciando il comando
+
+      gmake
+che crea i files immagine.
+oppure lanciando il comando
+      
+      gmake install
+che oltre a creare i files immagine li copia anche su floppy.
+Se vogliamo rimuovere tutti i files compilati ci basta fare:
+      
+      gmake clean
+
+Ora possiamo riavviare il pc con il floppy all'interno, assicurandoci che
+il bios sia configurato per per bootare prima da floppy che da hd.
+Altrimenti possiamo usare bochs o vmware per far partire il floppy.
+Ultima opzione e' usare il file dreamos.img sempre con bochs o vmware.
+A questo punto non ci resta che augurarvi: buon divertimento
